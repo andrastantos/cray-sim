@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cray_sim", "cray_sim.vcxproj", "{44538B87-E1EA-4D96-BA93-27FFCA411511}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8A280901-357C-4A38-881E-841654C8A6BD} = {8A280901-357C-4A38-881E-841654C8A6BD}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sim_lib", "..\sim_lib\sim_lib.vcxproj", "{8A280901-357C-4A38-881E-841654C8A6BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Debug|Win32.ActiveCfg = Debug|Win32
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Debug|Win32.Build.0 = Debug|Win32
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Debug|x64.ActiveCfg = Debug|x64
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Debug|x64.Build.0 = Debug|x64
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Release|Win32.ActiveCfg = Release|Win32
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Release|Win32.Build.0 = Release|Win32
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Release|x64.ActiveCfg = Release|x64
+		{44538B87-E1EA-4D96-BA93-27FFCA411511}.Release|x64.Build.0 = Release|x64
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Debug|Win32.Build.0 = Debug|Win32
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Debug|x64.ActiveCfg = Debug|x64
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Debug|x64.Build.0 = Debug|x64
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Release|Win32.ActiveCfg = Release|Win32
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Release|Win32.Build.0 = Release|Win32
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Release|x64.ActiveCfg = Release|x64
+		{8A280901-357C-4A38-881E-841654C8A6BD}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+EndGlobal

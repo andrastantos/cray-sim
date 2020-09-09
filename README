@@ -1,0 +1,33 @@
+Linux build instructions:
+==================================
+1. Clone repository:
+      git clone https://github.com/andrastantos/cray-sim.git
+3. Install build dependencies:
+      sudo apt install g++ make libboost-all-dev libncurses-dev libgpm-dev
+4. Install run dependencies
+      sudo apt install xterm telnet
+5. Build
+      cd cray-sim/simulator
+      make build
+6. Build images
+      cd ../target/cos_117
+      ./build_boot_tape
+      ./build_exp_disk
+7. Run simulator
+      cd ../..
+      ./run
+
+Native Windows build instructions:
+===================================
+1. Build boost and set up project files accordingly
+      see simulator\README_boost.txt for details
+2. Open solution in Visual Studio and build
+      Open simulator\all.sln
+      Hit build all
+3. Build images
+      cd target\cos_117
+      build_boot_tape
+      build_exp_disk
+4. Run simulator
+      cd ..\..
+      run

@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_PGO_Inst|Win32">
+      <Configuration>Release_PGO_Inst</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_PGO_Inst|x64">
+      <Configuration>Release_PGO_Inst</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8A280901-357C-4A38-881E-841654C8A6BD}</ProjectGuid>
+    <RootNamespace>sim_lib</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_PGO_Inst|Win32'" Label="Configuration">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_PGO_Inst|x64'" Label="Configuration">
+    <PlatformToolset>v141_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="..\common.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ItemGroup>
+    <ClCompile Include="commands.cpp" />
+    <ClCompile Include="config_file.cpp" />
+    <ClCompile Include="console.cpp" />
+    <ClCompile Include="cray_channels.cpp" />
+    <ClCompile Include="cray_float.cpp" />
+    <ClCompile Include="cray_iop.cpp" />
+    <ClCompile Include="cray_iop_built_in_channels.cpp" />
+    <ClCompile Include="cray_logger.cpp" />
+    <ClCompile Include="cray_mainframe.cpp" />
+    <ClCompile Include="cray_softcpu.cpp" />
+    <ClCompile Include="cray_types.cpp" />
+    <ClCompile Include="curses_win.cpp" />
+    <ClCompile Include="iop_bmx.cpp" />
+    <ClCompile Include="iop_cluster.cpp" />
+    <ClCompile Include="iop_cluster_if.cpp" />
+    <ClCompile Include="iop_concentrator.cpp" />
+    <ClCompile Include="iop_console.cpp" />
+    <ClCompile Include="iop_disk.cpp" />
+    <ClCompile Include="iop_era.cpp" />
+    <ClCompile Include="iop_expander.cpp" />
+    <ClCompile Include="iop_host_memory.cpp" />
+    <ClCompile Include="iop_iop2cray.cpp" />
+    <ClCompile Include="iop_iop2iop.cpp" />
+    <ClCompile Include="logger.cpp" />
+    <ClCompile Include="parser.cpp" />
+    <ClCompile Include="poked_tap_file.cpp" />
+    <ClCompile Include="sim_iop.cpp" />
+    <ClCompile Include="sim_iop_con.cpp" />
+    <ClCompile Include="sim_iop_disk.cpp" />
+    <ClCompile Include="sim_iop_eth.cpp" />
+    <ClCompile Include="sim_iop_periph.cpp" />
+    <ClCompile Include="sys_task_req.cpp" />
+    <ClCompile Include="tap_file.cpp" />
+    <ClCompile Include="ui.cpp" />
+    <ClCompile Include="unicos_proc_list.cpp" />
+    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="vtap_win32.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="commands.h" />
+    <ClInclude Include="config_file.h" />
+    <ClInclude Include="console.h" />
+    <ClInclude Include="config.h" />
+    <ClInclude Include="cray_channels.h" />
+    <ClInclude Include="cray_cpu.h" />
+    <ClInclude Include="cray_cpu_inst_0000_0037.h" />
+    <ClInclude Include="cray_cpu_inst_0040_0077.h" />
+    <ClInclude Include="cray_cpu_inst_0100_0137.h" />
+    <ClInclude Include="cray_cpu_inst_0140_0177.h" />
+    <ClInclude Include="cray_iop.h" />
+    <ClInclude Include="cray_logger.h" />
+    <ClInclude Include="cray_mainframe.h" />
+    <ClInclude Include="cray_softcpu.h" />
+    <ClInclude Include="cray_types.h" />
+    <ClInclude Include="curses_win.h" />
+    <ClInclude Include="curses_wrapper.h" />
+    <ClInclude Include="debug_events.h" />
+    <ClInclude Include="exceptions.h" />
+    <ClInclude Include="exchange_packet.h" />
+    <ClInclude Include="iop_bmx.h" />
+    <ClInclude Include="iop_cluster.h" />
+    <ClInclude Include="iop_cluster_if.h" />
+    <ClInclude Include="iop_concentrator.h" />
+    <ClInclude Include="iop_console.h" />
+    <ClInclude Include="iop_disk.h" />
+    <ClInclude Include="iop_era.h" />
+    <ClInclude Include="iop_expander.h" />
+    <ClInclude Include="iop_host_memory.h" />
+    <ClInclude Include="iop_iop2cray.h" />
+    <ClInclude Include="iop_iop2iop.h" />
+    <ClInclude Include="logger.h" />
+    <ClInclude Include="parser.h" />
+    <ClInclude Include="poked_tap_file.h" />
+    <ClInclude Include="sim_iop.h" />
+    <ClInclude Include="sim_iop_con.h" />
+    <ClInclude Include="sim_iop_disk.h" />
+    <ClInclude Include="sim_iop_eth.h" />
+    <ClInclude Include="sim_iop_periph.h" />
+    <ClInclude Include="sys_task_req.h" />
+    <ClInclude Include="tap_file.h" />
+    <ClInclude Include="ui.h" />
+    <ClInclude Include="unicos_proc_list.h" />
+    <ClInclude Include="utils.h" />
+    <ClInclude Include="vtap_win32.h" />
+  </ItemGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</EnableParallelCodeGeneration>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release_PGO_Inst'">
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <EnableParallelCodeGeneration Condition="'$(Configuration)|$(Platform)'=='Release_PGO_Inst|x64'">false</EnableParallelCodeGeneration>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>

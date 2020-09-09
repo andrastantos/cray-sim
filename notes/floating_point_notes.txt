@@ -1,0 +1,85 @@
+from http://www.usm.uni-muenchen.de/people/puls/f77to90/cray.html:
+
+REAL                        half  Default,single          double
+  KIND number =                4               8              16
+       digits =               24              47              96
+  maxexponent =             8189            8189            8190
+  minexponent =            -8188           -8188           -8189
+    precision =                6              13              28
+        radix =                2               2               2
+        range =             2465            2465            2465
+      epsilon =   0.11920929E-06   0.14210855-13  0.25243549E-28
+         tiny =  0.73344155-2465 0.73344155-2465 0.73344155-2465
+         huge =  0.13634352+2466 0.13634352+2466 0.13634352+2466
+
+This seems to indicate a 32-bit float with the same 15-bit exponent, and a 16-bit coefficient? Others seem to indicate a 24-bit coefficient, which would make sense being a 'half' precision, but that doesn't allow for much of an exponent in 32-bits. Puzzling...
+
+There's a ruby package that implement the Cray (full) float format, with test code as well (http://rubyforge.org/frs/?group_id=4684). Here's how they define it:
+
+# Cray-1
+Flt.define :CRAY, BinaryFormat,
+  :fields=>[:significand,48,:exponent,15,:sign,1],
+  :bias=>16384, :bias_mode=>:fractional_significand,
+  :hidden_bit=>false,
+  :min_encoded_exp=>8192, :max_encoded_exp=>24575, :zero_encoded_exp=>0,
+  :endianness=>:big_endian,
+  :gradual_underflow=>false, :infinity=>false, :nan=>false
+
+And here's some test code:
+CRAY:
+  parameters:
+  - total_bits: 64
+  - radix: 2
+  - significand_digits: 48
+  - radix_min_exp: -8193
+  - radix_max_exp: 8190
+  - decimal_digits_stored: 14
+  - decimal_digits_necessary: 16
+  - decimal_min_exp: -2466
+  - decimal_max_exp: 2466
+  values:
+  - Rational(1, 3): 3F FF AA AA AA AA AA AB
+  - Rational(1, 10): 3F FD CC CC CC CC CC CD
+  - Rational(2, 3): 40 00 AA AA AA AA AA AB
+  - Rational(1, 1024): 3F F7 80 00 00 00 00 00
+  - Rational(1, 1000): 3F F7 83 12 6E 97 8D 50
+  - Rational(1024, 1): 40 0B 80 00 00 00 00 00
+  - Rational(1024, 1): 40 0B 80 00 00 00 00 00
+  special:
+  - min_value: 20 00 80 00 00 00 00 00
+  - min_normalized_value: 20 00 80 00 00 00 00 00
+  - max_value: 5F FF FF FF FF FF FF FF
+  - epsilon: 3F D2 80 00 00 00 00 00
+  - strict_epsilon: 3F D2 80 00 00 00 00 00
+  numerals:
+  - "+0": 00 00 00 00 00 00 00 00
+  - "-0": 80 00 00 00 00 00 00 00
+  - "+1": 40 01 80 00 00 00 00 00
+  - "-1": C0 01 80 00 00 00 00 00
+  - "+0.1": 3F FD CC CC CC CC CC CD
+  - "-0.1": BF FD CC CC CC CC CC CD
+  - "0.5": 40 00 80 00 00 00 00 00
+  - "-0.5": C0 00 80 00 00 00 00 00
+  - "29.2": 40 05 E9 99 99 99 99 9A
+  - "-29.2": C0 05 E9 99 99 99 99 9A
+  - "0.03125": 3F FC 80 00 00 00 00 00
+  - "-0.03125": BF FC 80 00 00 00 00 00
+  - "-0.3125": BF FF A0 00 00 00 00 00
+  - 1.234E2: 40 07 F6 CC CC CC CC CD
+  - "-1.234E-6": BF ED A5 9F EA CA 16 6D
+  - "65536.0": 40 11 80 00 00 00 00 00
+  - "-65536.0": C0 11 80 00 00 00 00 00
+  - "-7.50": C0 03 F0 00 00 00 00 00
+  - "4.584009668887118E-2467": 20 00 80 00 00 00 00 00
+  - 5.45374067809706E2465: 5F FF FF FF FF FF FF FF
+  - "7.105427357601002E-15": 3F D2 80 00 00 00 00 00
+  - "7.105427357601002E-15": 3F D2 80 00 00 00 00 00
+  base: :bytes
+
+
+From the Cray reference manual:
+
+'The 18 low-order bits of the half-precision results are returned as zeros with a round applied to the low-order bit of the 30-bit result'
+
+This indicates a 30-bit coefficient, and a 15-bit exponent. It also means that half-precision numbers are represented the same way as normal floats (i.e. in 64-bits) only results are computed faster.
+

@@ -1,0 +1,111 @@
+B.1.2 DEADSTART
+
+The following procedure describes how to deadstart the lOS from either
+tape or disk. The deadstart tape and disk contain the following files:
+
+    Tape     Disk        Description
+	------   ---------   -------------------------------
+    FILE 0   TAPELOAD    Tape deadstart program
+    FILE 1   DISKLOAD    Disk deadstart program
+    FILE 2   DMP I/O     Processor dump program
+    FILE 3   KERNEL      The IOS Kernel
+    FILE 4   KERNEL.OV   IOS overlays
+    FILE 5   COS         COS
+    FILE 6   PARAM       Parameter file
+    FILE 7   CLEARIO     Clear IDS program
+    FILE 8   DSDIAG      IOS deadstart diagnostic control program
+    FILE 9   DSDIAG.OV   IOS deadstart diagnostic overlays
+
+Step   Procedure
+----   ------------------------------------------------------------
+1a.    Mount the deadstart tape on the Peripheral Expander tape unit.
+                             or
+lb.    Mount the deadstart disk in the Peripheral Expander drive unit.
+2.     Set lOS maintenance panel toggle switches as follows:
+
+                                                  Switch Setting
+                  Loading From                   Octal     Binary
+				  ---------------------------    -------   --------
+                  Tape                           22        010 010
+                  AMPEX disk unit                60        110 000
+                  CDC disk unit                  27        010 111
+
+3.     Depress IOP-O MC (or MASTER CLEAR on CRAY-1/A) and DEADSTART
+       buttons on the Power Distribution Unit or lOS chassis maintenance
+       panel (depending on your site).
+
+4.     Respond to the prompt at the MIOP Kernel console as follows. (If
+       the FILE @MTO prompt is not displayed, verify that a tape is
+       mounted on the Peripheral Expander tape unit.)
+
+       Prompt       Response
+	   -----------  ------------------------------------------
+       FILE @MTO:   Enter 3 and press RETURN (loads Kernel and
+                    performs initialization)
+
+       FILE @DKO:   Enter either the directory name (dir/) to
+                    display a menu of all files in requested
+                    directory or enter the
+                    Kernel filename (dir/Kernel) to load the
+                    Kernel and perform initialization.
+
+                    Press RETURN.
+
+         ============================================================
+     					            NOTE
+           When starting from disk, the Kernel expects the Kernel
+           overlays to have the same Kernel name and appended with
+           a ".OV" (for example; a Kernel with file name lOS must
+           have the overlays with filename IOS.OV).
+         ============================================================
+    
+       The Kernel goes through its initialization sequence and displays
+       the following message on the Kernel console of all lOPs:
+       
+           IOP-n KERNEL, VERSION x.xx SNsn, site. mm/dd/yy hh:mm:ss
+       
+       	n           Number designating the lOP where the console is
+                       attached
+       	x.xx        Software version number
+       	sn          Mainframe serial number
+       	site        Installation location
+       	mm/dd/yy    Kernel assembly date
+       	hh:mm:ss    Kernel assembly time
+       
+       The following message can appear on the BIOP or DIOP console only:
+       
+           DISK NOT READY CH nn
+       
+       The message indicates that the configured system disk has not
+       responded to attempts to select it. The disk might be disabled at
+       the lOS Power Distribution Unit cabinet, at the lOS deadstart
+       panel, or at the disk unit itself (maintenance mode). This
+       message may not indicate a problem since the operating system
+       being loaded in the mainframe controls which configured devices
+       must be present for successful operation.
+
+5.     If your IOS does not have a Peripheral Expander clock, two prompts
+       are issued at the MIOP Kernel console for the current date" and
+       time.
+
+         ============================================================
+     					            NOTE
+           If your lOS is equipped with a Peripheral Expander
+           clock, you are not asked to enter date and time. See
+           SETIME command (section 2) to set or reset the
+           Peripheral Expander clock.
+     
+     	  Proceed to step 6.
+         ============================================================
+
+	  After the "ENTER DATE:" prompt, enter the date in the following
+      format:
+
+	      mm/dd/yy
+
+	  Once the date has been accepted, the MIOP Kernel console displays
+      the "ENTER TIME:" prompt. Enter the time in the following format:
+	  
+	      hh:mm:ss
+
+6.    Proceed to the Cray Mainframe Deadstart procedure (subsection B.2).

@@ -1,0 +1,11 @@
+job,jn=JDIAGGO,us=ENGINEER,p=15.
+account,ac=ENGINEER,apw=WITHOUT,upw=APADDLE,nupw=APADDLE.
+*
+* Start the 'self-replicating diagnostic job'.
+*
+copyf,  o=JDIAG.
+rewind,dn=$IN.
+copyd,  o=JDIAG.
+submit,dn=JDIAG.
+*
+dispose,dn=$OUT,dc=sc,defer.

@@ -1,0 +1,897 @@
+0x00000004-0x0000025c flags:0x800b 0x0000 size:     584 AMAP
+0x0000025c-0x00000a74 flags:0x000c 0x0118 size:    2056 ADEM
+0x00000a74-0x000014b4 flags:0x000d 0x0118 size:    2608 AMSG
+0x000014b4-0x00001704 flags:0x0019 0x1118 size:     576 AUTO
+0x00001704-0x000022fc flags:0x000e 0x0118 size:    3048 BEGIN
+0x000022fc-0x0000245c flags:0x000f 0x0f18 size:     336 BTD
+0x0000245c-0x0000263c flags:0x0010 0x0f18 size:     464 BTH
+0x0000263c-0x0000276c flags:0x0011 0x0f18 size:     288 BTO
+0x0000276c-0x00002fd4 flags:0x0012 0x5118 size:    2136 CALL
+0x00002fd4-0x0000364c flags:0x0013 0x0118 size:    1640 CDEM
+0x0000364c-0x00003a64 flags:0x0014 0x0118 size:    1032 CLKSNC
+0x00003a64-0x00003f5c flags:0x0015 0x0118 size:    1256 CLOCK
+0x00003f5c-0x00004664 flags:0x0016 0x0318 size:    1784 CONFIG
+0x00004664-0x00004c1c flags:0x0017 0x0318 size:    1448 CRAY
+0x00004c1c-0x000054dc flags:0x0018 0x0118 size:    2224 CRTDEM
+0x000054dc-0x0000591c flags:0x001a 0x1518 size:    1072 DISKIO
+0x0000591c-0x00005b6c flags:0x001b 0x1318 size:     576 DIVIDE
+0x00005b6c-0x00006d3c flags:0x001c 0x0118 size:    4544 DKDMP
+0x00006d3c-0x00006f8c flags:0x001d 0x0318 size:     576 DKIOEX
+0x00006f8c-0x00007014 flags:0x001e 0x0318 size:     120 DKLOOK
+0x00007014-0x0000715c flags:0x001f 0x0d18 size:     312 DTB
+0x0000715c-0x0000786c flags:0x0020 0x0518 size:    1792 ERR
+0x0000786c-0x00007f0c flags:0x0021 0x0118 size:    1680 ERRDMP
+0x00007f0c-0x0000808c flags:0x0022 0x0b18 size:     368 FIND
+0x0000808c-0x0000817c flags:0x0023 0x0f18 size:     224 GETEXT
+0x0000817c-0x00008284 flags:0x0024 0x0918 size:     248 INFORM
+0x00008284-0x00008b3c flags:0x0025 0x0318 size:    2216 INDD10
+0x00008b3c-0x0000925c flags:0x0026 0x0318 size:    1808 INDD29
+0x0000925c-0x00009bd4 flags:0x0027 0x0318 size:    2408 INDD39
+0x00009bd4-0x0000a514 flags:0x0028 0x0318 size:    2352 INDD40
+0x0000a514-0x0000b03c flags:0x0029 0x0318 size:    2840 INDD49
+0x0000b03c-0x0000bb5c flags:0x002a 0x0318 size:    2832 INDD50
+0x0000bb5c-0x0000bea4 flags:0x002b 0x0518 size:     824 LISTO
+0x0000bea4-0x0000cb14 flags:0x002c 0x0318 size:    3168 LISTP
+0x0000cb14-0x0000cecc flags:0x002d 0x5118 size:     936 MFCLR
+0x0000cecc-0x0000d86c flags:0x002e 0x0118 size:    2448 MFINIT
+0x0000d86c-0x0000e6e4 flags:0x002f 0x1718 size:    3688 MSGHND
+0x0000e6e4-0x0000e754 flags:0x0030 0x0918 size:      96 MULTIPLY
+0x0000e754-0x0000e95c flags:0x0031 0x0318 size:     504 NOBEAT
+0x0000e95c-0x0000e9f4 flags:0x0032 0x0718 size:     136 OPSYS
+0x0000e9f4-0x0000eacc flags:0x0033 0x0d18 size:     200 OTB
+0x0000eacc-0x0000eb7c flags:0x0034 0x0318 size:     160 OUTCALL
+0x0000eb7c-0x0001260c flags:0x8035 0x0000 size:   14976 OVLNUM
+0x0001260c-0x00012954 flags:0x0036 0x2118 size:     824 PATCH
+0x00012954-0x00012a84 flags:0x0037 0x0118 size:     288 SCRUB
+0x00012a84-0x00012bfc flags:0x0038 0x0118 size:     360 SETIME
+0x00012bfc-0x00012efc flags:0x0039 0x0f18 size:     752 STATS
+0x00012efc-0x000137bc flags:0x803a 0x0000 size:    2224 SYSS
+0x000137bc-0x000141f4 flags:0x803b 0x0000 size:    2600 SYSTEXT
+0x000141f4-0x0001432c flags:0x003c 0x0318 size:     296 TCOM
+0x0001432c-0x00014b3c flags:0x003d 0x0f18 size:    2048 TDUMP
+0x00014b3c-0x0001507c flags:0x003e 0x0118 size:    1328 TIME
+0x0001507c-0x00015634 flags:0x003f 0x1118 size:    1448 TRACE
+0x00015634-0x00015724 flags:0x0040 0x0718 size:     224 TRACK
+0x00015724-0x000158fc flags:0x0041 0x0d18 size:     456 TSTASH
+0x000158fc-0x000159cc flags:0x0042 0x0718 size:     192 USURP
+0x000159cc-0x00015b0c flags:0x0043 0x0118 size:     304 WATCH
+0x00015b0c-0x000165bc flags:0x0044 0x0118 size:    2720 ACOM
+0x000165bc-0x00016724 flags:0x0045 0x0318 size:     344 BADDAT
+0x00016724-0x00016fcc flags:0x0046 0x0b18 size:    2200 D10IOR
+0x00016fcc-0x000171ec flags:0x0047 0x0b18 size:     528 D3ECC
+0x000171ec-0x00018044 flags:0x0048 0x0518 size:    3656 D3ERR
+0x00018044-0x00018b4c flags:0x0049 0x0b18 size:    2808 D3IOR
+0x00018b4c-0x0001922c flags:0x004a 0x0b18 size:    1744 D3LOG
+0x0001922c-0x00019524 flags:0x004b 0x0718 size:     744 D3MSG
+0x00019524-0x0001991c flags:0x004c 0x0318 size:    1000 D3RLR
+0x0001991c-0x00019ecc flags:0x004d 0x0b18 size:    1440 D3SKR
+0x00019ecc-0x0001a3fc flags:0x004e 0x0318 size:    1312 D3SLR
+0x0001a3fc-0x0001a564 flags:0x004f 0x0b18 size:     344 D40ECC
+0x0001a564-0x0001b6b4 flags:0x0050 0x0518 size:    4416 D40ERR
+0x0001b6b4-0x0001c184 flags:0x0051 0x0d18 size:    2752 D40IOR
+0x0001c184-0x0001e52c flags:0x0052 0x0118 size:    9112 D4DEM
+0x0001e52c-0x0001e63c flags:0x0053 0x0518 size:     256 D4ECC
+0x0001e63c-0x0001f27c flags:0x0054 0x0518 size:    3120 D4ERR
+0x0001f27c-0x0001ff34 flags:0x0055 0x0918 size:    3240 D4IOR
+0x0001ff34-0x00020564 flags:0x0056 0x0918 size:    1568 D4LOG
+0x00020564-0x00020854 flags:0x0057 0x0518 size:     736 D4MSG
+0x00020854-0x00020c74 flags:0x0058 0x0318 size:    1040 D4RES
+0x00020c74-0x00020fec flags:0x0059 0x0118 size:     872 D4RLR
+0x00020fec-0x00021614 flags:0x005a 0x0918 size:    1560 D4SKR
+0x00021614-0x00021b74 flags:0x005b 0x0118 size:    1360 D4SLR
+0x00021b74-0x00021d44 flags:0x005c 0x0518 size:     448 D4STAT
+0x00021d44-0x00022d1c flags:0x805d 0x0000 size:    4040 DD49
+0x00022d1c-0x00022e3c flags:0x005e 0x0518 size:     272 DDIAG
+0x00022e3c-0x00023be4 flags:0x005f 0x0118 size:    3480 DISK
+0x00023be4-0x00024904 flags:0x0060 0x0518 size:    3344 ERRECK
+0x00024904-0x00024b24 flags:0x0061 0x0718 size:     528 FIRECODE
+0x00024b24-0x000255ec flags:0x0062 0x0118 size:    2744 ICOM
+0x000255ec-0x00025b24 flags:0x0063 0x1518 size:    1320 REPORT
+0x00025b24-0x000261d4 flags:0x0064 0x0118 size:    1696 TRANSFR
+0x000261d4-0x000269c4 flags:0x0065 0x0d18 size:    2016 BMXAIO
+0x000269c4-0x000278dc flags:0x0066 0x0d18 size:    3848 BMXCON
+0x000278dc-0x000285b4 flags:0x0067 0x0318 size:    3272 BMXCPU
+0x000285b4-0x0002966c flags:0x0068 0x0118 size:    4264 BMXDEM
+0x0002966c-0x00029b4c flags:0x0069 0x0318 size:    1232 BMXOPE
+0x00029b4c-0x0002a62c flags:0x006a 0x0718 size:    2768 BMXSIO
+0x0002a62c-0x0002afac flags:0x006b 0x0d18 size:    2416 BMXTPO
+0x0002afac-0x0002b3a4 flags:0x006c 0x0118 size:    1000 BCOM0
+0x0002b3a4-0x0002b454 flags:0x006d 0x0118 size:     160 BCOM1
+0x0002b454-0x0002ba24 flags:0x006e 0x0118 size:    1472 BCOM3
+0x0002ba24-0x0002c1b4 flags:0x006f 0x0718 size:    1920 BUFMAN
+0x0002c1b4-0x0002c7a4 flags:0x0070 0x0118 size:    1504 BYPASS
+0x0002c7a4-0x0002c96c flags:0x0071 0x0318 size:     440 CONMAN
+0x0002c96c-0x0002cd9c flags:0x0072 0x0718 size:    1056 DSCGET
+0x0002cd9c-0x0002ce84 flags:0x0073 0x0518 size:     216 TAPDIS
+0x0002ce84-0x0002df84 flags:0x0074 0x0718 size:    4336 TAPEIO
+0x0002df84-0x0002e594 flags:0x0075 0x0518 size:    1536 TAPEND
+0x0002e594-0x0002e77c flags:0x0076 0x0518 size:     472 TAPERR
+0x0002e77c-0x0002e954 flags:0x0077 0x0b18 size:     456 TAPFUN
+0x0002e954-0x0002f0cc flags:0x0078 0x0718 size:    1896 TAPMOV
+0x0002f0cc-0x0002fbec flags:0x0079 0x0518 size:    2832 TCART
+0x0002fbec-0x00030584 flags:0x007a 0x1118 size:    2440 TCTELL
+0x00030584-0x00030b14 flags:0x007b 0x0118 size:    1408 TDEM
+0x00030b14-0x0003226c flags:0x007c 0x0118 size:    5960 TDEM1
+0x0003226c-0x00032b3c flags:0x007d 0x0518 size:    2240 TERROR
+0x00032b3c-0x0003305c flags:0x007e 0x0518 size:    1296 TEX
+0x0003305c-0x000332d4 flags:0x007f 0x0d18 size:     616 TRBOC
+0x000332d4-0x00033634 flags:0x0080 0x0d18 size:     848 TRCER
+0x00033634-0x00033824 flags:0x0081 0x0518 size:     480 TRCLN
+0x00033824-0x00033d0c flags:0x0082 0x0d18 size:    1240 TRDCK
+0x00033d0c-0x00033dd4 flags:0x0083 0x0d18 size:     184 TREQC
+0x00033dd4-0x00034024 flags:0x0084 0x0d18 size:     576 TRIDB
+0x00034024-0x00034104 flags:0x0085 0x0d18 size:     208 TRINR
+0x00034104-0x00034394 flags:0x0086 0x0d18 size:     640 TRORN
+0x00034394-0x00034ab4 flags:0x0087 0x0518 size:    1808 TRRDB
+0x00034ab4-0x00034c74 flags:0x0088 0x0518 size:     432 TRRDF
+0x00034c74-0x000353c4 flags:0x0089 0x1118 size:    1856 TRTELL
+0x000353c4-0x00035664 flags:0x008a 0x0518 size:     656 TRWRT
+0x00035664-0x00035efc flags:0x008b 0x0118 size:    2184 RSTRT
+0x00035efc-0x00037124 flags:0x808c 0x0000 size:    4632 SDMP0
+0x00037124-0x00037a04 flags:0x808d 0x0000 size:    2256 SDMP1
+0x00037a04-0x00038304 flags:0x808e 0x0000 size:    2288 SDMP2
+0x00038304-0x0003842c flags:0x808f 0x0000 size:     280 SDMP3
+0x0003842c-0x000386fc flags:0x8090 0x0000 size:     704 SDMP3A
+0x000386fc-0x000389cc flags:0x8091 0x0000 size:     704 SDMP3B
+0x000389cc-0x00038cb4 flags:0x8092 0x0000 size:     728 SDMP4
+0x00038cb4-0x00038dcc flags:0x8093 0x0000 size:     264 SDMP5
+0x00038dcc-0x00038f14 flags:0x8094 0x0000 size:     312 SDMP6
+0x00038f14-0x0003906c flags:0x8095 0x0000 size:     328 SDMP7
+0x0003906c-0x00039364 flags:0x8096 0x0000 size:     744 SDMP8
+0x00039364-0x000395c4 flags:0x8097 0x0000 size:     592 SDMP9
+0x000395c4-0x0003968c flags:0x8098 0x0000 size:     184 SDMP10
+0x0003968c-0x00039bb4 flags:0x0099 0x0318 size:    1304 CHNTES
+0x00039bb4-0x00039d3c flags:0x009a 0x4918 size:     376 CPSPIN
+0x00039d3c-0x0003a504 flags:0x009b 0x0318 size:    1976 CPTEST
+0x0003a504-0x0003a95c flags:0x009c 0x0118 size:    1096 ECHOCP
+0x0003a95c-0x0003b2ec flags:0x009d 0x0118 size:    2432 HSPTES
+0x0003b2ec-0x0003ba84 flags:0x009e 0x0118 size:    1928 MOSTES
+0x0003ba84-0x0003c354 flags:0x009f 0x0118 size:    2240 SSDTES
+0x0003c354-0x0003c434 flags:0x00a0 0x0518 size:     208 STOP
+0x0003c434-0x0003c8cc flags:0x00a1 0x0118 size:    1160 XDK
+0x0003c8cc-0x0003cde4 flags:0x00a2 0x0118 size:    1288 XMT
+0x0003cde4-0x0003d13c flags:0x00a3 0x0118 size:     840 XPR
+0x0003d13c-0x0003d8c4 flags:0x00a4 0x0918 size:    1912 XCLOCK
+0x0003d8c4-0x0003d97c flags:0x00a5 0x0518 size:     168 XCLS
+0x0003d97c-0x0003dd24 flags:0x00a6 0x0b18 size:     920 XDISK
+0x0003dd24-0x0003e38c flags:0x00a7 0x0518 size:    1624 XDISKA
+0x0003e38c-0x0003e8c4 flags:0x00a8 0x0518 size:    1320 XDISKB
+0x0003e8c4-0x0003ed84 flags:0x00a9 0x0f18 size:    1200 XOPN
+0x0003ed84-0x0003f24c flags:0x00aa 0x0918 size:    1208 XPRINT
+0x0003f24c-0x0003f654 flags:0x00ab 0x0518 size:    1016 XPRNTA
+0x0003f654-0x0003f9cc flags:0x00ac 0x0518 size:     872 XPRNTB
+0x0003f9cc-0x0003fd5c flags:0x00ad 0x0918 size:     896 XTAPE
+0x0003fd5c-0x0004002c flags:0x00ae 0x0718 size:     704 XTAPEA
+0x0004002c-0x00040684 flags:0x00af 0x0518 size:    1608 XTAPEB
+0x00040684-0x00040954 flags:0x00b0 0x0518 size:     704 XTAPEC
+0x00040954-0x00040ca4 flags:0x00b1 0x0518 size:     832 XTAPED
+0x00040ca4-0x00040f4c flags:0x00b2 0x5118 size:     664 CLEAR
+0x00040f4c-0x0004102c flags:0x00b3 0x0718 size:     208 CLEAR0
+0x0004102c-0x00041474 flags:0x00b4 0x5118 size:    1080 COPY
+0x00041474-0x000418f4 flags:0x00b5 0x0518 size:    1136 COPY0
+0x000418f4-0x00041c5c flags:0x00b6 0x0318 size:     856 COPY1
+0x00041c5c-0x0004202c flags:0x00b7 0x0518 size:     960 COPY2
+0x0004202c-0x0004234c flags:0x00b8 0x0318 size:     784 COPY3
+0x0004234c-0x000425cc flags:0x00b9 0x0318 size:     624 COPY4
+0x000425cc-0x000428a4 flags:0x00ba 0x0318 size:     712 COPY5
+0x000428a4-0x00042bbc flags:0x00bb 0x5118 size:     776 DDUMP
+0x00042bbc-0x00042dbc flags:0x00bc 0x0918 size:     496 DDUMP0
+0x00042dbc-0x00043114 flags:0x00bd 0x5118 size:     840 DEF
+0x00043114-0x00043334 flags:0x00be 0x0718 size:     528 DELET0
+0x00043334-0x0004368c flags:0x00bf 0x5118 size:     840 DELETE
+0x0004368c-0x00043974 flags:0x00c0 0x5118 size:     728 DLOAD
+0x00043974-0x00043e2c flags:0x00c1 0x0918 size:    1192 DLOAD0
+0x00043e2c-0x000440cc flags:0x00c2 0x5118 size:     656 DSTAT
+0x000440cc-0x0004435c flags:0x00c3 0x0718 size:     640 DSTAT0
+0x0004435c-0x000443ec flags:0x00c4 0x0718 size:     128 EDDELE
+0x000443ec-0x000446bc flags:0x00c5 0x0518 size:     704 EDINST
+0x000446bc-0x00044a0c flags:0x00c6 0x5118 size:     832 EDIT
+0x00044a0c-0x00045074 flags:0x00c7 0x0318 size:    1624 EDIT0
+0x00045074-0x00045594 flags:0x00c8 0x0318 size:    1296 EDIT1
+0x00045594-0x0004585c flags:0x00c9 0x0718 size:     696 EDPRNT
+0x0004585c-0x0004591c flags:0x00ca 0x0718 size:     176 EDREPL
+0x0004591c-0x00045a5c flags:0x00cb 0x0718 size:     304 EDTYPE
+0x00045a5c-0x00045e54 flags:0x00cc 0x5118 size:    1000 FDUMP
+0x00045e54-0x0004629c flags:0x00cd 0x0b18 size:    1080 FDUMP0
+0x0004629c-0x000465cc flags:0x00ce 0x5118 size:     800 FLAW
+0x000465cc-0x0004696c flags:0x00cf 0x5118 size:     912 FLOAD
+0x0004696c-0x00046ef4 flags:0x00d0 0x0918 size:    1400 FLOAD0
+0x00046ef4-0x000470dc flags:0x00d1 0x5118 size:     472 FORMAT
+0x000470dc-0x00047714 flags:0x00d2 0x0318 size:    1576 FORMT0
+0x00047714-0x00047a6c flags:0x00d3 0x5118 size:     840 FSTAT
+0x00047a6c-0x00047d44 flags:0x00d4 0x0718 size:     712 FSTAT0
+0x00047d44-0x0004807c flags:0x00d5 0x5118 size:     808 INIT
+0x0004807c-0x00048564 flags:0x00d6 0x0718 size:    1240 INIT0
+0x00048564-0x0004873c flags:0x00d7 0x0918 size:     456 LINGET
+0x0004873c-0x00048ab4 flags:0x00d8 0x0b18 size:     872 LINPUT
+0x00048ab4-0x00048ecc flags:0x00d9 0x5118 size:    1032 PLOT
+0x00048ecc-0x0004931c flags:0x00da 0x0318 size:    1088 PLOT0
+0x0004931c-0x000497dc flags:0x00db 0x0318 size:    1200 PLOT1
+0x000497dc-0x00049acc flags:0x00dc 0x5118 size:     736 PROC
+0x00049acc-0x00049dac flags:0x00dd 0x0318 size:     720 PROC0
+0x00049dac-0x0004a33c flags:0x00de 0x0718 size:    1408 PRTAPE
+0x0004a33c-0x0004a644 flags:0x00df 0x5118 size:     760 RENAME
+0x0004a644-0x0004a87c flags:0x00e0 0x0518 size:     552 RENAM0
+0x0004a87c-0x0004ad2c flags:0x00e1 0x5118 size:    1184 START
+0x0004ad2c-0x0004b09c flags:0x00e2 0x0718 size:     864 START0
+0x0004b09c-0x0004b264 flags:0x00e3 0x0718 size:     440 START1
+0x0004b264-0x0004b50c flags:0x00e4 0x0718 size:     664 START2
+0x0004b50c-0x0004b7c4 flags:0x00e5 0x0718 size:     680 START3
+0x0004b7c4-0x0004be4c flags:0x00e6 0x0b18 size:    1656 UBTAPE
+0x0004be4c-0x0004bf9c flags:0x00e7 0x0d18 size:     320 XFMACC
+0x0004bf9c-0x0004c0e4 flags:0x00e8 0x0918 size:     312 XFMCLS
+0x0004c0e4-0x0004c47c flags:0x00e9 0x0918 size:     904 XFMCRE
+0x0004c47c-0x0004c57c flags:0x00ea 0x0518 size:     240 XFMDEL
+0x0004c57c-0x0004c754 flags:0x00eb 0x0718 size:     456 XFMDIR
+0x0004c754-0x0004ca94 flags:0x00ec 0x0718 size:     816 XFMDST
+0x0004ca94-0x0004cc44 flags:0x00ed 0x0918 size:     416 XFMFIL
+0x0004cc44-0x0004cd14 flags:0x00ee 0x0918 size:     192 XFMFST
+0x0004cd14-0x0004ce64 flags:0x00ef 0x0718 size:     320 XFMFLW
+0x0004ce64-0x0004d074 flags:0x00f0 0x0918 size:     512 XFMFND
+0x0004d074-0x0004d334 flags:0x00f1 0x0918 size:     688 XFMGET
+0x0004d334-0x0004d734 flags:0x00f2 0x0b18 size:    1008 XFMIO
+0x0004d734-0x0004db54 flags:0x00f3 0x0518 size:    1040 XFMNIT
+0x0004db54-0x0004ddbc flags:0x00f4 0x0718 size:     600 XFMPUT
+0x0004ddbc-0x0004dec4 flags:0x00f5 0x0518 size:     248 XFMSTR
+0x0004dec4-0x0004e50c flags:0x00f6 0x0318 size:    1592 CONC
+0x0004e50c-0x0004ea54 flags:0x00f7 0x0918 size:    1336 CONCERR
+0x0004ea54-0x0004efac flags:0x00f8 0x0518 size:    1352 CONCID
+0x0004efac-0x0004fbf4 flags:0x00f9 0x0118 size:    3128 CONCIO
+0x0004fbf4-0x0004fe8c flags:0x00fa 0x0318 size:     648 ENDCONC
+0x0004fe8c-0x0004ff44 flags:0x00fb 0x0518 size:     168 ENTRID
+0x0004ff44-0x00050554 flags:0x00fc 0x0d18 size:    1536 FEIDIAG
+0x00050554-0x000505e4 flags:0x00fd 0x0318 size:     128 REMVID
+0x000505e4-0x0005096c flags:0x00fe 0x0518 size:     888 FEIMSG
+0x0005096c-0x00051404 flags:0x00ff 0x0d18 size:    2696 FEIR
+0x00051404-0x00051d5c flags:0x0100 0x0d18 size:    2376 FEIW
+0x00051d5c-0x00051dc4 flags:0x0101 0x0518 size:      88 ACQTRM
+0x00051dc4-0x00051fd4 flags:0x0102 0x0718 size:     512 ACQUIRE
+0x00051fd4-0x000522dc flags:0x0103 0x0918 size:     760 AMPEX
+0x000522dc-0x000529f4 flags:0x0104 0x0b18 size:    1800 BABEL
+0x000529f4-0x00052fc4 flags:0x8105 0x0000 size:    1472 BARDAT
+0x00052fc4-0x00053684 flags:0x0106 0x0318 size:    1712 BLOCK
+0x00053684-0x0005388c flags:0x0107 0x0518 size:     504 BMAGET
+0x0005388c-0x00053a84 flags:0x0108 0x0518 size:     488 BMGET
+0x00053a84-0x00053d6c flags:0x0109 0x0518 size:     728 BXDIS
+0x00053d6c-0x00053fac flags:0x010a 0x0318 size:     560 BXSET
+0x00053fac-0x000543d4 flags:0x010b 0x0f18 size:    1048 CFINIT
+0x000543d4-0x000546bc flags:0x010c 0x0b18 size:     728 CFREAD
+0x000546bc-0x00054ebc flags:0x010d 0x0318 size:    2032 CLI
+0x00054ebc-0x000554e4 flags:0x010e 0x0518 size:    1560 CLINIT
+0x000554e4-0x000558ec flags:0x010f 0x0f18 size:    1016 CLUSTR
+0x000558ec-0x00055a14 flags:0x0110 0x0718 size:     280 CMGET
+0x00055a14-0x0005625c flags:0x0111 0x0918 size:    2104 CNCDIS
+0x0005625c-0x0005631c flags:0x0112 0x0518 size:     176 COMBO
+0x0005631c-0x00057694 flags:0x0113 0x0d18 size:    4968 COMM01
+0x00057694-0x00057cdc flags:0x0114 0x0d18 size:    1592 COMM02
+0x00057cdc-0x00058074 flags:0x0115 0x0d18 size:     904 COMM03
+0x00058074-0x000584fc flags:0x0116 0x0d18 size:    1144 COMM04
+0x000584fc-0x00058b24 flags:0x0117 0x0d18 size:    1560 COMM05
+0x00058b24-0x00058e3c flags:0x0118 0x0d18 size:     776 COMM06
+0x00058e3c-0x000595c4 flags:0x0119 0x0d18 size:    1912 COMM07
+0x000595c4-0x00059a5c flags:0x011a 0x0d18 size:    1160 COMM08
+0x00059a5c-0x0005a16c flags:0x011b 0x0d18 size:    1792 COMM09
+0x0005a16c-0x0005a99c flags:0x011c 0x0d18 size:    2080 COMM10
+0x0005a99c-0x0005adec flags:0x011d 0x0d18 size:    1088 COMM11
+0x0005adec-0x0005b1d4 flags:0x011e 0x0d18 size:     984 COMM12
+0x0005b1d4-0x0005b9c4 flags:0x011f 0x0d18 size:    2016 COMM13
+0x0005b9c4-0x0005bf5c flags:0x0120 0x0d18 size:    1416 COMM14
+0x0005bf5c-0x0005bf94 flags:0x0121 0x0d18 size:      40 COMM15
+0x0005bf94-0x0005c35c flags:0x0122 0x0d18 size:     952 COMM16
+0x0005c35c-0x0005c8b4 flags:0x0123 0x0d18 size:    1352 CONSL
+0x0005c8b4-0x0005ca8c flags:0x0124 0x0718 size:     456 CPUGET
+0x0005ca8c-0x0005cfe4 flags:0x0125 0x1718 size:    1352 CRAYIO
+0x0005cfe4-0x0005d1dc flags:0x0126 0x0518 size:     488 DBGET
+0x0005d1dc-0x0005d544 flags:0x0127 0x0d18 size:     856 DECOD2
+0x0005d544-0x0005dd24 flags:0x0128 0x0f18 size:    2000 DECODE
+0x0005dd24-0x0005e294 flags:0x0129 0x0918 size:    1376 DELMSG
+0x0005e294-0x0005e3a4 flags:0x012a 0x0f18 size:     256 DESCRIBE
+0x0005e3a4-0x0005e69c flags:0x012b 0x0918 size:     744 DEVDAT
+0x0005e69c-0x0005f8a4 flags:0x012c 0x0318 size:    4600 DISP01
+0x0005f8a4-0x0005fe54 flags:0x012d 0x0118 size:    1440 DISP02
+0x0005fe54-0x000603ec flags:0x012e 0x0118 size:    1416 DISPLAY
+0x000603ec-0x00060644 flags:0x012f 0x0518 size:     584 DKDIS
+0x00060644-0x0006183c flags:0x0130 0x0d18 size:    4584 DKERR
+0x0006183c-0x00061874 flags:0x0131 0x0718 size:      40 DKERR1
+0x00061874-0x000619fc flags:0x0132 0x0318 size:     376 DKSET
+0x000619fc-0x00061b64 flags:0x0133 0x0318 size:     344 DKSET0
+0x00061b64-0x00062664 flags:0x0134 0x0918 size:    2800 DKSTAT
+0x00062664-0x000629c4 flags:0x0135 0x0d18 size:     848 DSPL
+0x000629c4-0x00062ff4 flags:0x0136 0x0518 size:    1568 ERRDIS
+0x00062ff4-0x00063134 flags:0x0137 0x0918 size:     304 ERROR
+0x00063134-0x00063744 flags:0x8138 0x0000 size:    1536 F80
+0x00063744-0x00063d54 flags:0x8139 0x0000 size:    1536 F132
+0x00063d54-0x00063f64 flags:0x013a 0x0518 size:     512 FMGET
+0x00063f64-0x000644fc flags:0x013b 0x0718 size:    1416 GRAPH
+0x000644fc-0x00064f2c flags:0x013c 0x0f18 size:    2592 GRCDIS
+0x00064f2c-0x000655ac flags:0x013d 0x0f18 size:    1648 GRPDIS
+0x000655ac-0x00065e24 flags:0x013e 0x0f18 size:    2152 GRUDIS
+0x00065e24-0x000662c4 flags:0x013f 0x0918 size:    1168 HDRPAG
+0x000662c4-0x00066554 flags:0x0140 0x1118 size:     640 HELP
+0x00066554-0x00066b84 flags:0x0141 0x0d18 size:    1568 HELP2
+0x00066b84-0x0006b84c flags:0x8142 0x0000 size:   19640 HELPD
+0x0006b84c-0x0006c79c flags:0x8143 0x0000 size:    3904 HPDATA
+0x0006c79c-0x0006c9a4 flags:0x0144 0x0518 size:     504 HSPGET
+0x0006c9a4-0x0006cc54 flags:0x0145 0x0518 size:     672 HSXGET
+0x0006cc54-0x0006ce0c flags:0x0146 0x0718 size:     424 ICONSL
+0x0006ce0c-0x0006d384 flags:0x0147 0x1518 size:    1384 IDEBUG
+0x0006d384-0x0006d5d4 flags:0x0148 0x0518 size:     576 IDLGET
+0x0006d5d4-0x0006dd3c flags:0x0149 0x1518 size:    1880 IDRCT
+0x0006dd3c-0x0006e0e4 flags:0x014a 0x1518 size:     920 IFRMT
+0x0006e0e4-0x0006e384 flags:0x014b 0x0918 size:     656 KEYBD
+0x0006e384-0x0006e89c flags:0x014c 0x0d18 size:    1288 LCP
+0x0006e89c-0x0006edfc flags:0x014d 0x0f18 size:    1360 LINK
+0x0006edfc-0x0006f45c flags:0x014e 0x0518 size:    1616 LOGON
+0x0006f45c-0x0006f5bc flags:0x014f 0x0f18 size:     336 MESSAGE
+0x0006f5bc-0x0006fcbc flags:0x0150 0x0f18 size:    1776 MSTAT
+0x0006fcbc-0x00070384 flags:0x0151 0x0718 size:    1720 MSTDIS
+0x00070384-0x00070d7c flags:0x0152 0x0918 size:    2536 NCNDIS
+0x00070d7c-0x00070e6c flags:0x0153 0x0518 size:     224 NEWDIS
+0x00070e6c-0x000717bc flags:0x0154 0x0918 size:    2368 NSCLP
+0x000717bc-0x00071e74 flags:0x0155 0x0b18 size:    1704 NSCNET
+0x00071e74-0x00072784 flags:0x0156 0x0918 size:    2304 NSCSFP
+0x00072784-0x00072aec flags:0x0157 0x0518 size:     856 OBIT
+0x00072aec-0x00072ee4 flags:0x0158 0x1518 size:    1000 OFRMT
+0x00072ee4-0x0007312c flags:0x0159 0x0318 size:     568 ONLINE
+0x0007312c-0x000733d4 flags:0x015a 0x1318 size:     664 POST
+0x000733d4-0x00073984 flags:0x015b 0x0518 size:    1440 PROTINIT
+0x00073984-0x0007402c flags:0x015c 0x0118 size:    1688 PROTOCOL
+0x0007402c-0x000741f4 flags:0x015d 0x1718 size:     440 QUEUE
+0x000741f4-0x0007481c flags:0x015e 0x1118 size:    1560 READ
+0x0007481c-0x00074a9c flags:0x015f 0x1518 size:     624 SNAP
+0x00074a9c-0x00074ce4 flags:0x0160 0x0b18 size:     568 SOROC
+0x00074ce4-0x00075174 flags:0x0161 0x0718 size:    1152 SSDGRA
+0x00075174-0x00075a4c flags:0x0162 0x0518 size:    2248 STADIS
+0x00075a4c-0x00076094 flags:0x0163 0x0518 size:    1592 STAGEIN
+0x00076094-0x00076754 flags:0x0164 0x0318 size:    1712 STAGEOUT
+0x00076754-0x00076d54 flags:0x0165 0x0f18 size:    1520 STATCL
+0x00076d54-0x0007701c flags:0x0166 0x0518 size:     696 STATINIT
+0x0007701c-0x0007708c flags:0x0167 0x0318 size:      96 STATION
+0x0007708c-0x0007726c flags:0x0168 0x0d18 size:     464 STIO
+0x0007726c-0x00077ad4 flags:0x0169 0x0718 size:    2136 STMSG
+0x00077ad4-0x00077e74 flags:0x016a 0x0318 size:     912 STPLOT
+0x00077e74-0x00078314 flags:0x016b 0x0d18 size:    1168 STREAMS
+0x00078314-0x0007897c flags:0x016c 0x1118 size:    1624 STRSTAT
+0x0007897c-0x00078b64 flags:0x016d 0x0318 size:     472 STSGET
+0x00078b64-0x00078ec4 flags:0x016e 0x0518 size:     848 STTAPI
+0x00078ec4-0x000791bc flags:0x016f 0x0318 size:     744 STTAPO
+0x000791bc-0x000799a4 flags:0x0170 0x0318 size:    2008 STUBPR
+0x000799a4-0x00079df4 flags:0x0171 0x0518 size:    1088 STXDKI
+0x00079df4-0x0007a19c flags:0x0172 0x0318 size:     920 STXDKO
+0x0007a19c-0x0007ad44 flags:0x0173 0x0718 size:    2968 SUMDAY
+0x0007ad44-0x0007b0dc flags:0x0174 0x0718 size:     904 SUMHOW
+0x0007b0dc-0x0007b45c flags:0x8175 0x0000 size:     880 SUMTIM
+0x0007b45c-0x0007bc4c flags:0x0176 0x0f18 size:    2016 SWAP
+0x0007bc4c-0x0007c8bc flags:0x8177 0x0000 size:    3168 SYNTAX
+0x0007c8bc-0x0007d09c flags:0x0178 0x1118 size:    2000 SYSTAT
+0x0007d09c-0x0007d7f4 flags:0x0179 0x0f18 size:    1864 TAPEC
+0x0007d7f4-0x0007d97c flags:0x017a 0x0718 size:     376 TEC455
+0x0007d97c-0x0007e0f4 flags:0x017b 0x0f18 size:    1896 TJOB
+0x0007e0f4-0x0007e944 flags:0x017c 0x0b18 size:    2112 TKSTAT
+0x0007e944-0x0007ed64 flags:0x017d 0x0918 size:    1040 TURNPG
+0x0007ed64-0x0007f11c flags:0x017e 0x0318 size:     936 UNBLK
+0x0007f11c-0x0007f354 flags:0x017f 0x0318 size:     552 UPDATE
+0x0007f354-0x0007f9dc flags:0x0180 0x0f18 size:    1656 XFRMT
+0x0007f9dc-0x000803f4 flags:0x0181 0x1118 size:    2568 XJSTAT
+0x000803f4-0x00080d5c flags:0x0182 0x0f18 size:    2392 XMPXP
+0x00080d5c-0x0008193c flags:0x0183 0x0f18 size:    3024 XMP4XP
+0x0008193c-0x00082494 flags:0x0184 0x0f18 size:    2888 YMPXP
+0x00082494-0x00082d44 flags:0x0185 0x0718 size:    2208 IACMD
+0x00082d44-0x0008312c flags:0x0186 0x0518 size:     984 IACON
+0x0008312c-0x0008333c flags:0x0187 0x0b18 size:     512 IACON1
+0x0008333c-0x000839b4 flags:0x0188 0x0918 size:    1640 IAFUNC
+0x000839b4-0x00083dec flags:0x0189 0x1118 size:    1064 IAIOP
+0x00083dec-0x000840ec flags:0x018a 0x1f18 size:     752 IAIOP1
+0x000840ec-0x000843bc flags:0x018b 0x0718 size:     704 IAMSG
+0x000843bc-0x0008490c flags:0x018c 0x0d18 size:    1344 IAOUT
+0x0008490c-0x000852f4 flags:0x018d 0x0318 size:    2520 FNSC
+0x000852f4-0x000853cc flags:0x018e 0x0318 size:     200 NIDEND
+0x000853cc-0x000857d4 flags:0x018f 0x0318 size:    1016 NSC
+0x000857d4-0x0008596c flags:0x0190 0x0318 size:     392 NSCEND
+0x0008596c-0x00085dac flags:0x0191 0x0918 size:    1072 NSCID
+0x00085dac-0x00086d84 flags:0x0192 0x0118 size:    4040 NSCIO
+0x00086d84-0x0008733c flags:0x0193 0x0b18 size:    1448 NSCMSG
+0x0008733c-0x00088864 flags:0x0194 0x0d18 size:    5400 NSCRW
+0x00088864-0x0008972c flags:0x0195 0x0918 size:    3768 SCPIO
+0x0008972c-0x00089804 flags:0x0196 0x0318 size:     200 TERMNSC
+0x00089804-0x00089984 flags:0x0197 0x0318 size:     368 TERMVME
+0x00089984-0x00089e74 flags:0x0198 0x0518 size:    1248 VME
+0x00089e74-0x0008a014 flags:0x0199 0x0318 size:     400 VMEND
+0x0008a014-0x0008a614 flags:0x019a 0x0118 size:    1520 VMERD
+0x0008a614-0x0008ab8c flags:0x019b 0x0118 size:    1384 VMEWT
+0x0008ab8c-0x0008b2c4 flags:0x01ae 0x0718 size:    1832 ASD
+0x0008b2c4-0x0008bda4 flags:0x01af 0x1318 size:    2768 ASDINP
+0x0008bda4-0x0008c0ec flags:0x01b0 0x0f18 size:     824 ASDOUT
+0x0008c0ec-0x0008c70c flags:0x01b1 0x1318 size:    1552 FSCOPY
+0x0008c70c-0x0008cb3c flags:0x01b2 0x0718 size:    1056 PART
+0x0008cb3c-0x0008cc4c flags:0x01b3 0x0718 size:     256 TTKEY
+0x0008cc4c-0x0008d614 flags:0x01b4 0x0718 size:    2488 TTY
+0x0008d614-0x0008e0ac flags:0x01b5 0x0d18 size:    2696 TTYIN
+0x0008e0ac-0x0008e414 flags:0x01b6 0x0318 size:     856 TTYNIT
+0x0008e414-0x0008e77c flags:0x01b7 0x0918 size:     856 TTYNSC
+0x0008e77c-0x0008ea04 flags:0x01b8 0x0918 size:     632 TTYOUT
+0x0008ea04-0x0008ed24 flags:0x01b9 0x0318 size:     784 UDISK
+0x0008ed24-0x0008f2bc flags:0x01ba 0x0318 size:    1416 UFILE
+0x0008f2bc-0x0008f4e4 flags:0x01bb 0x0318 size:     536 UPRINT
+0x0008f4e4-0x0008f814 flags:0x01bc 0x0918 size:     800 UPRT1
+0x0008f814-0x0008fc6c flags:0x01bd 0x0b18 size:    1096 UPRT2
+0x0008fc6c-0x0008ffec flags:0x01be 0x0518 size:     880 UPRT3
+0x0008ffec-0x0009039c flags:0x01bf 0x0318 size:     928 UTAPE
+0x0009039c-0x0009070c flags:0x019c 0x0318 size:     864 UCSHL
+0x0009070c-0x00090b74 flags:0x019d 0x0518 size:    1112 UCOPN
+0x00090b74-0x00090f1c flags:0x019e 0x0518 size:     920 UCCLS
+0x00090f1c-0x000917ac flags:0x019f 0x0518 size:    2176 UCRD
+0x000917ac-0x00091fbc flags:0x01a0 0x0518 size:    2048 UCWRT
+0x00091fbc-0x00092164 flags:0x01a1 0x0518 size:     408 UCDRV
+0x00092164-0x0009238c flags:0x01a2 0x0318 size:     536 UCXFR
+0x0009238c-0x00092a24 flags:0x01a3 0x0318 size:    1672 ISPDRV
+0x00092a24-0x00092f2c flags:0x01a4 0x0318 size:    1272 SL2DRV
+0x00092f2c-0x0009454c flags:0x01c0 0x0118 size:    5648 HCOM
+0x0009454c-0x00095134 flags:0x01c1 0x0198 size:    3032 HSXI
+0x00095134-0x00095bcc flags:0x01c2 0x0198 size:    2696 HSXO
+0x00095bcc-0x00095ce4 flags:0x01c3 0x0518 size:     264 INHSX
+0x00095ce4-0x00095ef4 flags:0x8000 0x0000 size:     512 SDMPA
+0x00095ef4-0x0009615c flags:0x8001 0x0000 size:     600 SDMPB
+0x0009615c-0x00096334 flags:0x8002 0x0000 size:     456 SDMPC
+0x00096334-0x0009647c flags:0x8003 0x0000 size:     312 SDMPD
+0x0009647c-0x00096564 flags:0x8004 0x0000 size:     216 SDMPE
+0x00096564-0x0009675c flags:0x8005 0x0000 size:     488 SDMPYA
+0x0009675c-0x00096994 flags:0x8006 0x0000 size:     552 SDMPYB
+0x00096994-0x00096b04 flags:0x8007 0x0000 size:     352 SDMPYC
+0x00096b04-0x00096bfc flags:0x8008 0x0000 size:     232 SDMPYD
+0x00096bfc-0x000971c4 flags:0x8009 0x0000 size:    1464 MFCHK
+0x000971c4-0x0009768c flags:0x800a 0x0000 size:    1208 MFCHKY
+Overlay file explanations
+========================================
+SDMPA: Dump executing exchange packages
+SDMPB: Dump Cray registers
+SDMPC: Dump cluster registers
+SDMPD: Dump SSD from a Cray 1/S
+SDMPE: Dump SSD from a Cray X-MP
+SDMPYA: Dump exchange packages, Y-MP
+SDMPYB: Dump Cray registers, Y-MP
+SDMPYC: Dump cluster registers, Y-MP
+SDMPYD: Dump SSD from a Cray Y-MP
+MFCHK: Mainframe confidence test
+MFCHKY: Mainframe confidence test, Y-MP
+AMAP: Configuration map
+ADEM: Cray interface demon
+AMSG: Inter-IOP communications demon
+BEGIN: IOS initialization
+BTD: Binary to decimal ASCII conversion
+BTH: Binary to hex ASCII conversion
+BTO: Binary to octal ASCII conversion
+CALL: Kernel command processor
+CDEM: Cray interface demon
+CLKSNC: Synchronize day clock
+CLOCK: Clock demon
+CONFIG: Configuration display
+CRAY: Cray interface initialization
+CRTDEM: CRT demon
+AUTO: Auto SYSDUMP feature
+DISKIO: Internal disk I/O
+DIVIDE: 32 bit integer divide
+DKDMP: Disk dump
+DKIOEX: Internal disk I/O
+DKLOOK: Verify disk channel
+DTB: ASCII decimal to binary conversion
+ERR: Error channel data display
+ERRDMP: Error channel data printout
+FIND: FIND overlay by name
+GETEXT: Get message text
+INFORM: Operator message output
+INDD10: Initialize DD10 devices
+INDD29: Initialize DD19/29 devices
+INDD39: Initialize DD39 devices
+INDD40: Initialize DD40 devices
+INDD49: Initialize DD49 devices
+INDD50: Initialize DD50 devices
+LISTO: Overlay information print out
+LISTP: Punt code print out
+MFCLR: Write a pattern into CRAY central memory
+MFINIT: Mainframe confidence monitor
+MSGHND: File/device handler message output
+MULTIPLY: Integer multiply
+NOBEAT: Warning of unresponsive IOP
+OPSYS: Define Cray operating system
+OTB: ASCII octal to binary conversion
+OUTCALL: Call overlay in another IOP
+OVLNUM: Overlay numbers
+PATCH: Patch overlays
+SCRUB: Refresh memory
+SETIME: Set internal or hardware clock
+STATS: Statistics collection
+SYSS: IOS initialization
+SYSTEXT: Error message text
+TCOM: Get trace buffer
+TDUMP: Trace dump print out
+TIME: Query/set time and date
+TRACE: Trace dump/control
+TRACK: Trace enable/disable
+TSTASH: Get ASCII time or date
+USURP: Allocate CRT
+WATCH: Display time and date
+ACOM: DD29 inter-IOP message handler
+BADDAT: DD29 error recovery, accept bad data
+D10IOR: DD10 read/write error recovery
+D3ECC: DD39 error correction code
+D3ERR: DD39 error recovery, main overlay
+D3IOR: DD39 read/write error recovery
+D3LOG: DD39 error logging
+D3MSG: DD39 operator messages
+D3RLR: DD39 release error recovery
+D3SKR: DD39 seek error recovery
+D3SLR: DD39 select error recovery
+D40ECC: DD40 error correction code
+D40ERR: DD40 error recovery, main overlay
+D40IOR: DD40 read/write error recovery
+D4DEM: DD49, DD39 disk demon
+D4ECC: DD49 error correction code
+D4ERR: DD49 error recovery, main overlay
+D4IOR: DD49 read/write error recovery
+D4LOG: DD49 error logging
+D4MSG: DD49 operator messages
+D4RES: DD49, DD39 reset overlay, error recovery
+D4RLR: DD49 unit release error recovery
+D4SKR: DD49 seek error recovery
+D4SLR: DD49 unit select error recovery
+D4STAT: DD49, DD39 select status, error recovery
+DD49: DD49, DD39 interrupt handler
+DDIAG: Online diagnostic special function processor
+DISK: DD29 disk demon
+ERRECK: DD29 error recovery, main overlay
+FIRECODE: DD29 error correction code
+ICOM: DD49, DD39 inter-IOP message handler
+REPORT: DD29 error logging
+TRANSFR: DD49, DD39 buffer memory I/O demon
+BMXAIO: Auxiliary BMX functions
+BMXCON: Configure channels and devices
+BMXCPU: Configure from Cray map
+BMXDEM: BMX channel demon
+BMXOPE: Open/close operations
+BMXSIO: Start I/O operation
+BMXTPO: Open BMX tape device
+BCOM0: MIOP message demon
+BCOM1: BIOP message demon
+BCOM3: XIOP message demon
+BUFMAN: MOS buffer manager
+BYPASS: Data-only request handle
+CONMAN: Get configuration map from Cray
+DSCGET: Create/destroy DSC table
+TAPDIS: Discard DSC data
+TAPEIO: Tape data functions handler
+TAPEND: End of read data handling
+TAPERR: Tape error recovery handler
+TAPFUN: Issue non-data function
+TAPMOV: Handle tape control functions
+TCART: Error handler for 3480 drives
+TCTELL: Display error messages for 3480 drives
+TDEM: MOS <-> tape demon
+TDEM1: MOS <-> Cray demon
+TERROR: Tape error handler
+TEX: Tape executive
+TRBOC: Bus out check
+TRCER: Channel error
+TRCLN: Issue tape cleaner sequence
+TRDCK: Data check
+TREQC: Equipment check
+TRIDB: ID burst error
+TRINR: Intervention required
+TRORN: Overrun
+TRRDB: Read reverse block
+TRRDF: Read forward block
+TRTELL: Display error message
+TRWRT: Write block
+RSTRT: IOS restart utility
+SDMP0: System dump parameter processor
+SDMP1: MIOP driver
+SDMP2: BIOP driver
+SDMP3: DD29 disk driver
+SDMP3A: DD49 disk driver
+SDMP3B: DD40 disk driver
+SDMP4: Dump Cray memory and registers
+SDMP5: Dump MOS
+SDMP6: Dump IOP0
+SDMP7: Dump IOP1
+SDMP8: Dump IOP2 and IOP3
+SDMP9: Dump SSD
+SDMP10: Dump Cluster registers
+CHNTES: Cray 50 Mbyte channel test
+CPSPIN: CPTEST initialization
+CPTEST: Block mux tape test
+ECHOCP: Mainframe low speed channel test
+HSPTES: Mainframe memory test
+MOSTES: Buffer memory test
+SSDTES: SSD memory test
+STOP: Terminate an executing test
+XDK: Expander disk test
+XMT: Expander tape test
+XPR: Expander printer test
+XCLOCK: Expander clock driver
+XCLS: Expander device close
+XDISK: Expander disk driver
+XDISKA: Ampex disk error handler
+XDISKB: CDC disk error handler
+XOPN: Expander device open
+XPRINT: Expander printer driver
+XPRNTA: Gould/Calcomp printer error handler
+XPRNTB: Versatec printer error handler
+XTAPE: Expander tape driver
+XTAPEA: Data General/Kennedy open/close driver
+XTAPEB: Data General/Kennedy error handler
+XTAPEC: Data General/Kennedy error handler
+XTAPED: Data General/Kennedy volume switch handler
+CLEAR: Clear directory utility
+CLEAR0: Clear disk directory
+COPY: Copy file utility
+COPY0: Copy tape to disk
+COPY1: Copy tape to MOS
+COPY2: Copy disk to tape
+COPY3: Copy disk to MOS
+COPY4: Copy MOS to tape
+COPY5: Copy MOS to disk
+DDUMP: Directory dump utility
+DDUMP0: Directory dump disk to tape
+DEF: Set default disk parameters
+DELET0: Delete disk file
+DELETE: Delete file utility
+DLOAD: Directory load utility
+DLOAD0: Directory load tape to disk
+DSTAT: Directory status display
+DSTAT0: Disk directory status
+EDDELE: Editor delete line routine
+EDINST: Editor insert line routine
+EDIT: Editor initialization
+EDIT0: Editor driver
+EDIT1: Editor file saver
+EDPRNT: Editor print routine
+EDREPL: Editor replace line routine
+EDTYPE: Editor display line routine
+FDUMP: File dump utility
+FDUMP0: File dump disk to tape
+FLAW: Flaw disk utility
+FLOAD: File load utility
+FLOAD0: File load tape to disk
+FORMAT: Disk format utility
+FORMT0: Disk format routine
+FSTAT: File status utility
+FSTAT0: Disk file status
+INIT: Initialize utility
+INIT0: Initialize disk
+LINGET: Editor line locating
+LINPUT: Editor file update
+PLOT: Plot file utility
+PLOT0: Plot disk file routine
+PLOT1: Plot tape file routine
+PROC: Procedure call utility
+PROC0: Procedure call disk file
+PRTAPE: Print unblocked tape file
+RENAME: Rename file utility
+RENAM0: Rename disk file
+START: Cray deadstart utility
+START0: Cray deadstart driver
+START1: Cray deadstart from MOS
+START2: Cray deadstart from tape
+START3: Cray deadstart from disk
+UBTAPE: Print blocked tape file
+XFMACC: Access expander disk file
+XFMCLS: File close
+XFMCRE: File creation
+XFMDEL: File deletion
+XFMDIR: Directory search
+XFMDST: Directory statistics
+XFMFIL: File search
+XFMFST: File statistics
+XFMFLW: Flaw routine
+XFMFND: Directory search
+XFMGET: File extention
+XFMIO: Expander disk I/O
+XFMNIT: Disk initialization
+XFMPUT: File space release
+XFMSTR: Update file descriptor
+CONC: Concentrator initialization
+CONCERR: Handle concentrator errors
+CONCID: Concentrator ID handler
+CONCIO: Concentrator activity
+ENDCONC: Terminate the concentrator
+ENTRID: Enter ID table
+FEIDIAG: FEI online diagnostics
+REMVID: Remove entry from ID table
+FEIMSG: FEI N-Packet Message Activity
+FEIR: FEI N-Packet Read Activity
+FEIW: FEI N-Packet Write Activity
+ACQTRM: Acquire response processing
+ACQUIRE: Acquire response processing
+AMPEX: Conversion for AMPEX console
+BABEL: STMSG display
+BARDAT: Monitor display descriptors
+BLOCK: Dataset blocking
+BMAGET: Get MOS I/O statistics
+BMGET: Get Mos biffer statistics
+BXDIS: Display BMX transfers
+BXSET: Get BMX statistics
+CFINIT: Command file initialization
+CFREAD: Command file read
+CLI: Command language processor
+CLINIT: Command language initialization
+CLUSTR: Cluster register display
+CMGET: Get Cray memory statistics
+CNCDIS: Concentrator monitor
+COMBO: Debug discriptor validation
+COMM01: Station commands
+COMM02: Station commands
+COMM03: Station commands
+COMM04: Station commands
+COMM05: Station commands
+COMM06: Station commands
+COMM07: Station commands
+COMM08: Station commands
+COMM09: Station commands
+COMM10: Station commands
+COMM11: Station commands
+COMM12: Station commands
+COMM13: Station commands
+COMM14: Station commands
+COMM15: Station commands
+COMM16: Station commands
+CONSL: Console driver
+CPUGET: Get Cray time statistics
+CRAYIO: Cray message interface
+DBGET: Get disk buffer statistics
+DECOD2: Parameter scanning
+DECODE: Parameter scanning
+DELMSG: Delete station messages
+DESCRIBE: Command descriptions
+DEVDAT: Display expander device status
+DISP01: Station displays
+DISP02: Station displays
+DISPLAY: Display processor
+DKDIS: Display disk activity graph
+DKERR: Display disk errors
+DKERR1: Set DKERR MOS buffer address
+DKSET: Get disk I/O statistics
+DKSET0: Get disk I/O statistics
+DKSTAT: DISK display
+DSPL: CPU formatted displays
+ERRDIS: Error log display
+ERROR: Error message formatter
+F80: 80 column rotated font
+F132: 132 column rotated font
+FMGET: Get free memory statistics
+GRAPH: Bar graph generator
+GRCDIS: Generic resource cumulatives
+GRPDIS: Generic resource profile
+GRUDIS: Generic resource utilization
+HDRPAG: Listing header page generation
+HELP: Help facility
+HELP2: Help facility
+HELPD: Help facility data
+HPDATA: Listing header page data
+HSPGET: Get high speed transfer statistics
+HSXGET: Get HSX transfer statistics
+ICONSL: Console initialization
+IDEBUG: Debug displays
+IDLGET: Get idle time statistics
+IDRCT: DEBUG display
+IFRMT: Debug display
+KEYBD: Station keyboard input
+LCP: LCP generation and validation
+LINK: LINK display
+LOGON: Station logon
+MESSAGE: Text message formatting
+MSTAT: STORAGE display
+MSTDIS: Mass storage Graph
+NCNDIS: NSC CONC display
+NEWDIS: Display type change
+NSCLP: NSC/FEI logical path display
+NSCNET: NSC configuration display
+NSCSFP: NSC network statistics display
+OBIT: Print file termination notification
+OFRMT: Debug display
+ONLINE: Station logon
+POST: Operator message I/O interface
+PROTINIT: Protocol task initialization
+PROTOCOL: Cray communications task
+QUEUE: Input dataset queuing
+READ: CLI read
+SNAP: SNAP command
+SOROC: SOROC translator
+SSDGRA: SSD Channel Graph
+STADIS: STATION display
+STAGEIN: Initialize staging to Cray
+STAGEOUT: Initialize staging from Cray
+STATCL: STATCLASS display
+STATINIT: Station initiation
+STATION: Console initiation
+STIO: Dataset staging
+STMSG: Process received station message
+STPLOT: Staging to plotter
+STREAMS: Stream control
+STRSTAT: STRSTAT display
+STSGET: Get system statistics
+STTAPI: Stage to tape
+STTAPO: Stage from tape
+STUBPR: Stage to printer
+STXDKI: Stage from disk
+STXDKO: Stage to disk
+SUMDAY: SUMMARY display
+SUMHOW: Summary control routine
+SUMTIM: Summary tallying
+SWAP: Swap Space Statistics
+SYNTAX: Command syntax descriptors
+SYSTAT: STATUS display
+TAPEC: TAPE display
+TEC455: Conversion for TEC console
+TJOB: TJOB display
+TKSTAT: STP display
+TURNPG: Rotate print page
+UNBLK: Dataset deblocking
+UPDATE: Update stream state
+XFRMT: Debug display
+XJSTAT: JSTAT display
+XMPXP: Debug display
+XMP4XP: Debug display for XMP-4
+YMPXP: Display YMP exchange packet
+IACMD: Command processor
+IACON: Console initialization
+IACON1: Console input
+IAFUNC: Concentrator functions
+IAIOP: Interactive station
+IAIOP1: Interactive concentrator
+IAMSG: Message distibutor
+IAOUT: Console output
+FNSC: NSC N-packet interface
+NIDEND: NSC concentrator termination
+NSC: NSC initialization
+NSCEND: NSC termination
+NSCID: NSC logical ID processor
+NSCIO: NSC I/O control
+NSCMSG: NSC message handler
+NSCRW: NSC R/W Handler
+SCPIO: SCP Protocol Handler
+TERMNSC: N-packet interface termination
+TERMVME: TERMINATE ALL LOGICAL PATHS ON A VME CHANNEL
+VME: INITIATE VMEBUS INTERFACE
+VMEND: TERMINATE VMEBUS INTERFACE
+VMERD: VMEBUS INTERFACE INPUT DRIVER
+VMEWT: VMEBUS INTERFACE OUTPUT DRIVER
+UCSHL: User channel Shell routine
+UCOPN: User channel Open routine
+UCCLS: User channel Close routine
+UCRD: User channel Read routine
+UCWRT: User channel Write routine
+UCDRV: User channel Driver routine
+UCXFR: User channel Data Transfer
+ISPDRV: ISP channel driver
+SL2DRV: Superlink FEI driver
+: User channel dummy driver 1
+: User channel dummy driver 2
+: User channel dummy driver 3
+: User channel dummy driver 4
+: User channel dummy driver 5
+: User channel dummy driver 6
+: User channel dummy driver 7
+: User channel dummy driver 8
+: User channel dummy driver 9
+ASD: ASD console driver initiator
+ASDINP: ASD console input driver
+ASDOUT: ASD console output driver
+FSCOPY: Copy expander pack partition
+PART: Expander disk partition allocation
+TTKEY: TTY keyboard driver
+TTY: TTY Kernel command
+TTYIN: TTY input, IOS to Cray
+TTYNIT: T-packet NSC driver initialization
+TTYNSC: T-packet NSC driver
+TTYOUT: TTY output, Cray to IOS
+UDISK: Disk driver
+UFILE: Expander disk file i/o
+UPRINT: Printer driver
+UPRT1: Print output
+UPRT2: Rotated print output
+UPRT3: Plot output
+UTAPE: Tape driver
+HCOM: HSX inter-IOP message handler
+HSXI: HSX input interrupt handler
+HSXO: HSX output interrupt handler
+INHSX: HSX initialization routine

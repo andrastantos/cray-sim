@@ -1,0 +1,57 @@
+************************************************************************
+*                                                                      *
+*        Link control package description.                             *
+*                                                                      *
+************************************************************************
+
+LC@DID   FIELD     0                   . Destination ID.
+LC@SID   FIELD     1                   . Source ID.
+LC@NSS   FIELD     2,0,8               . Number of subsegments.
+LC@MN    FIELD     2,8,8               . Message number.
+LC@MC    FIELD     3,0,8               . Message code.
+LC@MSC   FIELD     3,8,8               . Message subcode.
+LC@RQP   FIELD     4,0,1               . Request pending flag.
+LC@STN   FIELD     4,4,4               . Stream number.
+LC@SNU   FIELD     4,8,8               . Segment number (upper 8 bits).
+LC@SNL   FIELD     5                   . Segment number (lower 16 bits).
+LC@BCU   FIELD     6                   . Segment bit count (upper bits).
+LC@BCL   FIELD     7                   . Segment bit count (lower bits).
+LC@SCB   FIELD     3*4,*               . Stream control bytes.
+LC@ISB   CFIELD    3*4*2,8             . Input stream control bytes.
+LC@OSB   CFIELD    4*4*2,8             . Output stream control bytes.
+
+LC@LEN   FIELD     24,*                . LCP size.
+W@LC@LEN EQUALS    LC@LEN@P/4          . LCP size in words.
+         SPACE     4
+
+		 
+On COS side there's the Any Packet Table (APT) that describes MIOP<-->COS communication. APT types:
+
+C1		Cray mainframe identifier
+EX		EXEC identifier
+A		Disk IO
+B		Front-end IO
+C		Error message
+D		Tape IO
+E		Echo
+G		Tape confguration
+I		Initialization, part 1
+J		Initialization, part 2
+K		Kernel request
+N		Null request
+S		Statistics request
+
+A packets are described in SM-0045-E_COS_Table_Descriptions_Reference_Manual.pdf, page 46
+
+A-packets are handled by CDEM on the MIOP side. The packet gets scheduled in ICRI in the kernel (K)
+
+The MIOP queues an MC$MSTIO which means 'mass storage i/o' in the DAL, which will start (or rather queue) the proper
+operation on the DIOP (in ACOM)
+
+I think the completion message sent back to the mainframe is a MC$CSTAT message. ACOM seems to process this response and
+send the reply back to the mainframe, but it seems if I understand correctly, it's a reply with the same 'A' packet type
+just SRC and DST swapped
+
+Packet type is in the second byte of DID. Task ID is a bit confusing.
+
+At any rate, it should be possible to parse these packets on the low-speed channel and fire events based on their content

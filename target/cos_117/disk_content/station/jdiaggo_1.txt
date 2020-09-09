@@ -1,0 +1,37 @@
+job,jn=JDIAG,us=ENGINEER,p=15,t.
+account,ac=ENGINEER,apw=WITHOUT,upw=APADDLE,nupw=APADDLE.
+*
+* Self-replicating diagnostic job.
+*
+dispose,dn=$OUT,mf=II,dc=PR,defer.
+access,dn=$DIAGLB,id=V116BF1,own=SYSTEM.
+library,dn=*:$DIAGLB.
+*
+set(J1=144)
+loop.
+  exitloop(J1.EQ.0)
+  set(J0=date+time)
+  memory,fl=524288,user.
+  CMSCAN,pass=1,sec=V.
+  memory,auto.
+  CPRAN,fp,mr,vr,pass=250.
+  FPADD,pass=1000,format=P,emo.
+  FPMULT,pass=8000,format=P,emo.
+  FPRECP,pass=15000,format=P,emo.
+  SVCMP,pass=3000,emo.
+  VREGD,pass=15000,emo.
+  delay,interval=00:10:00.
+  set(J1=J1-1)
+endloop.
+*
+rewind,dn=$IN.
+copyf,  o=JDIAG.
+rewind,dn=$IN.
+copyd,  o=JDIAG.
+submit,dn=JDIAG.
+*
+dispose,dn=$OUT,dc=SC,defer.
+exit.
+dispose,dn=$OUT,mf=AP,dc=PR,defer.
+dumpjob.
+dump,lw=3777,v.

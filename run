@@ -1,0 +1,8 @@
+#!/bin/sh
+PATH=$PATH:sw/_bin/cygwin_release:sw/_bin/linux_release:bin
+
+mkdir dump
+mkdir disk
+mkdir tape
+cray_sim cos_117.cfg
+
