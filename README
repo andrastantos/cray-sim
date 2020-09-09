@@ -1,3 +1,18 @@
+This repository contains the source code for the Cray PVP simulator. This simulator allows you
+to run unmodified Cray software for the following machines:
+- Cray XMP
+- Cray YMP-el
+- Cray J90
+- Cray SV1
+Support for other machines, such as the Cray-1, the Cray-YMP, even the Cray-C90 and Cray-T90
+would most likely be possible, but for the lack of SW availablility for these platforms.
+
+Apart from the source code, also included in the repository the tools and files needed to
+create an executable COS-1.17 image for the Cray-XMP.
+
+If you have access to old Cray SW, especially for as-of yet unsupported machines,
+please contact me!
+
 Linux build instructions:
 ==================================
 1. Clone repository:
