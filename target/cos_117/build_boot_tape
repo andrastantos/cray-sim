@@ -1,5 +1,5 @@
 #!/bin/sh
-PATH=$PATH:../../sw/_bin/cygwin_release:../../sw/_bin/linux_release:../../bin
+PATH=$PATH:../../simulator/_bin/cygwin_release:../../simulator/_bin/linux_release:../../bin
 
 rm ../../boot_tape.tap
 tap_edit ../../boot_tape.tap insert iop_overlay1.bin 0  -- insert tapeboot.bin 1  -- insert diskboot.bin 2  -- insert dmp.bin 3  -- ls

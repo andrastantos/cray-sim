@@ -1,5 +1,5 @@
 #!/bin/sh
-PATH=$PATH:../../sw/_bin/cygwin_release:../../sw/_bin/linux_release:../../bin
+PATH=$PATH:../../simulator/_bin/cygwin_release:../../simulator/_bin/linux_release:../../bin
 
 mkdir _obj
 
