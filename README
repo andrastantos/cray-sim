@@ -13,6 +13,8 @@ create an executable COS-1.17 image for the Cray-XMP.
 If you have access to old Cray SW, especially for as-of yet unsupported machines,
 please contact me!
 
+For more details on the project, see http://www.modularcircuits.com/blog/articles/the-cray-files/
+
 Linux build instructions:
 ==================================
 1. Clone repository:
