@@ -1,19 +1,36 @@
+This repository contains the source code for the Cray PVP simulator. This simulator allows you
+to run unmodified Cray software for the following machines:
+- Cray XMP
+- Cray YMP-el
+- Cray J90
+- Cray SV1
+Support for other machines, such as the Cray-1, the Cray-YMP, even the Cray-C90 and Cray-T90
+would most likely be possible, but for the lack of SW availablility for these platforms.
+
+Apart from the source code, also included in the repository the tools and files needed to
+create an executable COS-1.17 image for the Cray-XMP.
+
+If you have access to old Cray SW, especially for as-of yet unsupported machines,
+please contact me!
+
+For more details on the project, see http://www.modularcircuits.com/blog/articles/the-cray-files/
+
 Linux build instructions:
 ==================================
 1. Clone repository:
       git clone https://github.com/andrastantos/cray-sim.git
-3. Install build dependencies:
+2. Install build dependencies:
       sudo apt install g++ make libboost-all-dev libncurses-dev libgpm-dev
-4. Install run dependencies
+3. Install run dependencies
       sudo apt install xterm telnet
-5. Build
+4. Build
       cd cray-sim/simulator
       make build
-6. Build images
+5. Build images
       cd ../target/cos_117
       ./build_boot_tape
       ./build_exp_disk
-7. Run simulator
+6. Run simulator
       cd ../..
       ./run
 
