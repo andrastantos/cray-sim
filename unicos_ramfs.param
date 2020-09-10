@@ -56,7 +56,7 @@ filesystem {
 		pdd swap {
 			minor 4;
 			sector 0;
-			length 32768 sectors;
+			length 65536 sectors;
 		}
 	}
 	disk "dump" {
@@ -103,11 +103,8 @@ filesystem {
 		minor 61;
 		pdd root;
 	}
-	ldd install {
-		minor 64;
-		pdd install;
-	}
 	rootdev is ldd ram;
+/*	rootdev is ldd root;*/
 	swapdev is ldd swap;
 	dmpdev is ldd dump;
 }
