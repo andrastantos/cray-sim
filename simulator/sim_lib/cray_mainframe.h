@@ -328,18 +328,11 @@ public:
 	void DeadStart();
 	void ChannelTick();
 
-	virtual CInt_t GetRealTimeClock() const {
-		if (mUseHostRealTimeClock) {
-			boost::timer::nanosecond_type DeltaTime = mRealTimeTimer.elapsed().wall - mRealTimeStart;
-			CInt_t DeltaClocks = CInt_t(double(DeltaTime) / mCpuClockPeriod);
-			return mRealTimeClock + DeltaClocks;
-		} else {
-			return mRealTimeClock;
-		}
-	}
+	virtual CInt_t GetRealTimeClock() const;
 	void SetRealTimeClock(CInt_t aValue) {
 		if (mUseHostRealTimeClock) {
 			mRealTimeStart = mRealTimeTimer.elapsed().wall;
+			mLastRealTimeReading = 0;
 		}
 		mRealTimeClock = aValue;
 	}
@@ -373,6 +366,7 @@ protected:
 	MachineTypes_e mMachineType;
 	bool mMultiThreaded;
 	bool mDisableAutoTerminal;
+	mutable CInt_t mLastRealTimeReading;
 
 	class MainFrameEventDispatcher_c: public DebugEventDispatcher_c {
 	public:
@@ -441,7 +435,7 @@ protected:
 	bool mCpuMasterClear;
 
 	uint64_t mTickCnt;
-	
+
 	bool mEnableTimeStamp;
 
 	OsTypes_e mOsType;

@@ -263,7 +263,7 @@ Mainframe_c::Mainframe_c(const Configuration_c &aConfig, CLogger_c &aLogger, boo
 				std::string Direction = CpuChannel.second.get<std::string>("Direction", "Auto");
 				bool IsInput;
 				if (Direction == "Input") { IsInput = true; }
-				else if (Direction == "Output") { IsInput = false; } 
+				else if (Direction == "Output") { IsInput = false; }
 				else if (Direction == "Auto") { IsInput = (ChannelIdx % 2) == 0; }
 				else throw InvalidParameter_x(boost::format("Invalid direction for logger channel %1%: %2%") % (ChannelIdx + 8) % Direction);
 				mOwnedChannels[ChannelIdx] = std::make_unique<LoggerChannel_c>(CpuChannel.second, ChannelIdx + 8, *this, mLogger, IsInput);
@@ -762,4 +762,18 @@ CInt_t Mainframe_c::SimToHost(CInt_t aValue) {
 // The simulated target can read 32-bit values to the host, using HostToSim. On return, the low-order 32 bits are from the FIFO, and the MSB is set if the read DID NOT take place due to the FIFO being empty.
 CInt_t Mainframe_c::HostToSim() {
 	return CInt_t(1) << 63;
+}
+
+CInt_t Mainframe_c::GetRealTimeClock() const {
+	if (mUseHostRealTimeClock) {
+		boost::timer::nanosecond_type DeltaTime = mRealTimeTimer.elapsed().wall - mRealTimeStart;
+		CInt_t DeltaClocks = CInt_t(double(DeltaTime) / mCpuClockPeriod);
+		if (DeltaClocks == mLastRealTimeReading) {
+			DeltaClocks += 1;
+		}
+		mLastRealTimeReading = DeltaClocks;
+		return mRealTimeClock + DeltaClocks;
+	} else {
+		return mRealTimeClock;
+	}
 }
