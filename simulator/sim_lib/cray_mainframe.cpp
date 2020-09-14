@@ -150,36 +150,36 @@ Mainframe_c::Mainframe_c(const Configuration_c &aConfig, CLogger_c &aLogger, boo
 		std::string MachineType = aConfig.get<std::string>("MachineType", "J90");
 		if (MachineType == "J90") {
 			mMachineType = MachineTypes_e::J90;
-			mCpuClockPeriod = 10.0;
+			mSystemClockPeriod = 10.0;
 		}
 		else if (MachineType == "YEL" || MachineType == "YMP-el") {
 			mMachineType = MachineTypes_e::YEL;
-			mCpuClockPeriod = 30.0;
+			mSystemClockPeriod = 30.0;
 		}
 		else if (MachineType == "YMP") {
 			mMachineType = MachineTypes_e::YMP;
-			mCpuClockPeriod = 6.0;
+			mSystemClockPeriod = 6.0;
 		}
 		else if (MachineType == "SV1") {
 			mMachineType = MachineTypes_e::SV1;
-			mCpuClockPeriod = 2.0;
+			mSystemClockPeriod = 10.0; // The SV1 has a split core/system clock architecture. While the core clock can be up to 500MHz, the system clock was locked at 100MHz.
 		}
 		else if (MachineType == "XMP1") {
 			mMachineType = MachineTypes_e::XMP1xx;
-			mCpuClockPeriod = 9.5;
+			mSystemClockPeriod = 9.5;
 		}
 		else if (MachineType == "XMP2") {
 			mMachineType = MachineTypes_e::XMP2xx;
-			mCpuClockPeriod = 9.5;
+			mSystemClockPeriod = 9.5;
 		}
 		else if (MachineType == "XMP4") {
 			mMachineType = MachineTypes_e::XMP4xx;
-			mCpuClockPeriod = 9.5;
+			mSystemClockPeriod = 9.5;
 		}
 		else {
 			throw Generic_x() << "Unknown machine type: " << MachineType;
 		}
-		mCpuClockPeriod = aConfig.get<double>("CpuClockPeriod", mCpuClockPeriod);
+		mSystemClockPeriod = aConfig.get<double>("SystemClockPeriod", mSystemClockPeriod);
 		if (mUseHostRealTimeClock) {
 			mRealTimeTimer.start();
 			mRealTimeStart = mRealTimeTimer.elapsed().wall;
@@ -767,7 +767,7 @@ CInt_t Mainframe_c::HostToSim() {
 CInt_t Mainframe_c::GetRealTimeClock() const {
 	if (mUseHostRealTimeClock) {
 		boost::timer::nanosecond_type DeltaTime = mRealTimeTimer.elapsed().wall - mRealTimeStart;
-		CInt_t DeltaClocks = CInt_t(double(DeltaTime) / mCpuClockPeriod);
+		CInt_t DeltaClocks = CInt_t(double(DeltaTime) / mSystemClockPeriod);
 		if (DeltaClocks == mLastRealTimeReading) {
 			DeltaClocks += 1;
 		}

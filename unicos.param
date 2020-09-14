@@ -1,0 +1,141 @@
+revision "SN9000.20";
+ios_e {
+	cluster 0 {
+		miop; eiop 0;
+	}
+}
+
+mainframe {
+	1 cpus;
+	32 Mwords memory;
+	channel 020 is lowspeed to cluster 0;
+	channel 78 is lowspeed to pseudo TCP;
+}
+
+unicos {
+	50 NBUF;
+	50 NPBUF;
+/*	98280 LDCHCORE;*/
+	10 LDCHCORE;
+	500 NLDCH;
+	256 PDDMAX;
+	256 LDDMAX;
+	32 HDDMAX;
+	300 PDDSLMAX;
+	8 MDDSLMAX;
+	8 SDDSLMAX;
+	8 RDDSLMAX;
+	4 SSDDSLMAX;
+	64 HDDSLMAX;
+	0 GUESTMAX;
+	294912 TAPE_MAX_PER_DEV;
+	8 TAPE_MAX_CONF_UP;
+	16 TAPE_MAX_DEV;
+}
+
+filesystem {
+	/*
+	* Physical device configuration
+	*/
+	RAM ramdev {
+		length 12288 blocks;
+		pdd ram {
+			minor 3; 
+			block 0; 
+			length 12288 blocks;
+		}
+	}
+	disk "swap" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 021;
+		}
+		unit 0;
+		pdd swap {
+			minor 4;
+			sector 0;
+			length 65536 sectors;
+		}
+	}
+	disk "dump" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 022;
+		}
+		unit 0;
+		pdd dump {
+			minor 5;
+			sector 0;
+			length 32768 sectors;
+		}
+	}
+	disk "root" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 024;
+		}
+		unit 0;
+		pdd root {
+			minor 7;
+			sector 0;
+			length 781000 sectors;
+		}
+	}
+	ldd ram {
+		minor 58;
+		pdd ram;
+	}
+	ldd swap {
+		minor 59;
+		pdd swap;
+	}
+	ldd dump {
+		minor 60;
+		pdd dump;
+	}
+	ldd root {
+		minor 61;
+		pdd root;
+	}
+/*	rootdev is ldd ram;*/
+	rootdev is ldd root;
+	swapdev is ldd swap;
+	dmpdev is ldd dump;
+}
+
+network {
+	8 nfs_static_clients;
+	8 nfs_temp_clients;
+	8 cnfs_static_clients;
+	8 cnfs_temp_clients;
+	32768 nfs_maxdata;
+	256 nfs_num_rnodes;
+	1200 nfs_maxdupreqs;
+	3 nfs_duptimeout;
+	0 nfs_printinter;
+	16000 tcp_nmbspace;
+	2 himaxdevs;
+	4 himaxpaths;
+	1 fdmaxdevs;
+	0 npmaxdevs;
+	1 enmaxdevs;
+	2 atmmaxdevs;
+	131072 atmarp_recv;
+	65536 atmarp_send;
+	1024 atmarp_entries;
+	0755 hidirmode;
+	0666 hifilemode;
+	endev 0 {
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 020;
+		}
+	}
+}

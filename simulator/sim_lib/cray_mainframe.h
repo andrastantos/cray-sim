@@ -406,7 +406,7 @@ protected:
 
 	boost::timer::cpu_timer mRealTimeTimer;
 	boost::timer::nanosecond_type mRealTimeStart;
-	double mCpuClockPeriod;
+	double mSystemClockPeriod;
 	CInt_t mRealTimeClock;
 	CInt_t mRealTimeClockIncrement;
 	bool mUseHostRealTimeClock;
