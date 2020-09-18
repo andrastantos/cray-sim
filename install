@@ -1,0 +1,382 @@
+#!/bin/ksh
+# This file is executed on the simulator to install UNICOS
+
+#####################################################
+# Configuration parameters
+#####################################################
+
+# Fill-in these parameters to contain relevant info, or leave empty to get prompted for it
+#LOCAL_LOGIN=
+HOST_IP=172.16.0.1
+SIM_IP=172.16.0.2
+#ISO_MNT=
+SERIALNO=9001
+
+if [ "x$LOCAL_LOGIN" = "x" ]; then
+	echo "Enter user name used to access host files: "
+	read LOCAL_LOGIN
+fi
+if [ "x$HOST_IP" = "x" ]; then
+	echo "Enter IP address for the host machine: "
+	read HOST_IP
+fi
+if [ "x$SIM_IP" = "x" ]; then
+	echo "Enter IP address for the simulator: "
+	read SIM_IP
+fi
+if [ "x$ISO_MNT" = "x" ]; then
+	echo "Enter install CD mount point on the host: "
+	read ISO_MNT
+fi
+if [ "x$SERIALNO" = "x" ]; then
+	echo "Enter serial number for the simulated machine (if unsure, use 9001): "
+	read SERIALNO
+fi
+if [ "x$SIM_LOC" = "x" ]; then
+	echo "WARNING! Setting 'simulator location on host' based on guessed information. Check for correctness!!"
+	SIM_LOC=/home/$LOCAL_LOGIN/cray-sim
+fi
+
+# Secondary configuration: you probably don't want to change these, but just in case...
+ROUTER_IP=$HOST_IP
+
+#####################################################
+# Start of script
+#####################################################
+
+echo "Setup configuration:"
+echo "   Local user on host machine: $LOCAL_LOGIN"
+echo "   IP address of the host machine: $HOST_IP"
+echo "   IP address of the simulator: $SIM_IP"
+echo "   Install CD mount point on the host: $ISO_MNT"
+echo "   Simulated machine serial number: $SERIALNO"
+echo "   Simulator location on host: $SIM_LOC"
+echo ""
+echo "If this is correct, press any key. If not, press CTRL-C now!"
+read
+echo "starting install..."
+
+install_errorexit() {
+	echo "INSTALL FAILED WITH ERROR: $1"
+	exit 255
+}
+
+do_extract_os() {
+	# Make sure that extraction hasn't already been done.
+	if [ -s ${CRAYCHKPNTFILE} ]; then
+	EXTRACT=`grep EXTRACT ${CRAYCHKPNTFILE}`
+	EXTRACT_VALUE=`echo "$EXTRACT" | awk -F" " '{print $2}'`
+		if [ "${EXTRACT_VALUE}" = "DONE" ]; then
+			echo "OS extraction has been done. Exiting without an error"
+			return
+		fi
+	echo "OS extraction has NOT been done."
+	fi
+	echo "Extracting OS files"
+
+	OLD_DIR=pwd
+	cd /$SYS_MNT
+
+	gzip -dc < /$SYS_MNT/uni_12.gzc | cpio -idv || install_errorexit "Can't extract install media"
+	sync
+	gzip -dc < /$SYS_MNT/uni_22.gzc | cpio -idv || install_errorexit "Can't extract install media"
+	sync
+	cd /$SYS_MNT/usr/src
+	gzip -dc < /$SYS_MNT/uex_11.gzc | cpio -idv || install_errorexit "Can't extract install media"
+	sync
+	gzip -dc < /$SYS_MNT/rbf_11.gzc | cpio -idv || install_errorexit "Can't extract install media"
+	sync
+
+	echo "EXTRACT DONE" >> $CRAYCHKPNTFILE
+	echo "done"
+	cd $OLD_DIR
+}
+
+do_mingle() {
+	cd /
+	if [ -s ${CRAYCHKPNTFILE} ]; then
+	MINGLE=`grep MINGLE ${CRAYCHKPNTFILE}`
+	MINGLE_VALUE=`echo "$MINGLE" | awk -F" " '{print $2}'`
+		if [ "${MINGLE_VALUE}" = "DONE" ]; then
+			echo "Mingle has been done. Exiting without an error"
+			return
+		fi
+	echo "Mingle has NOT been done."
+	fi
+	echo "Mingling vif files"
+
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uni_12.vif $SYS_MNT/ || install_errorexit "Can't get vif file from host"
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uni_22.vif $SYS_MNT/ || install_errorexit "Can't get vif file from host"
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uex_11.vif $SYS_MNT/usr/src || install_errorexit "Can't get vif file from host"
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/rbf_11.vif $SYS_MNT/usr/src || install_errorexit "Can't get vif file from host"
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/unicos.mingle / || install_errorexit "Can't get vif file from host"
+	. ./unicos.mingle
+	echo "MINGLE DONE" >> $CRAYCHKPNTFILE
+	echo "done"
+}
+
+do_pstload() {
+	cd /
+	if [ -s ${CRAYCHKPNTFILE} ]; then
+	PSTLOAD=`grep PSTLOAD ${CRAYCHKPNTFILE}`
+	PSTLOAD_VALUE=`echo "$PSTLOAD" | awk -F" " '{print $2}'`
+		if [ "${PSTLOAD_VALUE}" = "DONE" ]; then
+			echo "Post load script has been done. Exiting without an error"
+			return
+		fi
+	echo "Post load script has NOT been done."
+	fi
+
+	echo "**** running post-install script ****"
+	if [ ! -f /unicos.pstload ]; then
+		rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/unicos.pstload /unicos.pstload
+	fi
+	. ./unicos.pstload
+	mount $SYS_MNT || install_errorexit "mount $SYS_MNT failed"
+	echo "PSTLOAD DONE" >> $CRAYCHKPNTFILE
+	echo "done ..."
+}
+
+
+cd /
+echo "**** generating sysinfo ****"
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/sysinfo.default /sysinfo.default || install_errorexit "Can't get sysinfo.default from host"
+cp /sysinfo.default /sysinfo
+echo "" >> /sysinfo
+echo "##################################################" >> /sysinfo
+echo "# Local overrides" >> /sysinfo
+echo "##################################################" >> /sysinfo
+echo "SWSHOST=$HOST_IP" >> /sysinfo
+echo "SYS_CDROM=$ISO_MNT/unicos_exe" >> /sysinfo
+echo "CRAYCHKPNTFILE=/tmp/.blah" >> /sysinfo
+echo "SYS_SERIALNO=$SERIALNO" >> /sysinfo
+echo "SYS_SWSIP=$HOST_IP" >> /sysinfo
+echo "SYS_CRAYIP=$SIM_IP" >> /sysinfo
+echo "SYS_ROUTERIP=$ROUTER_IP" >> /sysinfo
+echo "SYS_ROUTERHOST=router" >> /sysinfo
+echo "SYS_IFNAME=en0" >> /sysinfo
+echo "SYS_ROOT_FS=root" >> /sysinfo
+echo "SYS_USR_FS=root" >> /sysinfo
+echo "SYS_SRC_FS=root" >> /sysinfo
+echo "# Parallel nmakes to run: let's keep things simple and single-threaded" >> /sysinfo
+echo "SYS_NPROC=1" >> /sysinfo
+echo "SYS_CPUS=16" >> /sysinfo
+echo "SYS_MEMORY=256" >> /sysinfo
+. /sysinfo
+echo "done ..."
+
+echo "**** patching up hosts file ****"
+echo 127.0.0.1 localhost loghost > /etc/hosts
+echo $HOST_IP host >> /etc/hosts
+echo $SYS_SWSIP sws >> /etc/hosts
+echo $SYS_CRAYIP cray >> /etc/hosts
+chmod 600 /etc/hosts
+mkbinhost
+echo "done ..."
+
+echo "**** creating /etc/config/interfaces ****"
+mkdir /etc/config
+echo "en0 - inet $SYS_CRAYIP - netmask $SYS_NETMASK" > /etc/config/interfaces
+echo "done ..."
+
+echo "**** getting installrules ****"
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/installrules /Installrules || install_errorexit "Can't get installrules from host"
+echo "overriding SYS_IOSV_FILES..."
+echo "" >> /Installrules
+echo "##################################################" >> /Installrules
+echo "# Local overrides" >> /Installrules
+echo "##################################################" >> /Installrules
+echo "SYS_IOSV_FILES=$SIM_LOC" >> /Installrules
+echo "done ..."
+
+echo "**** copying configuration back to host ****"
+echo "rcp /CONFIGURATION $LOCAL_LOGIN@$SWSHOST:$SIM_LOC/param"
+rcp /CONFIGURATION $LOCAL_LOGIN@$SWSHOST:$SIM_LOC/param || install_errorexit "Can't send /CONFIGURATION to host"
+echo "done ..."
+
+FILESYSTEMS=root
+MOUNTPOINTS=$SYS_MNT
+PACKAGES=UNICOS_Executables
+
+
+# Save out our modified sysinfo...
+
+umount $SYS_MNT
+mkdir $SYS_MNT
+echo "/dev/dsk/$SYS_ROOT_FS        $SYS_MNT                    NC1FS  rw,CRI_RC="NO"   1      1" > /etc/fstab
+rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmkfs.preload / || install_errorexit "Can't get citmkfs.preload from host"
+rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmntfs.preload / || install_errorexit "Can't get citmntfs.preload from host"
+. ./citmkfs.preload
+. ./citmntfs.preload
+if [[ ! -e $SYS_MNT/uex_11.gzc ]]; then
+    echo "copying uex..."
+    rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uex_11.gzc $SYS_MNT/ || install_errorexit "Can't get install media from host"
+    echo "done"
+fi
+if [[ ! -e $SYS_MNT/uni_12.gzc ]]; then
+    echo "copying uni..."
+    rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uni_12.gzc $SYS_MNT/ || install_errorexit "Can't get install media from host"
+    echo "done"
+fi
+if [[ ! -e $SYS_MNT/uni_22.gzc ]]; then
+    echo "copying uni..."
+    rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uni_22.gzc $SYS_MNT/ || install_errorexit "Can't get install media from host"
+    echo "done"
+fi
+if [[ ! -e $SYS_MNT/rbf_11.gzc ]]; then
+    echo "copying rbf..."
+    rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/rbf_11.gzc $SYS_MNT/ || install_errorexit "Can't get install media from host"
+    echo "done"
+fi
+
+do_extract_os
+do_mingle
+
+# At this point we have the new system installed, so we can start using tools from there
+PATH=$PATH:$SYS_MNT/bin:$SYS_MNT/usr/bin
+
+#rcp ${LOCAL_LOGIN}@${SWSHOST}:${SYS_CDROM}/version $SYS_MNT/.version
+
+echo "!!!! OS install complete, going into post-install configuration... !!!!"
+
+#cp /CONFIGURATION /etc/config/param
+
+echo "**** patching up kernel ****"
+cat <<EOT > /mfinits.patch
+203c203,204
+<             irunlvl,0  S1               Run level for init
+---
+>             a1         initcode
+>             irunlvl,a1 S1               Run level for init
+EOT
+if [ ! -f $SYS_MNT/usr/src/uts/c1/md/mfinits.s.original ]; then
+	cp $SYS_MNT/usr/src/uts/c1/md/mfinits.s $SYS_MNT/usr/src/uts/c1/md/mfinits.s.original
+else
+	cp $SYS_MNT/usr/src/uts/c1/md/mfinits.s.original $SYS_MNT/usr/src/uts/c1/md/mfinits.s
+fi
+patch $SYS_MNT/usr/src/uts/c1/md/mfinits.s < /mfinits.patch || install_errorexit "failed"
+echo "done ..."
+
+echo "**** enabling FTP from all hosts ****"
+if [ ! -f $SYS_MNT/skl/etc/inetd.conf.original ]; then
+	cp $SYS_MNT/skl/etc/inetd.conf $SYS_MNT/skl/etc/inetd.conf.original
+fi
+sed "/\/etc\/ftpd.*ftpd/ s/$/ -k/" $SYS_MNT/skl/etc/inetd.conf.original > $SYS_MNT/skl/etc/inetd.conf || install_errorexit "failed"
+echo "done ..."
+
+echo "**** changing init script defaults ****"
+cat <<EOT > /rcoptions.patch
+60c60
+< RC_DATE='YES'
+---
+> RC_DATE='NO'
+66,67c66,67
+< RC_MKTMP='ASK'
+< RC_MKUTMP='ASK'
+---
+> RC_MKTMP='YES'
+> RC_MKUTMP='NO'
+74c74
+< RC_TCP='ASK'
+---
+> RC_TCP='YES'
+78,80c78,80
+< RC_NFS='ASK'
+< RC_YP='ASK'
+< RC_TAPE='ASK'
+---
+> RC_NFS='YES'
+> RC_YP='NO'
+> RC_TAPE='NO'
+126,127c126,127
+< USRDEV='usr'
+< SRCDEV='src'
+---
+> USRDEV=''
+> SRCDEV=''
+EOT
+#131c131
+#< TMPDEV=''
+#---
+#> TMPDEV='tmp'
+if [ ! -f $SYS_MNT/skl/etc/config/rcoptions.original ]; then
+	cp $SYS_MNT/skl/etc/config/rcoptions $SYS_MNT/skl/etc/config/rcoptions.original
+else
+	cp $SYS_MNT/skl/etc/config/rcoptions.original $SYS_MNT/skl/etc/config/rcoptions
+fi
+patch $SYS_MNT/skl/etc/config/rcoptions < /rcoptions.patch || install_errorexit "failed"
+echo "done ..."
+
+echo "**** adding /etc to the default path ****"
+cat <<EOT > /profile.patch
+*** profile.original    Fri Apr 28 19:11:16 2017
+--- profile.new Fri Sep 11 23:50:52 2020
+***************
+*** 3,8 ****
+--- 3,13 ----
+
+
+  trap "" 1 2 3
+  PATH=/bin:/usr/bin:/usr/ucb:/usr/lbin
++
++ ###### Beginning of custom settings
++ PATH=\$PATH:/etc:/usr/local/bin:/usr/bin/X11
++ ###### End of custom settings
++
+  export PATH
+  umask 077
+  case "$0" in
+EOT
+if [ ! -f $SYS_MNT/skl/etc/profile.original ]; then
+	cp $SYS_MNT/skl/etc/profile $SYS_MNT/skl/etc/profile.original
+else
+	cp $SYS_MNT/skl/etc/profile.original $SYS_MNT/skl/etc/profile
+fi
+patch $SYS_MNT/skl/etc/profile < /profile.patch || install_errorexit "failed"
+echo "done ..."
+
+cd /
+do_pstload
+
+echo "**** setting up networking in new environment ****"
+chmod 600 $SYS_MNT/etc/hosts || install_errorexit "failed"
+chroot $SYS_MNT /etc/mkbinhost || install_errorexit "failed"
+echo "done ..."
+
+echo "**** making home folder ****"
+if [ ! -d "$SYS_MNT/home" ]; then
+	mkdir $SYS_MNT/home || install_errorexit "mkdir $SYS_MNT/home failed"
+	chmod a+rx $SYS_MNT/home || install_errorexit "chmod a+rx $SYS_MNT/home failed"
+fi
+echo "done ..."
+
+sync
+ldsync
+sync
+
+echo "**** installing crontab ****"
+cat <<EOT > /$SYS_MNT/bin/syncall
+#!/bin/sh
+sync
+sync
+sync
+EOT
+echo "* * * * * /bin/syncall" > /$SYS_MNT/cron
+chroot $SYS_MNT /usr/bin/crontab /cron
+rm /$SYS_MNT/cron
+echo "done ..."
+
+echo "**** changing root password ****"
+echo "please enter new root password!"
+chroot $SYS_MNT /bin/passwd root
+echo "done ..."
+
+echo "**** creating a new user ****"
+chroot $SYS_MNT /etc/nu -a
+echo "done ..."
+
+sync
+ldsync
+sync
+
+echo "============= INSTALLATION COMPLETED ================"
