@@ -140,13 +140,15 @@ Mainframe_c::Mainframe_c(const Configuration_c &aConfig, CLogger_c &aLogger, boo
 	mLogger(aConfig),
 	mOsType(OsTypes_e::None),
 	mUseHostRealTimeClock(aConfig.get<bool>("UseHostRealTimeClock", true)),
+	mRealTimeClockIncrement(aConfig.get<CInt_t>("RealTimeClockIncrement", 10)),
+	mRealTimeClockChunkLimit(aConfig.get<CInt_t>("RealTimeClockChunkLimit", 5000)),
+	mDeltaClockIncrement(aConfig.get<CInt_t>("DeltaClockIncrement", 1)),
 	mDisableAutoTerminal(aDisableAutoTerminal)
 {
 	mLogger.SetParent(aLogger);
 	mChannels.resize(aConfig.get<size_t>("ChannelCount", 8));
 	mOwnedChannels.resize(mChannels.size());
 	try {
-		mRealTimeClockIncrement = aConfig.get<CInt_t>("RealTimeClockIncrement", 10);
 		std::string MachineType = aConfig.get<std::string>("MachineType", "J90");
 		if (MachineType == "J90") {
 			mMachineType = MachineTypes_e::J90;
@@ -768,11 +770,15 @@ CInt_t Mainframe_c::GetRealTimeClock() const {
 	if (mUseHostRealTimeClock) {
 		boost::timer::nanosecond_type DeltaTime = mRealTimeTimer.elapsed().wall - mRealTimeStart;
 		CInt_t DeltaClocks = CInt_t(double(DeltaTime) / mSystemClockPeriod);
-		if (DeltaClocks == mLastRealTimeReading) {
-			DeltaClocks += 1;
+		CInt_t NewRTC = mRealTimeClock + DeltaClocks;
+		if (NewRTC > mLastRealTimeReading + mRealTimeClockChunkLimit) {
+			mLastRealTimeReading = NewRTC;
+			return NewRTC;
+		} else {
+			NewRTC = mLastRealTimeReading + mRealTimeClockIncrement;
+			mLastRealTimeReading = NewRTC;
+			return NewRTC;
 		}
-		mLastRealTimeReading = DeltaClocks;
-		return mRealTimeClock + DeltaClocks;
 	} else {
 		return mRealTimeClock;
 	}
