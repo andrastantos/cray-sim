@@ -556,7 +556,7 @@ IopExpClockDevice_c::IopExpClockDevice_c(const Configuration_c &aConfig, IopChan
 	mPrimaryChannelIdx(aConfig.get<uint16_t>("PrimaryChannelIdx")),
 	mRequestChannelIdx(aConfig.get<uint16_t>("RequestChannelIdx", mPrimaryChannelIdx+1)),
 	mResponseChannelIdx(aConfig.get<uint16_t>("ResponseChannelIdx", mPrimaryChannelIdx+0)),
-	mYearOffset(aConfig.get<uint16_t>("YearOffset", 20))
+	mYearOffset(aConfig.get<uint16_t>("YearOffset", 30))
 {
 	for(size_t i=0;i<sizeof(mInterruptActive)/sizeof(bool);++i) mInterruptActive[i] = false;
 	mLogger.SetParent(mParent.GetLogger());
