@@ -47,11 +47,15 @@ indicating that they are indeed for two different targets
 
 5. Updateing the Visual Studio property sheet
 =============================================
-If you're not using Boost version 1.60, or installed Boost into a non-default
-location, please update the common.props file in this directory:
+If you're not using Boost version 1.75, update common.props:
+- Change the following line:
+    <BOOSTVER Condition="'$(BOOSTVER)'==''">1_75</BOOSTVER>
+  according to the version you're using.
+If you installed Boost into a non-default location,
+you need to do additional changes:
 - Search for the following line in common.props:
-      <AdditionalIncludeDirectories>.;..;..\sim_lib;C:\Boost\include\boost-1_60;..\pdcurses</AdditionalIncludeDirectories>
-- Replace the include directory 'C:\Boost\include\boost-1_60' with the 
+      <AdditionalIncludeDirectories>.;..;..\sim_lib;C:\boost\include\boost-$(BOOSTVER);..\pdcurses;$(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+- Replace the include directory 'c:\Boost\include\boost-$(BOOSTVER)' with the 
   appropriate path for your Boost include files.
 - If you insatlled Boost into a non-default location, please make the following
   additional edits. In the same file,replace the library paths with the location 

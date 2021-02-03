@@ -25,11 +25,8 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <PlatformToolset>v141</PlatformToolset>
-  </PropertyGroup>
   <PropertyGroup Label="UserMacros">
-    <BOOSTVER Condition="'$(BOOSTVER)'==''">1_69</BOOSTVER>
+    <BOOSTVER Condition="'$(BOOSTVER)'==''">1_75</BOOSTVER>
     <BASEDIR Condition="'$(BASEDIR)'==''">..</BASEDIR>
     <LIBDIR Condition="'$(LIBDIR)'==''">$(BASEDIR)\_lib\msvc_$(Platform)_$(Configuration)\$(TargetName)\</LIBDIR>
     <BINDIR Condition="'$(BINDIR)'==''">$(BASEDIR)\_bin\msvc_$(Platform)_$(Configuration)\$(TargetName)\</BINDIR>
@@ -61,7 +58,7 @@
       <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>.;..;..\sim_lib;C:\boost\include\boost-$(BOOSTVER);..\pdcurses;$(AdditionalIncludeDirectories);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ProgramDataBaseFileName>$(IntDir)$(TargetName)_msvc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <PreprocessorDefinitions>$(PreprocessorDefinitions);_WIN32_WINNT=0x0501;_USING_V110_SDK71_;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>$(PreprocessorDefinitions);_WIN32_WINNT=0x0600;_USING_V110_SDK71_;BOOST_CONFIG_SUPPRESS_OUTDATED_MESSAGE</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
