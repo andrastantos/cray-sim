@@ -301,7 +301,7 @@ int PDC_scr_open(int argc, char **argv)
         exit(1);
     }
 
-    is_nt = !(GetVersion() & 0x80000000);
+    is_nt = IsWindowsXPOrGreater();
 
     GetConsoleScreenBufferInfo(pdc_con_out, &csbi);
     GetConsoleScreenBufferInfo(pdc_con_out, &orig_scr);

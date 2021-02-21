@@ -4,6 +4,7 @@
 #endif //NOMINMAX
 #include <windows.h>
 #include <winsock2.h>
+#include <ws2tcpip.h>
 
 #include <memory>
 #include "vtap_win32.h"
@@ -217,6 +218,13 @@ void TapAdapter_c::Close() {
 	mReadPending = false;
 }
 
+static uint32_t InetAddr(const char* aAddr) {
+	uint32_t BinAddr;
+	INT RetVal = inet_pton(AF_INET, aAddr, &BinAddr);
+	if (RetVal != 1) throw Generic_x() << "Failed to resolve address: " << aAddr << " with error code: " << HexPrinter(RetVal);
+	return BinAddr;
+}
+
 void TapAdapter_c::Open(const char *aIpAddr, const char *aNetMask, const char *aDhcpServerIpAddr, size_t aLeaseTime) {
 	std::stringstream DeviceName;
 	DeviceName << "\\\\.\\Global\\" << mDeviceGuid << ".tap";
@@ -246,9 +254,9 @@ void TapAdapter_c::Open(const char *aIpAddr, const char *aNetMask, const char *a
 	//		}
 
 	if (aIpAddr != nullptr) {
-		IoctlData[0] = inet_addr(aIpAddr);
-		IoctlData[1] = aNetMask == nullptr ? 0 : ~inet_addr(aNetMask);
-		IoctlData[2] = aDhcpServerIpAddr == nullptr ? 0 : inet_addr(aDhcpServerIpAddr);
+		IoctlData[0] = InetAddr(aIpAddr);
+		IoctlData[1] = aNetMask == nullptr ? 0 : ~InetAddr(aNetMask);
+		IoctlData[2] = aDhcpServerIpAddr == nullptr ? 0 : InetAddr(aDhcpServerIpAddr);
 		IoctlData[3] = ULONG(aLeaseTime);
 
 		if (!DeviceIoControl(mDeviceHandle, TAP_IOCTL_CONFIG_DHCP_MASQ, IoctlData, sizeof(IoctlData[0]) * 4, IoctlData, sizeof(IoctlData), &Length, nullptr)) {

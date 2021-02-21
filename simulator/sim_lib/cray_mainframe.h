@@ -341,7 +341,7 @@ public:
 	void Dump(size_t aIdent=0) const;
 	void DumpMemories() const;
 	void DumpHistory();
-	CLogger_c &GetLogger() { return mLogger; }
+	CLogger_c &GetLogger() const { return mLogger; }
 
 	virtual uint64_t GetTimeStamp() const override { return mEnableTimeStamp ? mTickCnt : 0ULL; }
 	virtual uint64_t GetResolution() const override { return 105000000ULL; } // TODO: make this configurable
@@ -367,6 +367,7 @@ protected:
 	bool mMultiThreaded;
 	bool mDisableAutoTerminal;
 	mutable CInt_t mLastRealTimeReading;
+	CInt_t mDeltaClockIncrement;
 
 	class MainFrameEventDispatcher_c: public DebugEventDispatcher_c {
 	public:
@@ -409,6 +410,7 @@ protected:
 	double mSystemClockPeriod;
 	CInt_t mRealTimeClock;
 	CInt_t mRealTimeClockIncrement;
+	CInt_t mRealTimeClockChunkLimit;
 	bool mUseHostRealTimeClock;
 
 	struct WatchPoint_c {

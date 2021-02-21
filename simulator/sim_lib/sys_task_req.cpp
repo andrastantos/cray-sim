@@ -206,11 +206,14 @@ void PrintIntArg(std::ostream &aLogger, size_t aArg, const ExchangePacket_c &aEx
 void ParseUnicosExchangePacket(const ExchangePacket_c &aCurrentEP, const ExchangePacket_c &aNewEP, std::ostream &aLogger, const Cpu_c &aCpu) {
 	static size_t LastSysCall = SIZE_MAX;
 	const Mainframe_c &Mainframe = aCpu.GetMainframe();
+
 	if (aCurrentEP.GetMode().IsMonitorMode()) {
 		CInt_t S[8];
 		for (size_t Idx = 0; Idx<sizeof(S) / sizeof(S[0]); ++Idx) S[Idx] = aNewEP.GetS(Idx);
 		CInt_t A[8];
 		for (size_t Idx = 0; Idx<sizeof(A) / sizeof(A[0]); ++Idx) A[Idx] = aNewEP.GetA(Idx);
+
+		//aLogger << "return from monitor mode with XA: " << HexPrinter(aCpu.GetExchangePacketAddress()) << " " << "IBA: " << HexPrinter(aCurrentEP.GetInstBaseAddr());
 
 		// Swapping out from monitor mode - parse it as a reply
 		if (LastSysCall < SysCallTableSize) {
@@ -261,11 +264,14 @@ void ParseUnicosExchangePacket(const ExchangePacket_c &aCurrentEP, const Exchang
 							PrintStringArrayArg(aLogger, 2, aCurrentEP, Mainframe);
 						break;
 						case 0x9b: // waitpid
-							PrintIntArg(aLogger, 0, aCurrentEp, Mainframe);
+							PrintIntArg(aLogger, 0, aCurrentEP, Mainframe);
 							aLogger << " , ";
-							PrintPtrArg(aLogger, 1, aCurrentEp, Mainframe);
+							PrintPtrArg(aLogger, 1, aCurrentEP, Mainframe);
 							aLogger << " , ";
-							PrintIntArg(aLogger, 2, aCurrentEp, Mainframe);
+							PrintIntArg(aLogger, 2, aCurrentEP, Mainframe);
+						break;
+						case 125: // mtimes
+							PrintPtrArg(aLogger, 0, aCurrentEP, Mainframe);
 						break;
 						default:
 							for (uint32_t ArgIdx = 0; ArgIdx < std::min(Entry.ArgCnt, uint32_t(10)); ++ArgIdx) {
@@ -292,6 +298,8 @@ void ParseUnicosExchangePacket(const ExchangePacket_c &aCurrentEP, const Exchang
 				//aLogger << "XA: " << HexPrinter(aCpu.GetExchangePacketAddress()) << " " << "IBA: " << HexPrinter(aCurrentEP.GetInstBaseAddr()) << " ";
 				//aLogger << "unknown SYSCALL with S0 = " << HexPrinter(S[0]);
 			}
+		} else {
+			//aLogger << "entering monitor mode with XA: " << HexPrinter(aCpu.GetExchangePacketAddress()) << " " << "IBA: " << HexPrinter(aCurrentEP.GetInstBaseAddr()) << " ";
 		}
 	}
 }

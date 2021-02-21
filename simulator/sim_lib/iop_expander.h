@@ -466,7 +466,7 @@ protected:
 	uint16_t mRegA;
 	uint16_t mRegB;
 	uint16_t mRegC;
-	uint16_t mYearOffset;
+	bool mYearLimit;
 	size_t mResponseTimer;
 	size_t mResponseTimeout;
 	bool mBusy;

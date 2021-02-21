@@ -556,7 +556,7 @@ IopExpClockDevice_c::IopExpClockDevice_c(const Configuration_c &aConfig, IopChan
 	mPrimaryChannelIdx(aConfig.get<uint16_t>("PrimaryChannelIdx")),
 	mRequestChannelIdx(aConfig.get<uint16_t>("RequestChannelIdx", mPrimaryChannelIdx+1)),
 	mResponseChannelIdx(aConfig.get<uint16_t>("ResponseChannelIdx", mPrimaryChannelIdx+0)),
-	mYearOffset(aConfig.get<uint16_t>("YearOffset", 20))
+	mYearLimit(aConfig.get<bool>("YearLimit", true))
 {
 	for(size_t i=0;i<sizeof(mInterruptActive)/sizeof(bool);++i) mInterruptActive[i] = false;
 	mLogger.SetParent(mParent.GetLogger());
@@ -629,7 +629,8 @@ void IopExpClockDevice_c::ProcessRequest() {
 		boost::local_time::local_date_time CurrentTime(boost::posix_time::second_clock::local_time(), boost::local_time::time_zone_ptr());
 		auto Date = CurrentTime.local_time().date().year_month_day();
 		uint16_t Year = Date.year;
-		Year = (Year - mYearOffset) % 100; // Correct with offset and keep only last two digits
+		// COS only accepts years between 1980 and 1999. So, we'll limit ourselves to that 20 year period
+		if (mYearLimit) Year = (Year % 20) + 80;
 		mResponse = (boost::format("%02d%02d%02d\x0d") % Year % Date.month.as_number() % Date.day.as_number()).str();
 	} else if (boost::starts_with(mRequest, "ATSD")) {
 		mLogger << setloglevel(LogLevel_IoActivity) << "Received SD, full request:" << mRequest << std::endl;

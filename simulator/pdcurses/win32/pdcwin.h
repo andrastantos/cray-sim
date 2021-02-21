@@ -7,6 +7,7 @@
 #endif
 
 #include <windows.h>
+#include <versionhelpers.h>
 #undef MOUSE_MOVED
 #include <curspriv.h>
 

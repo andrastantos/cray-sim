@@ -126,9 +126,6 @@
     <ClCompile Include="cray_softcpu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="cray_dpicpu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cray_cpu.h">
@@ -264,9 +261,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cray_softcpu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cray_dpicpu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
