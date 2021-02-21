@@ -208,6 +208,7 @@ rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmkfs.preload / || install_errorexit "Can
 rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmntfs.preload / || install_errorexit "Can't get citmntfs.preload from host"
 . ./citmkfs.preload
 . ./citmntfs.preload
+/etc/mkdmp /dev/dsk/dump
 if [[ ! -e $SYS_MNT/uex_11.gzc ]]; then
     echo "copying uex..."
     rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uex_11.gzc $SYS_MNT/ || install_errorexit "Can't get install media from host"
@@ -288,17 +289,19 @@ cat <<EOT > /rcoptions.patch
 > RC_NFS='YES'
 > RC_YP='NO'
 > RC_TAPE='NO'
-126,127c126,127
+126,128c126,128
 < USRDEV='usr'
 < SRCDEV='src'
+< USRTMPDEV='usr_tmp'
 ---
 > USRDEV=''
 > SRCDEV=''
+> USRTMPDEV=''
 EOT
 #131c131
-#< TMPDEV=''
+#< TMPDEV='tmp'
 #---
-#> TMPDEV='tmp'
+#> TMPDEV=''
 if [ ! -f $SYS_MNT/skl/etc/config/rcoptions.original ]; then
 	cp $SYS_MNT/skl/etc/config/rcoptions $SYS_MNT/skl/etc/config/rcoptions.original
 else
@@ -341,7 +344,14 @@ do_pstload
 echo "**** setting up networking in new environment ****"
 chmod 600 $SYS_MNT/etc/hosts || install_errorexit "failed"
 chroot $SYS_MNT /etc/mkbinhost || install_errorexit "failed"
+cat <<EOT > /etc/gated.conf || install_errorexit "failed"
+static {
+    default gateway $ROUTER_IP
+}
+EOT
+echo "en0 - inet $SYS_CRAYIP - netmask $SYS_NETMASK" >> /etc/config/interfaces || install_errorexit "failed"
 echo "done ..."
+
 
 echo "**** making home folder ****"
 if [ ! -d "$SYS_MNT/home" ]; then
