@@ -260,6 +260,13 @@ void ParseUnicosExchangePacket(const ExchangePacket_c &aCurrentEP, const Exchang
 							aLogger << " , ";
 							PrintStringArrayArg(aLogger, 2, aCurrentEP, Mainframe);
 						break;
+						case 0x9b: // waitpid
+							PrintIntArg(aLogger, 0, aCurrentEp, Mainframe);
+							aLogger << " , ";
+							PrintPtrArg(aLogger, 1, aCurrentEp, Mainframe);
+							aLogger << " , ";
+							PrintIntArg(aLogger, 2, aCurrentEp, Mainframe);
+						break;
 						default:
 							for (uint32_t ArgIdx = 0; ArgIdx < std::min(Entry.ArgCnt, uint32_t(10)); ++ArgIdx) {
 								if (ArgIdx != 0) aLogger << " , ";
