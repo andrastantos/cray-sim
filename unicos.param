@@ -40,8 +40,8 @@ filesystem {
 	RAM ramdev {
 		length 12288 blocks;
 		pdd ram {
-			minor 3; 
-			block 0; 
+			minor 3;
+			block 0;
 			length 12288 blocks;
 		}
 	}
@@ -87,6 +87,20 @@ filesystem {
 			length 781000 sectors;
 		}
 	}
+	disk "core" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 025;
+		}
+		unit 0;
+		pdd core {
+			minor 6;
+			sector 0;
+			length 32768 sectors;
+		}
+	}
 	ldd ram {
 		minor 58;
 		pdd ram;
@@ -102,6 +116,10 @@ filesystem {
 	ldd root {
 		minor 61;
 		pdd root;
+	}
+	ldd core {
+		minor 62;
+		pdd core;
 	}
 /*	rootdev is ldd ram;*/
 	rootdev is ldd root;
