@@ -56,7 +56,7 @@ filesystem {
 		pdd swap {
 			minor 4;
 			sector 0;
-			length 65536 sectors;
+			length 131072 sectors;
 		}
 	}
 	disk "dump" {
@@ -70,7 +70,21 @@ filesystem {
 		pdd dump {
 			minor 5;
 			sector 0;
-			length 32768 sectors;
+			length 131072 sectors;
+		}
+	}
+	disk "core" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 023;
+		}
+		unit 0;
+		pdd core {
+			minor 6;
+			sector 0;
+			length 131072 sectors;
 		}
 	}
 	disk "root" {
@@ -84,10 +98,10 @@ filesystem {
 		pdd root {
 			minor 7;
 			sector 0;
-			length 781000 sectors;
+			length 1048576 sectors;
 		}
 	}
-	disk "core" {
+	disk "tmp" {
 		type DD_U;
 		iopath {
 			cluster 0;
@@ -95,10 +109,10 @@ filesystem {
 			channel 025;
 		}
 		unit 0;
-		pdd core {
-			minor 6;
+		pdd tmp {
+			minor 8;
 			sector 0;
-			length 32768 sectors;
+			length 131072 sectors;
 		}
 	}
 	ldd ram {
@@ -113,13 +127,17 @@ filesystem {
 		minor 60;
 		pdd dump;
 	}
-	ldd root {
+	ldd core {
 		minor 61;
+		pdd core;
+	}
+	ldd root {
+		minor 62;
 		pdd root;
 	}
-	ldd core {
-		minor 62;
-		pdd core;
+	ldd tmp {
+		minor 63;
+		pdd tmp;
 	}
 	rootdev is ldd ram;
 /*	rootdev is ldd root;*/
