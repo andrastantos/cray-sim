@@ -152,12 +152,13 @@ echo "CRAYCHKPNTFILE=/tmp/.blah" >> /sysinfo
 echo "SYS_SERIALNO=$SERIALNO" >> /sysinfo
 echo "SYS_SWSIP=$HOST_IP" >> /sysinfo
 echo "SYS_CRAYIP=$SIM_IP" >> /sysinfo
+#echo "SYS_CRAYHOST=cray" >> /sysinfo
 echo "SYS_ROUTERIP=$ROUTER_IP" >> /sysinfo
 echo "SYS_ROUTERHOST=router" >> /sysinfo
 echo "SYS_IFNAME=en0" >> /sysinfo
 echo "SYS_ROOT_FS=root" >> /sysinfo
-echo "SYS_USR_FS=root" >> /sysinfo
-echo "SYS_SRC_FS=root" >> /sysinfo
+echo "SYS_USR_FS=usr" >> /sysinfo
+echo "SYS_SRC_FS=src" >> /sysinfo
 echo "# Parallel nmakes to run: let's keep things simple and single-threaded" >> /sysinfo
 echo "SYS_NPROC=1" >> /sysinfo
 echo "SYS_CPUS=16" >> /sysinfo
@@ -194,8 +195,8 @@ echo "rcp /CONFIGURATION $LOCAL_LOGIN@$SWSHOST:$SIM_LOC/param"
 rcp /CONFIGURATION $LOCAL_LOGIN@$SWSHOST:$SIM_LOC/param || install_errorexit "Can't send /CONFIGURATION to host"
 echo "done ..."
 
-FILESYSTEMS=root
-MOUNTPOINTS=$SYS_MNT
+FILESYSTEMS=root:usr:src
+MOUNTPOINTS=$SYS_MNT:$SYS_MNT/usr:$SYS_MNT/usr/src
 PACKAGES=UNICOS_Executables
 
 
@@ -276,7 +277,7 @@ cat <<EOT > /rcoptions.patch
 < RC_MKUTMP='ASK'
 ---
 > RC_MKTMP='YES'
-> RC_MKUTMP='NO'
+> RC_MKUTMP='YES'
 74c74
 < RC_TCP='ASK'
 ---
@@ -289,15 +290,18 @@ cat <<EOT > /rcoptions.patch
 > RC_NFS='YES'
 > RC_YP='NO'
 > RC_TAPE='NO'
-126,128c126,128
-< USRDEV='usr'
-< SRCDEV='src'
-< USRTMPDEV='usr_tmp'
----
-> USRDEV=''
-> SRCDEV=''
-> USRTMPDEV=''
 EOT
+# Unfortunately the CRAY-provided install scripts assume these to be real devices.
+# So let's not try to outsmart them and leave them as-is and provide simulated
+# hard drives for each
+#126,128c126,128
+#< USRDEV='usr'
+#< SRCDEV='src'
+#< USRTMPDEV='usr_tmp'
+#---
+#> USRDEV=''
+#> SRCDEV=''
+#> USRTMPDEV=''
 #131c131
 #< TMPDEV='tmp'
 #---

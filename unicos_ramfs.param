@@ -13,8 +13,8 @@ mainframe {
 }
 
 unicos {
-	50 NBUF;
-	50 NPBUF;
+	512 NBUF;
+	512 NPBUF;
 /*	98280 LDCHCORE;*/
 	10 LDCHCORE;
 	500 NLDCH;
@@ -98,10 +98,10 @@ filesystem {
 		pdd root {
 			minor 7;
 			sector 0;
-			length 1048576 sectors;
+			length 262144 sectors;
 		}
 	}
-	disk "tmp" {
+	disk "usr" {
 		type DD_U;
 		iopath {
 			cluster 0;
@@ -109,8 +109,50 @@ filesystem {
 			channel 025;
 		}
 		unit 0;
+		pdd usr {
+			minor 9;
+			sector 0;
+			length 1048576 sectors;
+		}
+	}
+	disk "src" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 026;
+		}
+		unit 0;
+		pdd src {
+			minor 10;
+			sector 0;
+			length 262144 sectors;
+		}
+	}
+	disk "usr_tmp" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 027;
+		}
+		unit 0;
+		pdd usr_tmp {
+			minor 11;
+			sector 0;
+			length 131072 sectors;
+		}
+	}
+	disk "tmp" {
+		type DD_U;
+		iopath {
+			cluster 0;
+			eiop 0;
+			channel 030;
+		}
+		unit 0;
 		pdd tmp {
-			minor 8;
+			minor 12;
 			sector 0;
 			length 131072 sectors;
 		}
@@ -135,8 +177,20 @@ filesystem {
 		minor 62;
 		pdd root;
 	}
-	ldd tmp {
+	ldd usr {
 		minor 63;
+		pdd usr;
+	}
+	ldd src {
+		minor 64;
+		pdd src;
+	}
+	ldd usr_tmp {
+		minor 65;
+		pdd usr_tmp;
+	}
+	ldd tmp {
+		minor 66;
 		pdd tmp;
 	}
 	rootdev is ldd ram;
