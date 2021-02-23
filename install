@@ -109,8 +109,8 @@ do_mingle() {
 	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uni_22.vif $SYS_MNT/ || install_errorexit "Can't get vif file from host"
 	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/uex_11.vif $SYS_MNT/usr/src || install_errorexit "Can't get vif file from host"
 	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/rbf_11.vif $SYS_MNT/usr/src || install_errorexit "Can't get vif file from host"
-	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/unicos.mingle / || install_errorexit "Can't get vif file from host"
-	. ./unicos.mingle
+	rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/$UNICOS_MINGLE / || install_errorexit "Can't get vif file from host"
+	. ./$UNICOS_MINGLE
 	echo "MINGLE DONE" >> $CRAYCHKPNTFILE
 	echo "done"
 }
@@ -128,10 +128,10 @@ do_pstload() {
 	fi
 
 	echo "**** running post-install script ****"
-	if [ ! -f /unicos.pstload ]; then
-		rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/unicos.pstload /unicos.pstload
+	if [ ! -f /$UNICOS_PSTLOAD ]; then
+		rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/$UNICOS_PSTLOAD /
 	fi
-	. ./unicos.pstload
+	. ./$UNICOS_PSTLOAD
 	mount $SYS_MNT || install_errorexit "mount $SYS_MNT failed"
 	echo "PSTLOAD DONE" >> $CRAYCHKPNTFILE
 	echo "done ..."
@@ -140,14 +140,50 @@ do_pstload() {
 
 cd /
 echo "**** generating sysinfo ****"
-rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/sysinfo.default /sysinfo.default || install_errorexit "Can't get sysinfo.default from host"
+# Testing for caseing of install directory as well as retriving sysinfo.default
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/version / || UNICOS_EXE=UNICOS_exe
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/version / || install_errorexit "Can't get sysinfo.default from host"
+VERSION=$(grep UNICOS /version | cut -d' ' -f5)
+echo "INSTALLING UNICOS VERSION $VERSION"
+case "$VERSION" in
+"10.0.0")
+	CITMKFS_PRELOAD=CIT.mkfs.preload
+	CITMNTFS_RELOAD=CIT.mntfs.preload
+	UNICOS_MINGLE=UNICOS.mingle
+	UNICOS_PSTLOAD=UNICOS.pstload
+	INSTALLRULES=Installrules
+;;
+"10.0.0.2")
+	CITMKFS_PRELOAD=CIT.mkfs.preload
+	CITMNTFS_RELOAD=CIT.mntfs.preload
+	UNICOS_MINGLE=UNICOS.mingle
+	UNICOS_PSTLOAD=UNICOS.pstload
+	INSTALLRULES=Installrules
+;;
+"10.0.1.2")
+	CITMKFS_PRELOAD=citmkfs.preload
+	CITMNTFS_RELOAD=citmntfs.preload
+	UNICOS_MINGLE=unicos.mingle
+	UNICOS_PSTLOAD=unicos.pstload
+	INSTALLRULES=installrules
+;;
+*)
+install_errorexit "Unknown UNICOS version"
+esac
+
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/sysinfo.default / || install_errorexit "Can't get sysinfo.default from host"
+
+if [ "$UPPER_CASE" == "yes"]; then
+	UNICOS_EXE=UNICOS_exe
+fi
+
 cp /sysinfo.default /sysinfo
 echo "" >> /sysinfo
 echo "##################################################" >> /sysinfo
 echo "# Local overrides" >> /sysinfo
 echo "##################################################" >> /sysinfo
 echo "SWSHOST=$HOST_IP" >> /sysinfo
-echo "SYS_CDROM=$ISO_MNT/unicos_exe" >> /sysinfo
+echo "SYS_CDROM=$ISO_MNT/$UNICOS_EXE" >> /sysinfo
 echo "CRAYCHKPNTFILE=/tmp/.blah" >> /sysinfo
 echo "SYS_SERIALNO=$SERIALNO" >> /sysinfo
 echo "SYS_SWSIP=$HOST_IP" >> /sysinfo
@@ -181,7 +217,7 @@ echo "en0 - inet $SYS_CRAYIP - netmask $SYS_NETMASK" > /etc/config/interfaces
 echo "done ..."
 
 echo "**** getting installrules ****"
-rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/unicos_exe/installrules /Installrules || install_errorexit "Can't get installrules from host"
+rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/$INSTALLRULES /Installrules || install_errorexit "Can't get installrules from host"
 echo "overriding SYS_IOSV_FILES..."
 echo "" >> /Installrules
 echo "##################################################" >> /Installrules
@@ -205,10 +241,10 @@ PACKAGES=UNICOS_Executables
 umount $SYS_MNT
 mkdir $SYS_MNT
 echo "/dev/dsk/$SYS_ROOT_FS        $SYS_MNT                    NC1FS  rw,CRI_RC="NO"   1      1" > /etc/fstab
-rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmkfs.preload / || install_errorexit "Can't get citmkfs.preload from host"
-rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/citmntfs.preload / || install_errorexit "Can't get citmntfs.preload from host"
-. ./citmkfs.preload
-. ./citmntfs.preload
+rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/$CITMKFS_PRELOAD / || install_errorexit "Can't get citmkfs.preload from host"
+rcp $LOCAL_LOGIN@$SWSHOST:$SYS_CDROM/$CITMNTFS_RELOAD / || install_errorexit "Can't get citmntfs.preload from host"
+. ./$CITMKFS_PRELOAD
+. ./$CITMNTFS_RELOAD
 /etc/mkdmp /dev/dsk/dump
 if [[ ! -e $SYS_MNT/uex_11.gzc ]]; then
     echo "copying uex..."
