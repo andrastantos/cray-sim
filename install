@@ -168,7 +168,8 @@ case "$VERSION" in
 	INSTALLRULES=installrules
 ;;
 *)
-install_errorexit "Unknown UNICOS version"
+	install_errorexit "Unknown UNICOS version"
+;;
 esac
 
 rcp $LOCAL_LOGIN@$HOST_IP:/$ISO_MNT/$UNICOS_EXE/sysinfo.default / || install_errorexit "Can't get sysinfo.default from host"
@@ -280,6 +281,25 @@ echo "!!!! OS install complete, going into post-install configuration... !!!!"
 #cp /CONFIGURATION /etc/config/param
 
 echo "**** patching up kernel ****"
+
+case "$VERSION" in
+"10.0.0")
+cat <<EOT > /mfinits.patch
+79a80
+>           EXT     initcode
+174c175,176
+<             irunlvl,0   s1
+---
+>             a1          initcode
+>             irunlvl,a1  s1
+205c207,208
+<             irunlvl,0  S1               Run level for init
+---
+>             a1         initcode
+>             irunlvl,a1 s1               Run level for init
+EOT
+;;
+*)
 cat <<EOT > /mfinits.patch
 203c203,204
 <             irunlvl,0  S1               Run level for init
@@ -287,6 +307,9 @@ cat <<EOT > /mfinits.patch
 >             a1         initcode
 >             irunlvl,a1 S1               Run level for init
 EOT
+;;
+esac
+
 if [ ! -f $SYS_MNT/usr/src/uts/c1/md/mfinits.s.original ]; then
 	cp $SYS_MNT/usr/src/uts/c1/md/mfinits.s $SYS_MNT/usr/src/uts/c1/md/mfinits.s.original
 else
