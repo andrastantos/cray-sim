@@ -256,6 +256,7 @@ void SimIopPeripheral_c::HandlePacket(std::vector<CInt_t> &aPacket, bool aIosESt
 		case FunctionCodes_e::RD:
 		case FunctionCodes_e::RDHLD:
 		case FunctionCodes_e::RDRD: {
+			int BufferCnt = (Function == FunctionCodes_e::RDRD) ? 2 : 1;
 			uint32_t Addr[2];
 			uint32_t DataLen[2];
 			uint32_t TransferLen[2];
@@ -272,10 +273,10 @@ void SimIopPeripheral_c::HandlePacket(std::vector<CInt_t> &aPacket, bool aIosESt
 			case ChannelNumbers_e::Disk:
 				break;
 			case ChannelNumbers_e::Tape:
-				Read(Addr, DataLen, TransferLen, 2, mTapeFile);
+				Read(Addr, DataLen, TransferLen, BufferCnt, mTapeFile);
 				break;
 			case ChannelNumbers_e::File:
-				Read(Addr, DataLen, TransferLen, 2, mFile);
+				Read(Addr, DataLen, TransferLen, BufferCnt, mFile);
 				break;
 			default:
 				CRAY_ASSERT(false);
@@ -290,6 +291,7 @@ void SimIopPeripheral_c::HandlePacket(std::vector<CInt_t> &aPacket, bool aIosESt
 		case FunctionCodes_e::WR:
 		case FunctionCodes_e::WRHLD:
 		case FunctionCodes_e::WRWR: {
+			int BufferCnt = (Function == FunctionCodes_e::RDRD) ? 2 : 1;
 			uint32_t Addr[2];
 			uint32_t DataLen[2];
 			uint32_t TransferLen[2];
@@ -301,15 +303,15 @@ void SimIopPeripheral_c::HandlePacket(std::vector<CInt_t> &aPacket, bool aIosESt
 			TransferLen[1] = uint32_t(GetBits(aPacket[4], TransferLenReq2Range));
 			switch (ChannelNumber) {
 				case ChannelNumbers_e::Printer:
-					Write(Addr, DataLen, TransferLen, 2, mPrinterFile);
+					Write(Addr, DataLen, TransferLen, BufferCnt, mPrinterFile);
 				break;
 				case ChannelNumbers_e::Disk:
 				break;
 				case ChannelNumbers_e::Tape:
-					Write(Addr, DataLen, TransferLen, 2, mTapeFile);
+					Write(Addr, DataLen, TransferLen, BufferCnt, mTapeFile);
 				break;
 				case ChannelNumbers_e::File:
-					Write(Addr, DataLen, TransferLen, 2, mFile);
+					Write(Addr, DataLen, TransferLen, BufferCnt, mFile);
 				break;
 				default:
 					CRAY_ASSERT(false);

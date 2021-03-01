@@ -416,6 +416,7 @@ public:
 	CREATE_FIELD(CAddr_t,                 YmpReadAddress,        2,        0,      7,     0)
 	CREATE_FIELD(uint8_t,             YmpExchangeAddress,        5,        8,     15,     0)
 	CREATE_FIELD(uint8_t,                YmpVectorLength,        5,       16,     22,     0)
+//	Here the number of bits is actually series dependent. YEL for example has 4 bits, J90 has 6. Leaving as 8 for now as it doesn't seem to cause trouble.
 	CREATE_FIELD(uint8_t,               YmpClusterNumber,        5,       24,     31,     0)
 	CREATE_FIELD(uint8_t,               YmpVectorNotUsed,        6,        0,      0,     0)
 	CREATE_FIELD(uint8_t,               YmpProcessorType,        7,        0,      1,     0)
