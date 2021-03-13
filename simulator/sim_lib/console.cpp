@@ -112,10 +112,10 @@ void Console_c::SendFromQueue() {
 				boost::asio::buffer(Head.mData),
 				boost::bind(&Console_c::WriteHandler, this, boost::asio::placeholders::error)
 				);
-			for (int i = 0; i < 100; ++i) {
-				mIoService.reset();
-				mIoService.poll();
-			}
+			//for (int i = 0; i < 100; ++i) {
+			//	mIoService.reset();
+			//	mIoService.poll();
+			//}
 		}
 		catch (boost::system::system_error &) {
 			CloseSocket();
