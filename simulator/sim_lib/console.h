@@ -82,7 +82,7 @@ enum class TelnetOptions_e : uint8_t {
 class Console_c {
 public:
 	Console_c(const Configuration_c &aConfig, CLogger_c &aLogger, uint16_t aPort, bool aAutoPort, bool aDisableAutoTerminal);
-	virtual ~Console_c() {}
+	virtual ~Console_c();
 	bool HasInput() const;
 	char GetChar();
 	void SendString(std::string &aData);

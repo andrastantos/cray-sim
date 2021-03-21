@@ -69,6 +69,10 @@ Console_c::Console_c(const Configuration_c &aConfig, CLogger_c &aLogger, uint16_
 	mLogFileName = aConfig.get<std::string>("LogFile", "");
 }
 
+Console_c::~Console_c() {
+	Flush();
+}
+
 bool Console_c::HasInput() const { return mReceiveFull; }
 
 char Console_c::GetChar() {
@@ -239,7 +243,7 @@ void Console_c::AcceptHandler(const boost::system::error_code& aError) {
 		SendOptionString(TelnetCodes_e::WONT, TelnetOptions_e::LINEMODE, true);
 //		SendOptionString(TelnetCodes_e::DO, TelnetOptions_e::SGA, true);
 		SendFromQueue();
-		mIoService.poll();
+//		mIoService.poll();
 	}
 	catch (boost::system::system_error &) {
 		CloseSocket();
@@ -395,25 +399,17 @@ void Console_c::ReadHandler(const boost::system::error_code& aError) {
 
 
 void Console_c::WriteHandler(const boost::system::error_code& aError) {
-	const BitRange_s TypeRange(56, 63);
-	const BitRange_s FlagsRange(48, 55);
-	const BitRange_s RequestRange(40, 47);
-	const BitRange_s ResponseRange(32, 39);
-	const BitRange_s CharCountRange(23, 31); // character count
-	const BitRange_s DevRange(16, 22);  // device identification
-	const BitRange_s SeqRange(8, 15); // sequence number of this packet
-	const BitRange_s AckRange(0, 7); // seq. number of last packet received
-
 //	std::cout << "w" << std::flush;
 	if (aError) {
 		CloseSocket();
 		return;
 	}
-	CRAY_ASSERT(!mTransmitQueue.empty());
-	bool DoNotify = mTransmitQueue.front().mDoNotify;
-	mTransmitQueue.pop();
-	SendFromQueue();
-	if (DoNotify) SendHandlerDetail();
+	if (!mTransmitQueue.empty()) {
+		bool DoNotify = mTransmitQueue.front().mDoNotify;
+		mTransmitQueue.pop();
+		SendFromQueue();
+		if (DoNotify) SendHandlerDetail();
+	}
 }
 
 void Console_c::AcceptIfNeeded(bool aSilent) {
