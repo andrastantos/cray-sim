@@ -35,7 +35,7 @@ TapFile_c::State_e TapFile_c::GetState() {
 	}
 	if (!is_open()) return State_e::BeginningOfTape;
 	if (eof()) return State_e::EndOfTape;
-	if (tellg() == streampos(0)) return State_e::BeginningOfTape;
+	if (tellg() == std::streampos(0)) return State_e::BeginningOfTape;
 	if (mCurRecordEof) return State_e::EndOfFile;
 	if (!mCurRecordValid) return State_e::EndOfRecord;
 	if (mCurRecordLeft == 0 && mLastCmdDirection == Direction::Backward) return State_e::EndOfRecord;
@@ -95,7 +95,7 @@ void TapFile_c::SeekToPrevRecord() {
 	// If we're on an EOF record, skip to the end of the previous record
 
 	// BOT case
-	if ((tellg() == streamoff(0))) {
+	if ((tellg() == std::streamoff(0))) {
 		Reset();
 		mCurRecordEof = false;
 		return;
@@ -123,16 +123,16 @@ void TapFile_c::SeekToPrevRecord() {
 	// We're either sitting before an EOF marker or between two data records...
 	mCurRecordEof = false;
 	// Since we don't have a valid record, open the previous record if any
-	if (!(tellg() == streamoff(0))) {
+	if (!(tellg() == std::streamoff(0))) {
 		seekg(-4, ios_base::cur); // Seek back to the end-of-record marker of the previous record
-		//streamoff CurPos = tellg();
+		//std::streamoff CurPos = tellg();
 		if (fail()) throw Generic_x("Can't seek to end of record");
 		uint32_t EndRecordSize;
 		read((char*)(&EndRecordSize), 4);
 		if (fail()) throw Generic_x("Can't read end of record");
 		if (EndRecordSize != 0) {
 			// Previous record is not an EOF marker, so we have to skip the whole record
-			seekg(-streamoff(EndRecordSize + 8), ios_base::cur); // Seek back to the beginning of the record
+			seekg(-std::streamoff(EndRecordSize + 8), ios_base::cur); // Seek back to the beginning of the record
 			if (fail()) throw Generic_x("Can't seek to beginning of record");
 			// Make sure the record size at the beginning matches the end
 			uint32_t RecordSize;
@@ -172,7 +172,7 @@ std::vector<uint8_t> TapFile_c::Read(uint32_t aMaxSize) {
 		if (fail()) throw Generic_x("Can't read beginning of record");
 		// Verify record size
 		if (RecordSize > 0) {
-			streampos CurPos = tellg();
+			std::streampos CurPos = tellg();
 			seekg(RecordSize, ios_base::cur);
 			if (fail()) throw Generic_x("Can't seek to end of record");
 			uint32_t EndRecordSize;
@@ -248,7 +248,7 @@ void TapFile_c::WriteRecordInternal(const std::vector<uint8_t> &aData) {
 					read((char*)&EndDiskRecordSize, 4);
 					if (fail()) throw Generic_x("Can't read end of record");
 					if (DiskRecordSize != EndDiskRecordSize) throw Generic_x("Record size mismatch at end");
-					seekg(-streamoff(DiskRecordSize + 4), ios_base::cur);
+					seekg(-std::streamoff(DiskRecordSize + 4), ios_base::cur);
 					if (fail()) throw Generic_x("Can't seek to beginning of record");
 				}
 				seekg(-4, ios_base::cur);
@@ -273,7 +273,7 @@ void TapFile_c::WriteRecordInternal(const std::vector<uint8_t> &aData) {
 		write((char*)(&RecordSize), 4);
 		if (fail()) throw Generic_x("Can't write end of record to file");
 	}
-	streamoff Pos = tellp();
+	std::streamoff Pos = tellp();
 	// Re-create the proper internal state: the read is positioned at the end of the currenty written record with or without EOF depending on what we just did
 	seekg(Pos, ios_base::beg);
 	seekp(Pos, ios_base::beg);
@@ -309,7 +309,7 @@ void TapFile_c::Reset() {
 
 void TapFile_c::Truncate() {
 	Direction OldDir = mLastCmdDirection;
-	streamoff CurPos = tellg();
+	std::streamoff CurPos = tellg();
 	close();
 	mFileSize.reset();
 	if (CurPos != 0) {
