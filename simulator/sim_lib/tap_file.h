@@ -67,7 +67,7 @@ protected:
 		None
 	} mLastCmdDirection;
 	uint32_t mCurRecordLeft;
-	streamoff mCurRecordStart;
+	std::streamoff mCurRecordStart;
 	bool mCurRecordValid;
 	bool mCurRecordEof;
 	std::string mFileName;
