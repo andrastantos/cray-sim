@@ -69,6 +69,10 @@ Console_c::Console_c(const Configuration_c &aConfig, CLogger_c &aLogger, uint16_
 	mLogFileName = aConfig.get<std::string>("LogFile", "");
 }
 
+Console_c::~Console_c() {
+	Flush();
+}
+
 bool Console_c::HasInput() const { return mReceiveFull; }
 
 char Console_c::GetChar() {
