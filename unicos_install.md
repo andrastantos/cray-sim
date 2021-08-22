@@ -158,13 +158,13 @@ At this point, you are ready to start the simulator in full OS mode. There is a 
 
 	./unicos
 
-This should bring up the same simulator window, but now boot UNICOS, using the newly created kernel and root filesystem. It should also boot into multi-user mode (init level 2) by deafult. The boot process `fscks` the root filesystem several times, it might even find some inconsistencies, but should run to completion without user interaction needed. When it’s all said and done, you should be greeted by a login prompt. Here you can log in either as root or the user you've created during the installation process.
+This should bring up the same simulator window, but now boot UNICOS, using the newly created kernel and root filesystem. It should also boot into multi-user mode (init level 2) by default. The boot process `fscks` the root filesystem several times, it might even find some inconsistencies, but should run to completion without user interaction needed. When it’s all said and done, you should be greeted by a login prompt. Here you can log in either as root or the user you've created during the installation process.
 
 Congratulations, you've finished installing UNICOS!
 
 # Goodies
 
-The system you've just installed is not the most user-friendly out of the box. It lacks many utilities you might gotten used to and the configuration of it might not be what you like. There are a few utilities pre-compiled for UNICOS-10 that you might find useful, under the unicos_tools directory.
+The system you've just installed is not the most user-friendly out of the box. It lacks many utilities you might gotten used to and the configuration of it might not be what you like. There are a few utilities pre-compiled for UNICOS-10 that you might find useful, under the `unicos_tools` directory.
 
 To install these, rcp them over to UNICOS (as root):
 
@@ -182,7 +182,7 @@ You can get `lynx`, a text-based web-browser and `wget` a similar way. *Note*: T
 
 # System configuration
 
-There is extensive documentation out there on UNICOS, and your installation also comes with a huge number of man pages. This document doesn't inspire to be an authorotive source on how to configure or use your new-fangled installation. Here are a few general tips and hints:
+There is extensive documentation out there on UNICOS, and your installation also comes with a huge number of man pages. This document doesn't inspire to be an authoritative source on how to configure or use your new-fangled installation. Here are a few general tips and hints:
 
 - As usual with UNIX systems, `/etc` is where you'll find the configuration files.
 - As unusual with at least LINUX systems `/etc` is also home to a lot of binary utilities, so adding it to your `$PATH` is probably wise.
