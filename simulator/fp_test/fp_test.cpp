@@ -542,7 +542,7 @@ void SearchSettings() {
 	TestResult_s BestResult;
 	size_t BestStep0Precision;
 	size_t BestStep1Precision;
-	size_t BestStep2Precision;
+	size_t BestStep2Precision = 0;
 	uint64_t BestStep1CorrectionFactor = 0;
 	uint64_t BestStep2CorrectionFactor = 0;
 
