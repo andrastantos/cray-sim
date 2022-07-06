@@ -11,6 +11,7 @@
 #ifndef HTTP_REPLY_HPP
 #define HTTP_REPLY_HPP
 
+#include <map>
 #include <string>
 #include <vector>
 #include <boost/asio.hpp>
