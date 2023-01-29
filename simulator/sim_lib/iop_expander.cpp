@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <time.h>
 #include <boost/date_time/gregorian/gregorian.hpp>
-#include <boost/bind.hpp>
+//#include <boost/bind.hpp>
 #include "commands.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////

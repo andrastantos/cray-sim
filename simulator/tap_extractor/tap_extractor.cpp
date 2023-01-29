@@ -167,7 +167,8 @@ int main(int argc, const char* argv[])
 	}
 	if (OutputBaseFileName.length() == 0) {
 		//Figure out base-name from input
-		OutputBaseFileName = boost::filesystem::basename(InFileName);
+		boost::filesystem::path Path(InFileName);
+		OutputBaseFileName = Path.stem().string();
 	}
 
 	errno = 0;

@@ -11,6 +11,7 @@
 
 #include <config.h>
 
+#include <boost/algorithm/string/predicate.hpp>
 
 #include <winioctl.h>
 #include <iphlpapi.h>
@@ -415,8 +416,11 @@ std::vector<TapAdapter_c> EnumTaps() {
 		if (
 			(RetVal != ERROR_SUCCESS) ||
 			(Type != REG_SZ) ||
-			(strcmp(Entry, TAP_COMPONENT_ID1) != 0 && strcmp(Entry, TAP_COMPONENT_ID2) != 0)
-			) {
+			(
+				!boost::algorithm::ends_with(std::string(Entry), std::string(TAP_COMPONENT_ID1)) &&
+				!boost::algorithm::ends_with(std::string(Entry), std::string(TAP_COMPONENT_ID2))
+			)
+		) {
 			continue;
 		}
 

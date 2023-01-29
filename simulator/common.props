@@ -26,7 +26,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Label="UserMacros">
-    <BOOSTVER Condition="'$(BOOSTVER)'==''">1_75</BOOSTVER>
+    <BOOSTVER Condition="'$(BOOSTVER)'==''">1_81</BOOSTVER>
     <BASEDIR Condition="'$(BASEDIR)'==''">..</BASEDIR>
     <LIBDIR Condition="'$(LIBDIR)'==''">$(BASEDIR)\_lib\msvc_$(Platform)_$(Configuration)\$(TargetName)\</LIBDIR>
     <BINDIR Condition="'$(BINDIR)'==''">$(BASEDIR)\_bin\msvc_$(Platform)_$(Configuration)\$(TargetName)\</BINDIR>
