@@ -49,3 +49,4 @@ mfsysdmp
 grsysdmp
 ram_fs
 **/.vs/*
+*.user
