@@ -161,11 +161,11 @@ case "$VERSION" in
 	INSTALLRULES=Installrules
 ;;
 "10.0.1.2")
-	CITMKFS_PRELOAD=citmkfs.preload
-	CITMNTFS_RELOAD=citmntfs.preload
-	UNICOS_MINGLE=unicos.mingle
-	UNICOS_PSTLOAD=unicos.pstload
-	INSTALLRULES=installrules
+	CITMKFS_PRELOAD=CIT.mkfs.preload
+	CITMNTFS_RELOAD=CIT.mntfs.preload
+	UNICOS_MINGLE=UNICOS.mingle
+	UNICOS_PSTLOAD=UNICOS.pstload
+	INSTALLRULES=Installrules
 ;;
 *)
 	install_errorexit "Unknown UNICOS version"
