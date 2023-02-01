@@ -169,6 +169,7 @@ std::string WriteTest(const std::string &aPrefix, const CInt_t &aA, const CInt_t
 		Result = aOperation(CFloat_t(aA), CFloat_t(aB));
 	}
 	catch (std::exception &) {
+		Result.Value = 0xdeadbeef;
 		Overflow = true;
 	}
 	RetVal << "____" << (Overflow ? "1" : "0") << "_" << std::noshowbase << std::uppercase << std::hex << std::setw(16) << std::setfill('0') << Result.Value;
@@ -188,6 +189,7 @@ std::string WriteTest(const std::string &aPrefix, const CInt_t &aA, CFloat_t(*aO
 		Result = aOperation(CFloat_t(aA));
 	}
 	catch (std::exception &) {
+		Result.Value = 0xdeadbeef;
 		Overflow = true;
 	}
 	RetVal << "____" << std::noshowbase << std::uppercase << std::hex << std::setw(16) << std::setfill('0') << Result.Value;
@@ -540,8 +542,8 @@ TestResult_s TestSettings(size_t aStep0Precision, size_t aStep1Precision, size_t
 
 void SearchSettings() {
 	TestResult_s BestResult;
-	size_t BestStep0Precision;
-	size_t BestStep1Precision;
+	size_t BestStep0Precision = 0xdeadbeef;
+	size_t BestStep1Precision = 0xdeadbeef;
 	size_t BestStep2Precision = 0;
 	uint64_t BestStep1CorrectionFactor = 0;
 	uint64_t BestStep2CorrectionFactor = 0;

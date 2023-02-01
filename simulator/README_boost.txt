@@ -76,16 +76,19 @@ you need to do additional changes:
 == MinGW
 ===============================================================================
 
-Use MinGW distro from http://nuwen.net/mingw.html. That way you don't have to do 
-anything, you are ready to go.
+For MinGW the easiest route is to use the mSYS2 environment from https://www.msys2.org/.
 
-If you are using a stock MinGW installation, you'll have to build boost yourself.
+Use 'pacman' to install boost matching your toolchain. An example would be:
+
+  pacman -S ucrt64/mingw-w64-ucrt-x86_64-boost
+
+or
+
+  pacman -S mingw64/mingw-w64-x86_64-boost
 
 ===============================================================================
 == Cygwin
 ===============================================================================
 
-As of this writing, Cygwin is broken. Theoretically, all you have to select all 
-the boost libraries in the cygwin setup. 
-See http://comments.gmane.org/gmane.os.cygwin/158779 for what's wrong with the
-current packages.
+Cygwin comes with boost packages (boost-devel). Install them and you should be
+good to go.

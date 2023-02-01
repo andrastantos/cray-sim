@@ -93,7 +93,8 @@ ifndef REMOVE
 REMOVE = del
 endif
 #ifndef MKDIR
-MKDIR = mkdir $(subst /,\,$(1))
+# MKDIR = mkdir $(subst /,\,$(1))
+MKDIR = mkdir -p $(1)
 #endif
 endif
 
@@ -149,6 +150,11 @@ define static_lib
 	$(1)
 endef
 endif
+ifeq ($(SYSTEM),mingw)
+define static_lib
+	:lib$(strip $(1))-mt.a
+endef
+endif
 
 #################################################################################
 ### Setting up some common libraries
@@ -171,6 +177,7 @@ COMMON_LIBS += stdc++
 ifeq ("$(SYSTEM)","mingw")
 COMMON_LIBS += wsock32
 COMMON_LIBS += ws2_32
+COMMON_LIBS += Bcrypt
 endif
 ifeq ($(SYSTEM),linux)
 NCURSES_LIBS += $(call static_lib, ncurses)

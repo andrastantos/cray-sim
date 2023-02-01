@@ -45,7 +45,7 @@ void SetThreadAffinity(std::thread &aThread, size_t aCpuId) {
 	CRAY_ASSERT(aCpuId < std::thread::hardware_concurrency());
 	CRAY_ASSERT(aCpuId < (sizeof(DWORD_PTR) *8));
 	DWORD_PTR CpuMask = DWORD_PTR(1) << aCpuId;
-	DWORD_PTR RetVal = SetThreadAffinityMask(aThread.native_handle(), CpuMask);
+	DWORD_PTR RetVal = SetThreadAffinityMask((HANDLE)aThread.native_handle(), CpuMask);
 	if (RetVal == 0) throw Generic_x() << "Error calling SetThreadAffinityMask: " << HexPrinter(GetLastError());
 }
 
