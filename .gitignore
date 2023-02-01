@@ -50,3 +50,4 @@ grsysdmp
 ram_fs
 **/.vs/*
 *.user
+unicos.generic
