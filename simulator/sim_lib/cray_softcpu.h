@@ -36,6 +36,15 @@
 #error CRAY_UNIMPLEMENTED is already defined
 #endif
 
+#define CRAY_UNKNOWN_PASS 1
+
+#ifdef CRAY_UNKNOWN_PASS
+
+#define CRAY_UNKNOWN return 1;
+#define CRAY_UNIMPLEMENTED return 1;
+
+#else
+
 #define CRAY_UNKNOWN throw UnknownInstError_x(__FILE__,__LINE__);
 
 #define CRAY_UNIMPLEMENTED                                       \
@@ -48,6 +57,8 @@
 		}														 \
 		return 1;                                                \
 	} while (false);
+
+#endif
 
 
 inline size_t FirstParcel(uint64_t aInst) { return size_t((aInst >> 32) & 0xffff); }
