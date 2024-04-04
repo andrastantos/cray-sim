@@ -36,14 +36,21 @@
 #error CRAY_UNIMPLEMENTED is already defined
 #endif
 
-#define CRAY_UNKNOWN throw UnknownInstError_x(__FILE__,__LINE__);
+#define CRAY_UNKNOWN                                          \
+	do {                                                      \
+		if (mThrowOnUnknown) {                                \
+			throw UnknownInstError_x(__FILE__,__LINE__);      \
+		} else {                                              \
+			return 1;                                         \
+		}                                                     \
+	} while (false);
 
 #define CRAY_UNIMPLEMENTED                                       \
 	do {														 \
 		if (!aDoExecute) {										 \
 			aDisassembly << "*** UNK ***";						 \
 		}														 \
-		if (aDoExecute) {										 \
+		if (aDoExecute && mThrowOnUnimplemented) {				 \
 			throw InstUnimplementedError_x(__FILE__,__LINE__);	 \
 		}														 \
 		return 1;                                                \
@@ -208,6 +215,8 @@ protected:
 	};
 	std::vector<MemoryPoke_s> mMemoryPokes;
 	uint32_t mTimerIncrement;
+	bool mThrowOnUnknown;
+	bool mThrowOnUnimplemented;
 	void SetCluster(uint8_t aCluster) {
 		if (mState.Cluster != aCluster) {
 			if (mState.Cluster != 0) {
@@ -411,7 +420,7 @@ protected:
 			InstBaseAddr = 0;
 			InstLimitAddr = 0;
 			DataBaseAddr = 0;
-			DataLimitAddr = 0;			
+			DataLimitAddr = 0;
 			//Mode;
 			//Flags;
 			PeriodicInterruptLimit = 0;

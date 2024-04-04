@@ -15,17 +15,17 @@ be a full sub-hierarchy enclosed in { and } characters.
 The hierarchy of the file closely follows the class-herarchy in the simulator,
 each major class having its own configuration section.
 
-The names and values are separated by white-space characters (space, tab, 
+The names and values are separated by white-space characters (space, tab,
 new-line etc.). There's no special separator between names and values, the role
 of each word is simply determined by it's position. Apart from the hierarchy,
-each odd word is a name and each even one is a value. Because of this, be 
+each odd word is a name and each even one is a value. Because of this, be
 careful when editing the file: a misplaced word can skew the parsing of the rest
 of the file
 
 To include values with spaces in them, they can be quoted using " characters.
 
-Comments can be included, using the ; character: this starts a single-line 
-comment that terminates at the end of the line obviously. There's no 
+Comments can be included, using the ; character: this starts a single-line
+comment that terminates at the end of the line obviously. There's no
 block-comment facility.
 
 Parsing of the configuration file is rather loose: if the simulator encounters
@@ -126,10 +126,10 @@ Global parameters
 ================================================================================
 
 WindowWidth: optional integer
-	If specified, sets the width of the main window (only applied if 
+	If specified, sets the width of the main window (only applied if
 	WindowHeight is specified as well)
 WindowHeight: optional integer
-	If specified, sets the height of the main window (only applied if 
+	If specified, sets the height of the main window (only applied if
 	WindowWidth is specified as well)
 ConsoleHeight: optinal integer
 	If specified, sets the height of the console window. Defaults to 10.
@@ -147,7 +147,7 @@ RealTimeClockIncrement: optional integer
 	How much faster the real-time clock runs compared to simulated clock cycles.
 	Defaults to 1000.
 ProcessorAsyncLimit: optional integer
-	How many clock-cycles processors or IOPs can get out of sync with each 
+	How many clock-cycles processors or IOPs can get out of sync with each
 	other in a multi-threaded simulation. Defaults to 10000.
 CpuIopScale: optional integer
 	Scaling of IOP clock cycles before they are compared to mainframe processors
@@ -158,15 +158,15 @@ CpuMemorySize: optional integer
 BufferMemorySize: optional integer
 	IOP buffer memory size in 64-bit words. Defaults to 8388608, which is 8M.
 ImageFiles: optional sub-hierarchy
-	A list of files to be loaded into mainframe memory. Each entry is in the 
+	A list of files to be loaded into mainframe memory. Each entry is in the
 	form of: <load address> <file name>. Load address is specified in
 	64-bit quantities
 BufferImageFiles: optional sub-hierarchy
-	A list of files to be loaded into IOP buffer memory. Each entry is in the 
-	form of: <load address> <file name>. Load address is specified in 
+	A list of files to be loaded into IOP buffer memory. Each entry is in the
+	form of: <load address> <file name>. Load address is specified in
 	64-bit quantities
 ClusterCount: optional integer
-	Number of clusters in the mainframe. Defaults to 5. The number of clusters 
+	Number of clusters in the mainframe. Defaults to 5. The number of clusters
 	depends on the simulated machine: for an XMP-1x or XMP-2x machine, it should
 	be 3. For XMP-4x machines, set it to 5.
 StartupCpuIdx: optional integer
@@ -174,10 +174,10 @@ StartupCpuIdx: optional integer
 StartupIopIdx: optional integer
 	The index of the IOP to start first. Defaults to 0.
 MemoryDumpFile: optional string
-	If set, specifies the mainframe memory dump file. The contents of the 
+	If set, specifies the mainframe memory dump file. The contents of the
 	mainframe memory is dumped into this file when simulation terminates
 BufferMemoryDumpFile: optional string
-	If set, specifies the IOP buffer memory dump file. The contents of the IOP 
+	If set, specifies the IOP buffer memory dump file. The contents of the IOP
 	buffer memory is dumped into this file when simulation terminates
 OsType: optional string
 	If set, specifies the way exchange packets get interpreted for logging.
@@ -186,7 +186,7 @@ OsType: optional string
 	- None: no interpretation
 	- COS: interpret exchange packets for COS system calls
 	- UNICOS: interpret exchange packets for UNICOS system calls
-	
+
 ================================================================================
 Cpus
 ================================================================================
@@ -204,11 +204,15 @@ TimerIncrement: optional integer
 	simulated clock-cycle. The default value is 10, which makes the simulated
 	real-time clock 10x faster then the original HW one would be.
 MemoryPokes: list of address-value pairs
-	This list contains a set of values that are going to be written into 
+	This list contains a set of values that are going to be written into
 	mainframe memory whenever the particular processor is released from reset.
 	Address can be either a 64-bit word address (like 0x425432) or a 16-bit
 	parcel address (like 0x42346:p2). For word addresses, the value is a 64-bit
 	integer, for parcel-address the value is a 16-bit integer
+ThrowOnUnknown: optional boolean
+	If set, unknown instructions won't throw an assert. If cleared they are treated as no-ops. Defaults to set.
+ThrowOnUnimplemented: optional boolean
+	If set, unimplemented instructions won't throw an assert. If cleared they are treated as no-ops. Defaults to set.
 
 ================================================================================
 BreakPoints
@@ -224,7 +228,7 @@ breakpoint can be specified such: 0x345f:p2 { Type: Dump }
 
 For CPU break points, the address is specified in parcel address format
 (ex. 0x536:p2). The type of the breakpoint is specified using the 'Type'
-parameter. 
+parameter.
 
 For mainframe breakpoints support the following qualifiers:
 	AbsoluteAddr	  when specified, denotes the absolute address for the breakpoint.
@@ -248,7 +252,7 @@ Type: string
 	LogOff	  when fires, sets log level to 'none' on the CPU that triggered
 			  the breakpoint
 	LogLevel	  when fires, sets the log level to the defined level on the CPU
-			  that triggered the breakpoint. The new log level is set using 
+			  that triggered the breakpoint. The new log level is set using
 			  the 'Level' parameter
 	LogLevelPush  When fires, sets the log level to the defined level as well as
 			  push the current log level into the log level stack on the CPU
@@ -328,7 +332,7 @@ are 16-bit quantities as well.
 
 Buffer memory pokes are executed right at the beginning of the simulation after
 the memory it is initialized from the files listed in BufferImageFiles.
-	
+
 ================================================================================
 Iops
 ================================================================================
@@ -426,7 +430,7 @@ HIA/HOA
 These channels implement high-speed data transfers between the IOP and the
 mainframe memory. They are DMA controllers in modern terms. The only
 configurable parameter for them is their channel index:
-	
+
 ChannelIdx - integer
 	Sets the IOP channel this peripheral connects to
 
@@ -628,7 +632,7 @@ DelayLimit - optional integer
 	delay counter is a test operation in the BMX channel hardware.
 	Default value is 10.
 DeviceCount - optional integer
-	Maximum number of devices that can be connected to this BMX channel. 
+	Maximum number of devices that can be connected to this BMX channel.
 	Default value is 255
 
 For each tape device the following parameters are valid:
@@ -702,7 +706,7 @@ breakpoint can be specified such: 0x345f { Type: Dump }
 For IOP break points, the address is specified in 16-bit address format
 (ex. 0x5362) as these processors used a simple 16-bit instruction set and
 address bus width. The type of the breakpoint is specified using the 'Type'
-parameter. 
+parameter.
 
 Type - string
 	Trace		  when fires, puts the specified message into the log file
@@ -717,7 +721,7 @@ Type - string
 	LogOff	  when fires, sets log level to 'none' on the CPU that triggered
 			  the breakpoint
 	LogLevel	  when fires, sets the log level to the defined level on the CPU
-			  that triggered the breakpoint. The new log level is set using 
+			  that triggered the breakpoint. The new log level is set using
 			  the 'Level' parameter
 	LogLevelPush  When fires, sets the log level to the defined level as well as
 			  push the current log level into the log level stack on the CPU

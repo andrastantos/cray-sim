@@ -31,7 +31,7 @@
 //////////////////////////////////////
 SoftCpu_c::SoftCpu_c(const Configuration_c &aConfig, const Configuration_c &aDefaultConfig, Mainframe_c &aMainframe, Mainframe_c::BreakPoints_t &aBreakPoints, size_t aCpuId):
 	Cpu_c(aConfig, aMainframe, aCpuId),
-	mInstCnt(0), 
+	mInstCnt(0),
 	mLastInstCnt(0),
 	mInReset(true),
 	mBreakPoints(aBreakPoints),
@@ -91,13 +91,16 @@ SoftCpu_c::SoftCpu_c(const Configuration_c &aConfig, const Configuration_c &aDef
 		}
 	}
 	mTimerIncrement = aConfig.get("TimerIncrement", aDefaultConfig.get("TimerIncrement", 1000));
+	mThrowOnUnknown = aConfig.get("ThrowOnUnknown", aDefaultConfig.get("ThrowOnUnknown", true));
+	mThrowOnUnimplemented = aConfig.get("ThrowOnUnimplemented", aDefaultConfig.get("ThrowOnUnimplemented", true));
+
 	if (mTimerIncrement == 0) mTimerIncrement = 1;
 	InitNotIntFlags();
 }
 
 SoftCpu_c::SoftCpu_c(Mainframe_c &aMainframe):
 	Cpu_c(aMainframe),
-	mInstCnt(0), 
+	mInstCnt(0),
 	mLastInstCnt(0),
 	mInReset(true),
 	mCycleCount(0)
@@ -194,14 +197,14 @@ ExchangePacket_c SoftCpu_c::CreateExchangePacket() {
 		FiringInterupts &
 		(
 			Flags_c::IoInterrupt |
-			Flags_c::InterProcessorInterrupt | 
-			Flags_c::Deadlock | 
-			Flags_c::McuInterrupt | 
-			Flags_c::FloatingPointError | 
-			Flags_c::OperandRangeError | 
-			Flags_c::ProgramRangeError | 
-			Flags_c::MemoryError | 
-			Flags_c::NormalExit | 
+			Flags_c::InterProcessorInterrupt |
+			Flags_c::Deadlock |
+			Flags_c::McuInterrupt |
+			Flags_c::FloatingPointError |
+			Flags_c::OperandRangeError |
+			Flags_c::ProgramRangeError |
+			Flags_c::MemoryError |
+			Flags_c::NormalExit |
 			Flags_c::ErrorExit
 		)
 	);
@@ -375,7 +378,7 @@ void SoftCpu_c::HandleCounters() {
 		mState.PeriodicInterruptCountDown -= mTimerIncrement;
 	}
 }
-	
+
 CInt_t SoftCpu_c::GetSR(size_t aSrIdx) {
 	CInt_t RetVal = 0;
 	switch (aSrIdx) {
@@ -418,8 +421,8 @@ CInt_t SoftCpu_c::ReadDataMem(CAddr_t aAddr) {
 			std::stringstream ErrorStr;
 			ErrorStr <<
 				"FAILED mem read " << DataSymbol(mState.DataBaseAddr, aAddr) << " (" << HexPrinter(PhysicalAddress) << ")" <<
-				" limit: " << HexPrinter(mState.DataLimitAddr) << 
-				" P: " << InstAddr(mState.ProgramAddress) << " (" << InstAddr(PhysicalInstAddress) << ")" << 
+				" limit: " << HexPrinter(mState.DataLimitAddr) <<
+				" P: " << InstAddr(mState.ProgramAddress) << " (" << InstAddr(PhysicalInstAddress) << ")" <<
 				std::endl;
 			mLogger << setloglevel(LogLevel_Error) << ErrorStr.str() << std::endl;
 			mMainframe.GetEventDispatcher().Fire(ErrorStr.str());
