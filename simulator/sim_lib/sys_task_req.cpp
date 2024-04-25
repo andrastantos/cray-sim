@@ -379,7 +379,7 @@ void ParseCosExchangePacket(const ExchangePacket_c &aExchangePacket, std::ostrea
 				aLogger << Event.str() << std::endl;
 				aMainframe.GetEventDispatcher().Fire(Event.str());
 			} break;
-			case 014: { // Ready system task and self-syspend
+			case 014: { // Ready system task and self-suspend
 				bool T = bool(GetBitsReverse(S[7],0,0) != 0);
 				std::stringstream Event;
 				Event << "SYS_TASK_REQ - READY_SYSTEM_TASK_AND-SELF_SUSPEND (RTSS) - T: " << (T ? "yes":"no") << " - S1: " << HexPrinter(S[1]) << " - S2: " << HexPrinter(S[2]) << " - TASK: " << OctPrinter(S[6]);
