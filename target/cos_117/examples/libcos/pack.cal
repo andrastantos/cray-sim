@@ -1,0 +1,54 @@
+         TITLE     'PACK'
+         SUBTITLE  'Pack character strings'
+         IDENT     PACK
+         COMMENT   'PACK - Pack character strings'
+
+PACK     SECTION   MIXED
+
+**
+*  $PACK - pack a character string
+*
+*  Entry:
+*    (A1) address of unpacked source characters
+*    (A2) address of buffer for packed characters
+*    (A3) number of characters to pack
+*
+*  Exit:
+*    (A2) address of last packed word stored
+*
+*  Uses:
+*    A4, A5
+*    S1, S7
+*
+         ENTRY     $PACK
+$PACK    SUBR
+         A0        A3
+         JAZ       $PAC4          ; if no characters to pack
+         A5        8              ; decrement for shift count
+
+$PAC1    S7        0              ; initialize next packed word
+         A4        56             ; initial shift count for empty word
+
+$PAC2    S1        ,A1            ; pack next character
+         S1        S1<A4
+         S7        S7!S1
+         A3        A3-1           ; decrement character count
+         A0        A3
+         JAZ       $PAC3          ; if done
+         A1        A1+1           ; advance source address
+         A4        A4-A5          ; update shift count for next character
+         A0        A4
+         JAP       $PAC2          ; if destination word not full
+         ,A2       S7             ; store packed word
+         A2        A2+1           ; advance destination address
+         J         $PAC1
+
+$PAC3    ,A2       S7             ; store final word
+
+$PAC4    =         *
+
+$PACK    RETURN
+
+         SECTION   *
+
+         END

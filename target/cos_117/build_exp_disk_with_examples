@@ -1,0 +1,67 @@
+#!/bin/sh
+PATH=$PATH:../../simulator/_bin/cygwin_release:../../simulator/_bin/linux_release:../../bin
+
+mkdir _obj
+
+make -C examples
+
+ds_edit c -aa disk_content/station/jdiaggo_0.txt  -aa disk_content/station/jdiaggo_1.txt    -o _obj/jdiaggo.job
+ds_edit c -aa disk_content/station/jflush.txt                                               -o _obj/jflush.job
+ds_edit c -aa disk_content/station/jgencat_0.txt  -aa disk_content/station/jgencat_1.txt    -o _obj/jgencat.job
+ds_edit c -aa disk_content/station/jinstall_0.txt -aa disk_content/station/jinstall_1.txt -aa disk_content/station/jinstall_2.txt -aa disk_content/station/jinstall_3.txt   -o _obj/jinstall.job
+ds_edit c -aa disk_content/station/jsysdir.txt                                              -o _obj/jsysdir.job
+ds_edit c -aa disk_content/station/jtest30.txt                                              -o _obj/jtest30.job
+ds_edit c -aa disk_content/station/recall_0.txt   -aa disk_content/station/recall_1.txt     -o _obj/recall.job
+
+ds_edit c -a  disk_content/bin/audit.bin    -o _obj/audit.ds
+ds_edit c -a  disk_content/bin/dmp10.bin    -o _obj/dmp10.ds
+ds_edit c -a  disk_content/bin/gencat.bin   -o _obj/gencat.ds
+ds_edit c -a  disk_content/bin/jcsdef.bin   -o _obj/jcsdef.ds
+ds_edit c -a  disk_content/bin/loadcat.bin  -o _obj/loadcat.ds
+ds_edit c -a  disk_content/bin/pld10.bin    -o _obj/pld10.ds
+ds_edit c -a  disk_content/bin/prvdef.bin   -o _obj/prvdef.ds
+ds_edit c -a  disk_content/bin/tedi.bin     -o _obj/tedi.ds
+ds_edit c -a  disk_content/bin/acctdef.bin  -o _obj/acctdef.ds
+ds_edit c -a  disk_content/bin/recio.bin    -o _obj/recio.ds
+ds_edit c -a  disk_content/bin/reload.bin   -o _obj/reload.ds
+cp disk_content/bin/recall.ds _obj/recall.ds
+
+exp_disk_create \
+-l IOS \
+-fixed 0 diskboot.bin \
+-fixed 1 dmp.bin \
+-d STATION \
+-f IOPKERNEL iop_kern.bin \
+-f COS_117 disk_content/station/cos_117_2_hdr.bin \
+-f COS_117_1 disk_content/station/cos_117_1_hdr.bin \
+-f COS_117_2 disk_content/station/cos_117_2_hdr.bin \
+-f JDIAGGO _obj/jdiaggo.job \
+-f JFLUSH _obj/jflush.job \
+-f JGENCAT _obj/jgencat.job \
+-f JINSTALL _obj/jinstall.job \
+-f JSYSDIR _obj/jsysdir.job \
+-f JTEST30 _obj/jtest30.job \
+-f RECALL _obj/recall.job \
+-f DEADSTART disk_content/station/deadstart.param \
+-f RESTART disk_content/station/restart.param \
+-f INSTALL disk_content/station/install.param \
+-f MINSTALL disk_content/station/install_mini.param \
+-d MARK \
+-f $ACCOUNT disk_content/mark/account.ds \
+-f $BULLETIN disk_content/mark/bulletin.ds \
+-f $VALIDATION disk_content/mark/validation.ds \
+-d BIN \
+-f $ACCTDEF _obj/acctdef.ds \
+-f AUDIT _obj/audit.ds \
+-f DMP10 _obj/dmp10.ds \
+-f GENCAT _obj/gencat.ds \
+-f JCSDEF _obj/jcsdef.ds \
+-f LOADCAT _obj/loadcat.ds \
+-f PLD10 _obj/pld10.ds \
+-f PRVDEF _obj/prvdef.ds \
+-f RECALL _obj/recall.ds \
+-f RECIO _obj/recio.ds \
+-f RELOAD _obj/reload.ds \
+-f TEDI _obj/tedi.ds \
+-f HELLOA examples/_bin/helloa.bin \
+-o ../../exp_disk.img

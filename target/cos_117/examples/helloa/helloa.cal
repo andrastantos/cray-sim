@@ -1,0 +1,18 @@
+; Hello world in CRAY assembly.
+; Lifted from Kevin Jordans COS-tools
+;     https://github.com/kej715/COS-Tools
+
+         TITLE     'Hello'
+         SUBTITLE  'Simple *Hello World* program'
+         IDENT     HELLO
+         COMMENT   'HELLO - A simple *Hello World* program'
+         ENTRY     HELLO
+         START     HELLO
+
+HELLO    S0        O'004          ; F$MSG
+         S1        ='Hello world!'Z
+         S2        O'17           ; CLASS=1, OR=1, FC=3
+         EX
+         ENDP
+
+         END

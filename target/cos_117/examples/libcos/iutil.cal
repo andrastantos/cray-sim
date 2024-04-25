@@ -1,0 +1,182 @@
+         TITLE     'IUTIL'
+         SUBTITLE  'Miscellaneous integer utility functions'
+         IDENT     IUTIL
+         COMMENT   'UTIL - Miscellaneous integer utility functions'
+
+IUTIL    SECTION   MIXED
+
+**
+*  $D2I@24 - decimal to integer
+*
+*  Entry:
+*    (S1) decimal value to be converted (left justified, range 0..16777215)
+*
+*  Exit:
+*    (S7) result
+*
+*  Uses:
+*    A2, A6, A7
+*    S1, S2
+*
+         ENTRY     $D2I@24
+$D2I@24  SUBR
+         A1        0              ; initialize result
+         A2        56             ; initial shift count
+         S2        <8             ; digit mask
+         S3        '0'R
+$D2I1    S4        S1             ; isolate next digit
+         S4        S4>A2
+         S4        S4&S2
+         S0        S4
+         JSZ       $D2I2          ; if done
+         A3        8              ; calculate shift count for next digit
+         A2        A2-A3
+         S4        S4-S3          ; digit to binary
+         A3        10             ; accumulate next digit
+         A4        S4
+         A1        A1*A3
+         A1        A1+A4
+         J         $D2I1
+
+$D2I2    S7        A1
+$D2I@24  RETURN
+
+
+**
+*  $DV10@24 - 24-bit integer divide by 10
+*
+*  Entry:
+*    (A1) value to be divided by 10
+*
+*  Exit:
+*    (A6) integer quotient
+*    (A7) integer remainder
+*
+*  Uses:
+*    A2
+*    S1, S2, S3
+*
+         ENTRY     $DV10@24
+$DV10@24 S1        +FA1           ; argument to normalized floating point
+         S1        +FS1
+         A2        10             ; generate 1/10
+         S2        +FA2
+         S2        +FS2
+         S2        /HS2
+         S1        S1*HS2         ; rounded half-precision multiply
+         S2        S1             ; extract and unbias exponent
+         S3        <15
+         S2        S2>48
+         S2        S2&S3
+         S3        O'40060
+         S3        S3-S2
+         A2        S3             ; shift count for coefficient
+         S2        <48
+         S1        S1&S2          ; extract and shift coefficient
+         S1        S1>A2
+         A6        S1             ; integer quotient
+         A2        10
+         A2        A6*A2
+         A7        A1-A2          ; integer remainder
+         J         B00
+
+**
+*  $I2D@24 - 24-bit integer to decimal
+*
+*  The result is left-justified in a word supplied as an argument,
+*  with characters originally in the word shifted right. For example,
+*  the word supplied is usually one of 0, ' ', ',', or ','L.
+*
+*  Entry:
+*    (A1) value to be converted
+*    (S7) template result word
+*
+*  Exit:
+*    (S7) result
+*
+*  Uses:
+*    A2, A6, A7
+*    S1, S2
+*
+         ENTRY     $I2D@24
+$I2D@24  SUBR
+         A0        A1
+         $I2D@24A, A1             ; save original value
+         JAP       $I2D@241       ; if value not negative
+         A1        -A1
+         
+$I2D@241 R         $DV10@24       ; compute next digit
+         A2        '0'R
+         A2        A2+A7
+         S7        S7>8           ; merge digit into result
+         S1        A2
+         S1        S1<56
+         S7        S1!S7
+         A1        A6
+         A0        A6
+         JAN       $I2D@241       ; if more digits to be converted
+         A0        $I2D@24A,
+         JAP       $I2D@242       ; if original value not negative
+         S7        S7>8           ; merge sign into result
+         S1        '-'R
+         S1        S1<56
+         S7        S1!S7
+
+$I2D@242 =         *
+$I2D@24  RETURN
+
+$I2D@24A CON       0
+
+**
+*  $I2X@32 - Convert 32-bit value to 8 hexadecimal digits
+*
+*  Entry:
+*    (S1) 32-bit value
+*
+*  Exit:
+*    (S7) 8 hexadecimal digits
+*
+*  Uses:
+*    A2, A3, A4
+*    S2, S3
+*
+         ENTRY     $I2X@32
+$I2X@32  A2        D'32           ; initial nibble shift count
+         A3        4              ; shift count decrement
+         S2        X'0F
+         S7        0              ; initialize converted word
+$I2X@321 S3        S1
+         A2        A2-A3
+         A0        A2
+         JAZ       $I2X@322       ; if shift count is 0 (last nibble)
+         S3        S3>A2          ; position nibble
+$I2X@322 S3        S3&S2
+         A4        S3
+         S3        HEX,A4         ; fetch digit
+         S7        S7<D'8         ; merge into word
+         S7        S7!S3
+         A0        A2
+         JAN       $I2X@321       ; if not done
+         J         B00
+
+HEX      BSS       0
+         CON       '0'R
+         CON       '1'R
+         CON       '2'R
+         CON       '3'R
+         CON       '4'R
+         CON       '5'R
+         CON       '6'R
+         CON       '7'R
+         CON       '8'R
+         CON       '9'R
+         CON       'A'R
+         CON       'B'R
+         CON       'C'R
+         CON       'D'R
+         CON       'E'R
+         CON       'F'R
+
+         SECTION   *
+
+         END

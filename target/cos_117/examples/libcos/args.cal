@@ -1,0 +1,212 @@
+         TITLE     'ARGS'
+         SUBTITLE  'Command line argument parsing functions'
+         IDENT     ARGS
+         COMMENT   'ARGS - Command line argument parsing functions'
+
+         EXT       $PACK,$UNPACK
+
+**
+*  $PARGS - Parse command line arguments
+*
+*  This function parses the command line image in the job communication area
+*  and produces a vector of addresses, each address pointing to a packed
+*  character string representing a command line token. Each token is 0-byte
+*  delimited, and the vector itself is delimited by a word of 0.
+*
+*  Exit:
+*    (A1) Pointer to vector of token addresses
+*    (A2) number of addresses in vector
+*
+
+ARGS     SECTION   MIXED
+
+         ENTRY     $PARGS
+$PARGS   SUBR
+         S0        0              ; initialize argument count
+         ARGC,     S0
+         A0        CHARV          ; initialize address of next token
+         NXTOKN,   A0
+         A1        JCCCI          ; unpack control card image
+         A2        CHARV
+         A3        (JCCPR-JCCCI)*8
+         R         $UNPACK
+         A1        CHARV
+         R         TOUPPER        ; convert lower case to upper case
+         A1        CHARV
+
+$PAR1    A2        A1             ; start of next token
+
+$PAR2    S1        ,A1            ; fetch next character
+         S0        S1
+         JSZ       $PAR9          ; if end of command
+         S2        ','R
+         S0        S1\S2
+         JSZ       $PAR4          ; if end of token
+         S2        ':'R
+         S0        S1\S2
+         JSZ       $PAR4          ; if end of token
+         S2        '('R
+         S0        S1\S2
+         JSZ       $PAR4          ; if end of token
+         S2        '='R
+         S0        S1\S2
+         JSZ       $PAR3          ; if end of keyword token
+         S2        '.'R
+         S0        S1\S2
+         JSZ       $PAR9          ; if end of command
+         S2        ')'R
+         S0        S1\S2
+         JSZ       $PAR9          ; if end of command
+         S2        X'27
+         S0        S1\S2
+         JSZ       $PAR6          ; if start of string
+         A1        A1+1
+         J         $PAR2
+*
+*  Process a keyword token
+*
+$PAR3    A3        A1-A2          ; calculate length of token
+         A3        A3+1
+         J         $PAR5
+*
+*  Process a non-keyword token
+*
+$PAR4    A3        A1-A2          ; calculate length of token
+
+$PAR5    B01       A1
+         A1        A2             ; start of token
+         A2        NXTOKN,        ; where to deliver packed token
+         A4        ARGC,          ; store address of packed token in argument vector
+         ARGV,A4   A2
+         A4        A4+1           ; increment ARGC
+         ARGC,     A4
+         R         $PACK          ; pack token
+         A2        A2+1           ; ensure 0-byte delimiter
+         S0        0
+         ,A2       S0
+         A2        A2+1           ; advance next token address
+         NXTOKN,   A2
+         A1        B01
+         A1        A1+1
+         J         $PAR1
+*
+*  Process a string token
+*
+$PAR6    A1        A1+1           ; advance past opening quote character
+         A2        A1             ; start of string
+         S2        X'27
+
+$PAR7    S1        ,A1
+         S0        S1
+         JSZ       $PAR8          ; if end of string
+         S0        S1\S2
+         JSZ       $PAR8          ; if end of string
+         A1        A1+1
+         J         $PAR7
+
+$PAR8    A3        A1-A2          ; calculate length of string
+         B01       A1
+         A1        A2             ; start of token
+         A2        NXTOKN,        ; where to deliver packed token
+         A4        ARGC,          ; store address of packed token in argument vector
+         ARGV,A4   A2
+         A4        A4+1           ; increment ARGC
+         ARGC,     A4
+         R         $PACK          ; pack token
+         A2        A2+1           ; ensure 0-byte delimiter
+         S0        0
+         ,A2       S0
+         A2        A2+1           ; advance next token address
+         NXTOKN,   A2
+         A1        B01
+         S0        ,A1
+         JSZ       $PAR10         ; if end of command line
+         A1        A1+1           ; advance past closing quote
+         S1        ,A1            ; next character should be a delimiter
+         A1        A1+1
+         S0        S1
+         JSZ       $PAR10         ; if end of command line
+         S2        '.'R
+         S0        S1\S2
+         JSZ       $PAR10         ; if end of command line
+         S2        ')'R
+         S0        S1\S2
+         JSZ       $PAR10         ; if end of command line
+         J         $PAR1
+
+*
+*  Process last token of command line
+*
+$PAR9    A3        A1-A2          ; calculate length of token
+         A1        A2             ; start of token
+         A2        NXTOKN,        ; where to deliver packed token
+         A4        ARGC,          ; store address of packed token in argument vector
+         ARGV,A4   A2
+         A4        A4+1           ; increment ARGC
+         ARGC,     A4
+         R         $PACK          ; pack token
+         A2        A2+1           ; ensure 0-byte delimiter
+         S0        0
+         ,A2       S0
+
+$PAR10   A1        ARGV
+         A2        ARGC,          ; argument count
+         S0        0              ; store null address to mark end of vector
+         ARGV,A2   S0
+
+$PARGS   RETURN
+
+**
+*  TOUPPER - convert lower case to upper case
+*
+*  Entry:
+*    (A1) : address of unpacked character list
+*
+
+TOUPPER  S1        ,A1            ; fetch next character
+         S0        S1
+         JSZ       TOU2           ; if done
+         S2        X'27
+         S0        S1\S2
+         JSZ       TOU3           ; if start of string
+         S2        'a'R
+         S0        S1-S2
+         JSM       TOU1           ; if not lower case
+         S2        'z'R+1
+         S0        S1-S2
+         JSP       TOU1           ; if not lower case
+         S2        'a'R-'A'R
+         S1        S1-S2
+         ,A1       S1
+
+TOU1     A1        A1+1
+         J         TOUPPER
+
+TOU2     J         B00
+
+TOU3     A1        A1+1
+         S1        ,A1
+         S0        S1
+         JSZ       TOU2           ; if end of character list
+         S0        S1\S2
+         JSN       TOU3           ; if not end of string
+         A1        A1+1
+         J         TOUPPER
+
+         SECTION   *
+
+DATA     SECTION   DATA
+
+NXTOKN   BSS       1
+
+ARGC     BSS       1
+
+ARGV     BSS       JCCPR-JCCCI
+         CON       0
+
+CHARV    BSS       (JCCPR-JCCCI)*8
+         CON       0
+
+         SECTION   *
+
+         END

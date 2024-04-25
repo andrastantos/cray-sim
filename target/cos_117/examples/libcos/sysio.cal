@@ -1,0 +1,242 @@
+         TITLE     'SYSIO'
+         SUBTITLE  'System I/O utility functions'
+         IDENT     SYSIO
+         COMMENT   'SYSIO - System I/O utility functions'
+
+SYSIO    SECTION   MIXED
+
+**
+*  $RWDP/$RWDR - Read Words Partial/Record
+*
+*  Entry:
+*    (A1) DSP address
+*    (A2) FWA of user data area (UDA)
+*    (A3) Requested word count (CT)
+*
+*  Return conditions:
+*    (A1) DSP address
+*    (A2) FWA of user data area (UDA)
+*    (A3) Requested word count (CT)
+*    (A4) Actual LWA+1 of data transferred to UDA. (A4)=(A2) if a null
+*         record was read.
+*    (S0) Condition of termination:
+*           < 0 EOR encountered.
+*           = 0 Null record, EOF, EOD, or unrecovered data error
+*               encountered.
+*           > 0 User-specified count (A3) exhausted before EOR is
+*               encountered. For partial read (READP) if EOR and end of
+*               count coincide, EOR takes precedence.
+*    (S1) Error status:
+*           = 0 No errors encountered.
+*           = 1 Unrecovered data error encountered.
+*    (S6) Contents of DPCWF if (SO)<=0 and (S1)=0, otherwise, meaningless.
+*         Note that for READ/READP, the unused bit count can also be
+*         obtained from S6 if (SO)<O.
+*
+*  Uses: S2, S3, A5
+*
+         ENTRY     $RWDP
+$RWDP    SUBR
+         S2        BIOFRRP        ; Function Read Record Partial
+         R         $RWD
+$RWDP    RETURN
+
+         ENTRY     $RWDR
+$RWDR    SUBR
+         S2        BIOFRR         ; Function Read Record
+         R         $RWD
+$RWDR    RETURN
+
+$RWD     SUBR
+         A0        A1
+         JAP       $RWD1          ; if not negative offset
+         A5        JCDSP,
+         A1        A5-A1
+$RWD1    S0        DPBIO,A1
+         JSM       $RWD7          ; if buffered I/O busy
+         S2        S2<(D'63-D'9)  ; position function code
+         S3        A3
+         S3        S3<(D'63-D'39) ; position and merge word count
+         S1        S2!S3
+         S2        A2             ; merge user data area address
+         S1        S1!S2
+         DPBIO,A1  S1
+         S0        F$BIO          ; initiate function
+         S1        A1
+         EX
+$RWD2    RECALL    A1             ; wait for function to complete
+         S2        DPBIO,A1
+         S0        S2
+         JSM       $RWD2          ; if not complete
+         S0        S0<1
+         JSM       $RWD6          ; if error
+         S1        0              ; set no errors encountered
+         S2        S2>(D'63-D'39) ; position and isolate count of words read
+         A0        S2
+         JAZ       $RWD5          ; if no words read
+         A4        S2             ; compute LWA+1 of data transferred to UDA
+         A4        A2+A4
+         A5        S2
+         A0        A5-A3
+         JAM       $RWD4          ; if words read < words requested
+         S0        1
+$RWD3    =         *
+$RWD     RETURN
+
+$RWD4    S6        DPBUBC,A1      ; position and isolate unused bit count
+         S6        S6>(D'63-D'15)
+         S2        <6
+         S6        S6&S2
+         S0        -1             ; indicate EOR
+         J         $RWD3
+
+$RWD5    A4        A2             ; no words read, determine whether EOR/EOF/EOD
+         S2        DPCWF,A1       ; check for EOR
+         S3        <2
+         S2        S2>(D'63-D'03)
+         S0        S2&S3
+         JSZ       $RWD4          ; if EOR
+         S0        0              ; indicate EOF/EOD
+         J         $RWD3
+
+$RWD6    S1        1              ; indicate error encountered
+         S0        0
+         J         $RWD3
+
+$RWD7    RECALL    A1
+         J         $RWD1
+
+**
+*  $WWDS/$WWDR - Write Words Partial/Record
+*
+*  Entry:
+*    (A1) DSP address
+*    (A2) FWA of user data area (UDA)
+*    (A3) Requested word count (CT)
+*    (S2) Unused bit count ($WWDR)
+*
+*  Return conditions:
+*    (A1) DSP address
+*    (A2) FWA of user data area (UDA)
+*    (A3) Requested word count (CT)
+*    (S1) Error status:
+*           = 0 No errors encountered.
+*           = 1 Unrecovered data error encountered.
+*
+*  Uses: S3, S4
+*
+         ENTRY     $WWDS
+$WWDS    SUBR
+         S2        0              ; Unused bit count (ignored)
+         S3        BIOFWRP        ; Function Write Record Partial
+         R         $WWD
+$WWDS    RETURN
+
+         ENTRY     $WWDR
+$WWDR    SUBR
+         S3        BIOFWR         ; Function Write Record
+         R         $WWD
+$WWDR    RETURN
+
+$WWD     SUBR
+         A0        A1
+         JAP       $WWD1          ; if not negative offset
+         A5        JCDSP,
+         A1        A5-A1
+$WWD1    S0        DPBIO,A1
+         JSM       $WWD4          ; if buffered I/O busy
+         S2        S2<(D'63-D'15) ; position unused bit count
+         S3        S3<(D'63-D'9)  ; position function code
+         S4        A3
+         S4        S4<(D'63-D'39) ; position word count
+         S1        S2!S3          ; merge function code, bit count, word count
+         S1        S1!S4
+         S2        A2             ; merge user data area address
+         S1        S1!S2
+         DPBIO,A1  S1
+         S0        F$BIO          ; initiate function
+         S1        A1
+         EX
+$WWD2    RECALL    A1             ; wait for function to complete
+         S0        DPBIO,A1
+         JSM       $WWD2          ; if not complete
+         S0        S0<1
+         JSM       $WWD3          ; if error
+         S1        0              ; set no errors encountered
+$WWD     RETURN
+
+$WWD3    S1        1              ; indicate error encountered
+$WWD     RETURN
+
+$WWD4    RECALL    A1
+         J         $WWD1
+
+**
+*  $WEOD - Write End-of-Data
+*
+*  Entry:
+*    (A1) DSP address
+*
+*  Return conditions:
+*    (A1) DSP address
+*    (S1) Error status:
+*           = 0 No errors encountered.
+*           = 1 Unrecovered data error encountered.
+*
+*  Uses: S2
+*
+         ENTRY     $WEOD
+$WEOD    SUBR
+         S2        BIOFEOD
+         R         $WEFD
+$WEOD    RETURN
+
+**
+*  $WEOF - Write End-of-File
+*
+*  Entry:
+*    (A1) DSP address
+*
+*  Return conditions:
+*    (A1) DSP address
+*    (S1) Error status:
+*           = 0 No errors encountered.
+*           = 1 Unrecovered data error encountered.
+*
+*  Uses: A2, S2
+*
+         ENTRY     $WEOF
+$WEOF    SUBR
+         S2        BIOFEOF
+         R         $WEFD
+$WEOF    RETURN
+
+$WEFD    SUBR
+         A0        A1
+         JAP       $WEFD1         ; if not negative offset
+         A2        JCDSP,
+         A1        A2-A1
+$WEFD1   S0        DPBIO,A1
+         JSM       $WEFD4         ; if buffered I/O busy
+         S2        S2<(D'63-D'9)  ; position and store function code
+         DPBIO,A1  S2
+         S0        F$BIO          ; initiate function
+         S1        A1
+         EX
+$WEFD2   RECALL    A1             ; wait for function to complete
+         S0        DPBIO,A1
+         JSM       $WEFD2         ; if not complete
+         S0        S0<1
+         JSM       $WEFD3         ; if error
+         S1        0              ; set no errors encountered
+$WEFD    RETURN
+
+$WEFD3   S1        1              ; indicate error
+$WEFD    RETURN
+
+$WEFD4   RECALL    A1
+         J         $WEFD1
+
+         SECTION   *
+
+         END

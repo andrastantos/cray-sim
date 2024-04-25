@@ -1,0 +1,42 @@
+         TITLE     'DMP'
+         SUBTITLE  'Dump block of memory to log'
+         IDENT     DMP
+         COMMENT   'DMP - Dump block of memory to log'
+
+         EXT       $I2X@32
+
+DMP      SECTION   MIXED
+
+**
+*  $DMP - Dump block of memory to log file
+*
+*  Entry:
+*    (A6) first word address
+*    (A7) last word address + 1
+*
+*  Uses:
+*    A2, A3, A4
+*    S1, S2, S3, S7
+         ENTRY     $DMP
+$DMP     SUBR
+$DMP1    A0        A7-A6
+         JAZ       $DMP2          ; if done
+         S1        ,A6            ; convert top 32 bits to hex
+         S1        S1>D'32
+         R         $I2X@32
+         $DMPA,    S7
+         S1        ,A6            ; convert bottom 32 bits
+         R         $I2X@32
+         $DMPA+1,  S7
+         MESSAGE   $DMPA,US
+         A6        A6+1
+         J         $DMP1
+
+$DMP2    =         *
+$DMP     RETURN
+
+$DMPA    BSSZ      3
+
+         SECTION   *
+
+         END
