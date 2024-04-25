@@ -1,4 +1,8 @@
-.PHONY: helloa
+BINDIR=_bin
 
-helloa:
-	$(MAKE) -C helloa $(MAKECMDGOALS)
+all: $(BINDIR)/helloa $(BINDIR)/helloc
+clean: all
+build: all
+
+$(BINDIR)/%: %
+	$(MAKE) -C $< $(MAKECMDGOALS)

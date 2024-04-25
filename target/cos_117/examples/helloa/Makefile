@@ -33,7 +33,7 @@ $(OBJDIR)%.obj: %.cal
 $(LIBCOS):
 	$(MAKE) -C $(LIBCOS_SRC) $(MAKECMDGOALS)
 
-clean:
+clean: $(LIBCOS)
 	rm -f $(OBJDIR)*.obj $(OBJDIR)*.lst
 	rm -f $(TARGET)
 
