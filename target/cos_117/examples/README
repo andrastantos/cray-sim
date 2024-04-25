@@ -1,0 +1,8 @@
+In order to use these examples, you need the following projects:
+
+https://github.com/kej715/COS-Tools
+https://github.com/kej715/ack
+
+These are the cross-assembler/linker and C compiler for cray-XMP and COS targets.
+
+The projects come with pretty detailed installation instructions.

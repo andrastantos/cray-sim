@@ -64,4 +64,5 @@ exp_disk_create \
 -f RELOAD _obj/reload.ds \
 -f TEDI _obj/tedi.ds \
 -f HELLOA examples/_bin/helloa.bin \
+-f HELLOC examples/_bin/helloc.bin \
 -o ../../exp_disk.img
