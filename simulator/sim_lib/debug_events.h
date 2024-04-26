@@ -72,9 +72,13 @@ public:
 	};
 	void Fire(const DebugEvent_t &aEvent) {
 		for(auto Entry: mBreakPoints) {
-			if (std::regex_search(aEvent,Entry.Event)) FireBreakPoint(Entry.BreakPoint.get());
+			if (std::regex_search(aEvent,Entry.Event)) {
+				//std::cout << "FIRING EVENT POINT" << std::endl;
+				FireBreakPoint(Entry.BreakPoint.get());
+			}
 		}
 	}
+	size_t size() const { return mBreakPoints.size(); }
 protected:
 	virtual void FireBreakPoint(tBreakPoint *aBreakPoint) = 0;
 	virtual std::shared_ptr<tBreakPoint> CreateBreakPoint(const std::string &aBreakPointType, const Configuration_c &aConfig) = 0;

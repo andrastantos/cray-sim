@@ -262,7 +262,7 @@ Type: string
 			  CPU that triggered the breakpoint
 	Event		  When fires, triggers an event. The event string is specified
 			  using the 'Event' parameter. The special string {cpu} gets
-			  repleced with the name of the CPU that triggered the breakpoint
+			  replaced with the name of the CPU that triggered the breakpoint
 
 ================================================================================
 WatchPoints

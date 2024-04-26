@@ -169,6 +169,7 @@ public:
 	typedef boost::property_tree::ptree::const_assoc_iterator const_assoc_iterator;
 	const_iterator begin() const { return mTree->begin(); }
 	const_iterator end() const { return mTree->end(); }
+	size_t size() const { return mTree->size(); }
 	const_assoc_iterator find(const char *aKey) const { DO_OPTIONS_LOG(cerr << "Finding key: " << aKey << endl); return mTree->find(aKey); }
 
 	bool empty() const { return mTree->empty(); }

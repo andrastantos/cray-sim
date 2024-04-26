@@ -349,7 +349,10 @@ public:
 	const DebugEventDispatcher_c &GetEventDispatcher() const { return mEventDispatcher; }
 	DebugEventDispatcher_c &GetEventDispatcher() { return mEventDispatcher; }
 
-	void HandleDebugEvent(const DebugEvent_t &aEvent) { mEventPoints.Fire(aEvent); }
+	void HandleDebugEvent(const DebugEvent_t &aEvent) {
+		//std::cout << "EVENT POINTS LENGTH: " << mEventPoints.size() << std::endl;
+		mEventPoints.Fire(aEvent);
+	}
 	bool IsMultiThreaded() const { return mMultiThreaded; }
 	OsTypes_e GetOsType() const { return mOsType; }
 
