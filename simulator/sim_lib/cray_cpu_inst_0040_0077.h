@@ -699,7 +699,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0073(uint64_t aParcels, size_
 				aExplanation << "Read (high or low order bits of) performance counter into " << RefSiTarget << " than increment performance counter pointer";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					//CRAY_UNIMPLEMENTED;
 					RefSi = CInt_t(0);
@@ -719,7 +718,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0073(uint64_t aParcels, size_
 				}
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					//CRAY_UNIMPLEMENTED;
 				}
@@ -731,7 +729,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0073(uint64_t aParcels, size_
 				aExplanation << "Clear all maintenance modes. Loads " << RefSiTarget << " with -1 as a side-effect";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					//CRAY_UNIMPLEMENTED;
 				}
@@ -754,7 +751,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0073(uint64_t aParcels, size_
 					aExplanation << "Increment the current performance counter (high-part) pointed by PFPTR";
 				}
 				if (aDoExecute) {
-					CRAY_ASSERT(mState.Mode.IsMonitorMode());
 					if (mState.Mode.IsMonitorMode()) {
 						//CRAY_UNIMPLEMENTED;
 					}

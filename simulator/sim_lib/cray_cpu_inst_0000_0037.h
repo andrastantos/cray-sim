@@ -38,7 +38,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 		}
 		if (aDoExecute) {
 			if (!IsXmp() && j == 0) return 1;
-			CRAY_ASSERT(mState.Mode.IsMonitorMode());
 			if (mState.Mode.IsMonitorMode()) {
 				size_t ChIdx = size_t(CAddr_t(RefAj)) - 8;
 				mLogger << setloglevel(LogLevel_IoActivity) << SideEffectIndent << "CA" << " (ChIdx = " << DecPrinter(ChIdx + 8) << ", Value = " << HexPrinter(RefAk) << " )" << std::endl;
@@ -61,7 +60,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 		}
 		if (aDoExecute) {
 			if (!IsXmp() && j == 0) return 1;
-			CRAY_ASSERT(mState.Mode.IsMonitorMode());
 			if (mState.Mode.IsMonitorMode()) {
 				size_t ChIdx = size_t(CAddr_t(RefAj)) - 8;
 				mLogger << setloglevel(LogLevel_IoActivity) << SideEffectIndent << "CL" << " (ChIdx = " << DecPrinter(ChIdx + 8) << ", Value = " << HexPrinter(RefAk) << " )" << std::endl;
@@ -87,7 +85,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 			}
 			if (aDoExecute) {
 				if (!IsXmp() && j == 0) return 1;
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					size_t ChIdx = size_t(CAddr_t(RefAj)) - 8;
 					mLogger << setloglevel(LogLevel_IoActivity) << SideEffectIndent << "CI" << " (ChIdx = " << DecPrinter(ChIdx + 8) << ")" << std::endl;
@@ -117,7 +114,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 			}
 			if (aDoExecute) {
 				if (!IsXmp() && j == 0) return 1;
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					size_t ChIdx = size_t(CAddr_t(RefAj)) - 8;
 					mLogger << setloglevel(LogLevel_IoActivity) << SideEffectIndent << "MC" << " (ChIdx = " << DecPrinter(ChIdx + 8) << ")" << std::endl;
@@ -152,7 +148,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 		}
 		if (aDoExecute) {
 			if (!IsXmp() && j == 0) return 1;
-			CRAY_ASSERT(mState.Mode.IsMonitorMode());
 			if (mState.Mode.IsMonitorMode()) {
 				LogLine_c LogLine = mLogger << setloglevel(LogLevel_SideEffects);
 				if (LogLine.good()) LogLine << "\tXA <== " << HexPrinter(uint8_t(size_t(CAddr_t(RefAj)) >> 4), 2) << std::endl;
@@ -168,7 +163,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Set the real-time-clock";
 			}
 			if (aDoExecute) {
-				//						CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					mMainframe.SetRealTimeClock(RefSj);
 				}
@@ -191,13 +185,11 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				}
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					CRAY_ASSERT(IsXmp() || !IsXMode()); // We don't know how this instruction works in X mode on a Y-MP machine...
 					size_t CpuIdx = IsXmp() ? j : RefAj;
 					if (CpuIdx >= mMainframe.GetCpuCnt()) throw InstExecError_x() << "CPU index " << OctPrinter(CpuIdx) << " out of bounds";
 					if (CpuIdx != mCpuId) {
-						CRAY_ASSERT(mState.Mode.IsMonitorMode());
 						mMainframe.GetCpu(CpuIdx).SetInterProcessorInterrupt();
 						aBreakBurst = true;
 					}
@@ -215,7 +207,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Clear received interprocessor interrupt";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					mState.Flags.ClearInterProcessorInterrupt();
 					aBreakBurst = true;
@@ -234,7 +225,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				}
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					// Cluster numbers are 1-based. 0 is reserved to no-cluster selected
 					CRAY_ASSERT(IsXmp() || !IsXMode()); // We don't know how this instruction works in X mode on a Y-MP machine...
@@ -252,7 +242,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Set Interrupt Interval register to " << RefSj;
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					LogLine_c LogLine = mLogger << setloglevel(LogLevel_SideEffects);
 					if (LogLine.good()) LogLine << "\tPCI <== " << HexPrinter(RefSj, 0) << std::endl;
@@ -268,7 +257,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Clear programmable clock interrupt request";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					mState.Flags.ClearProgrammableClockInterrupt();
 					aBreakBurst = true;
@@ -281,7 +269,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Enable programmable clock interrupt request";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					mState.PeriodicInterruptEnabled = true;
 					aBreakBurst = true;
@@ -294,7 +281,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Disable programmable clock interrupt request";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					mState.PeriodicInterruptEnabled = false;
 					aBreakBurst = true;
@@ -312,7 +298,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 				aExplanation << "Select performance monitor group (no CAL support)";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsMonitorMode());
 				if (mState.Mode.IsMonitorMode()) {
 					//CRAY_UNIMPLEMENTED;
 				}
@@ -327,7 +312,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 						aExplanation << "Select maintenance read mode (no CAL support)";
 					}
 				if (aDoExecute) {
-					CRAY_ASSERT(mState.Mode.IsMonitorMode());
 					if (mState.Mode.IsMonitorMode()) {
 						CRAY_UNIMPLEMENTED;
 					}
@@ -339,7 +323,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 					aExplanation << "Load diagnostic checkbyte with S1 (no CAL support)";
 				}
 				if (aDoExecute) {
-					CRAY_ASSERT(mState.Mode.IsMonitorMode());
 					if (mState.Mode.IsMonitorMode()) {
 						CRAY_UNIMPLEMENTED;
 					}
@@ -351,7 +334,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 					aExplanation << "Set maintenance write mode 1 (no CAL support)";
 				}
 				if (aDoExecute) {
-					CRAY_ASSERT(mState.Mode.IsMonitorMode());
 					if (mState.Mode.IsMonitorMode()) {
 						CRAY_UNIMPLEMENTED;
 					}
@@ -363,7 +345,6 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0001(uint64_t aParcels, size_
 					aExplanation << "Set maintenance write mode 2 (no CAL support)";
 				}
 				if (aDoExecute) {
-					CRAY_ASSERT(mState.Mode.IsMonitorMode());
 					if (mState.Mode.IsMonitorMode()) {
 						CRAY_UNIMPLEMENTED;
 					}
