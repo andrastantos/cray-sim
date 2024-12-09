@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <boost/asio.hpp>
+#include <boost/array.hpp>
 #include "utils.h"
 #include "cray_logger.h"
 #include "debug_events.h"
