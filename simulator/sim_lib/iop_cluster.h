@@ -38,7 +38,11 @@ public:
 	virtual std::string GetName() const override;
 	virtual std::string GetLongName() const override;
 	virtual void Dump(size_t aIdent = 0) const override;
-	virtual void RegisterCommands(CommandHooks_t &aHooks)  override {}
+	virtual void RegisterCommands(CommandHooks_t &aHooks)  override {
+		for (auto &Iop : mIops) {
+			Iop->Cpu.RegisterCommands(aHooks);
+		}
+	}
 	virtual void Tick() override;
 protected:
 	void LoadBufferImage(const char *aFileName, CAddr_t aLoadAddr);
