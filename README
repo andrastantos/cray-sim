@@ -26,6 +26,8 @@ Linux build instructions:
 4. Build
       cd cray-sim/simulator
       make build
+   Else for Linux distros that require dynamic linking do:
+      make LINK_TYPE=dynamic build
 5. Build images
       cd ../target/cos_117
       ./build_boot_tape
