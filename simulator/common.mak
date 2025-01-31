@@ -141,7 +141,12 @@ INC_DIRS += $(DEP_INC_DIRS) $(EXTRA_INC)
 
 DEFINES += _FILE_OFFSET_BITS=64
 
+ifndef LINK_TYPE
+LINK_TYPE=static
+endif
+
 #	$(if ("$(SYSTEM)","cygwin"), $(1), :lib$(strip $(1)).a)
+ifeq ($(LINK_TYPE),static)
 define static_lib
 	:lib$(strip $(1)).a
 endef
@@ -154,6 +159,13 @@ ifeq ($(SYSTEM),mingw)
 define static_lib
 	:lib$(strip $(1))-mt.a
 endef
+endif
+else ifeq ($(LINK_TYPE),dynamic)
+define static_lib
+	$(1)
+endef
+else
+$(error LINK_TYPE must be either 'static' or 'dynamic', not '$(LINK_TYPE)')
 endif
 
 #################################################################################
@@ -181,9 +193,11 @@ COMMON_LIBS += Bcrypt
 endif
 ifeq ($(SYSTEM),linux)
 NCURSES_LIBS += $(call static_lib, ncurses)
+NCURSES_LIBS += $(call static_lib, panel)
+ifeq ($(LINK_TYPE),static)
 NCURSES_LIBS += $(call static_lib, termcap)
 NCURSES_LIBS += $(call static_lib, gpm)
-NCURSES_LIBS += $(call static_lib, panel)
+endif
 BOOST_LIBS += $(call static_lib, rt)
 COMMON_LIBS += pthread
 endif
