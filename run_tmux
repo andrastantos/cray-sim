@@ -1,7 +1,6 @@
 #!/bin/sh
 PATH=$PATH:simulator/_bin/linux_release
 
-# Usage message
 usage() {
 cat << EOF
 
@@ -53,8 +52,10 @@ cray_is_up() {
 start_cray() {
     if cray_is_up; then msg "running"; else
         mkdir -p dump disk tape
-        tmux new-session -d -s cray
-        #space for future tmux hooks here
+        tmux new-session -d -s cray 
+        # Simplify the hooks, they could be error prone 
+        tmux set-hook -t cray -g session-created 'run-shell "tmux list-sessions -F '#{session_name}' | grep '^cray_' | sort | while read -r session; do tmux move-window -s $session:0 -t cray:; done; tmux move-window -s cray:$(tmux list-windows -t cray | grep -n 'cray_sim' | cut -d: -f1) -t cray:0"'
+        tmux set-hook -t cray -g window-linked 'run-shell "tmux list-windows -t cray -F \"#{window_index}\" | awk '\''$1 != \"0\" {print \"tmux rename-window -t \" $1 \" console_\" NR-1}'\'' | bash"'
         tmux send-keys -t cray 'cray_sim cos_117_tmux.cfg' C-m
         msg "started"
         help
@@ -95,7 +96,6 @@ restart_cray() {
 
 # Attach to the cray simulator session
 attach_cray() { if cray_is_up; then tmux attach-session -t cray; else msg "not_up"; fi }
-
 
 # Display status of cray simulator session and consoles
 status_cray() {
