@@ -1,0 +1,42 @@
+#!/bin/bash
+
+usage() {
+cat << EOF
+
+Generate run script and configuration for cray_sim
+to launch consoles in alternate terminals instead of
+xterm.
+
+Usage: $0 <terminal-name>
+
+  Example    - $0 cool-retro-term
+
+EOF
+}
+
+# Sanity checks
+if [ "$#" -ne 1 ]; then usage; exit 1; fi
+if [[ ! -f run ]]; then echo "Error: No run file."; exit 1; fi
+if [[ ! -f cos_117.cfg ]]; then echo "Error: No cos_117.cfg file."; exit 1; fi
+
+terminal_name="$1"
+
+# Uniform naming: - to _
+term_suffix="${terminal_name//-/_}"
+cp run "run_${term_suffix}"
+cp cos_117.cfg "cos_117_${term_suffix}.cfg"
+
+# Replace cos_117.cfg and xterm in targets
+sed -i "s/xterm/${terminal_name}/g" "cos_117_${term_suffix}.cfg"
+sed -i "s/cos_117.cfg/cos_117_${term_suffix}.cfg/" "run_${term_suffix}"
+chmod +x "run_${term_suffix}"
+
+cat << EOF
+
+Target Terminal           :  ${terminal_name}
+Generated run script      :  run_${term_suffix}
+Generated configuration   :  cos_117_${term_suffix}.cfg
+
+Genaration Successful!"
+
+EOF
