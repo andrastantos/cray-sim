@@ -1,0 +1,156 @@
+#!/bin/sh
+PATH=$PATH:simulator/_bin/linux_release
+
+usage() {
+cat << EOF
+
+Usage: $0 {start|stop|restart|kill|attach|status}
+
+  start    - Start cray simulator session
+  stop     - Stop cray simulator session
+  restart  - Restart cray simulator session
+  kill     - Kill cray simulator session (unsafe)
+  attach   - Attach to cray simulator session
+  status   - List running cray simulator and consoles
+
+EOF
+}
+
+# Quick tmux help
+help() {
+cat << EOF
+
+Run "tmux_run" or "tmux_run attach" to attach to simulator session.
+Or use 'tmux attach' or 'tmux attach-session -t cray'
+Use keys 'Ctrl b <0 to ...>' to move to specific windows
+Use keys 'Ctrl b n' to move to next window
+Use keys 'Ctrl b p' to move to previous window
+Use keys "Ctrl b d" to detach from simulator session.
+
+EOF
+}
+
+# Status messages
+msg() {
+    case "$1" in
+        "not_up")       echo "No cray simulator session is running." ;;
+        "running")      echo "A cray simulator session is already running." ;;
+        "started")      echo "Started!" ;;
+        "stopped")      echo "Stopped!" ;;
+        "killed")       echo "Killed!" ;;
+        "restarting")   echo "Restarting!" ;;
+        "unknown")      echo "Unknown choice: Exiting.";;
+    esac
+}
+
+# Check if cray simulator session is up
+cray_is_up() {
+    tmux has-session -t cray 2>/dev/null
+}
+
+# Start cray simulator session
+start_cray() {
+    if cray_is_up; then msg "running"; else
+        mkdir -p dump disk tape
+        tmux new-session -d -s cray 
+        # Simplify the hooks, they could be error prone 
+        tmux set-hook -t cray -g session-created 'run-shell "tmux list-sessions -F '#{session_name}' | grep '^cray_' | sort | while read -r session; do tmux move-window -s $session:0 -t cray:; done; tmux move-window -s cray:$(tmux list-windows -t cray | grep -n 'cray_sim' | cut -d: -f1) -t cray:0"'
+        tmux set-hook -t cray -g window-linked 'run-shell "tmux list-windows -t cray -F \"#{window_index}\" | awk '\''$1 != \"0\" {print \"tmux rename-window -t \" $1 \" console_\" NR-1}'\'' | bash"'
+        tmux send-keys -t cray 'cray_sim cos_117_tmux.cfg' C-m
+        msg "started"
+        help
+    fi
+}
+
+# Stop cray simulator session
+stop_cray() {
+    if cray_is_up; then
+        tmux select-window -t cray:0
+        tmux send-keys -t cray:0 'exit' C-m
+        tmux send-keys -t cray:0 'exit' C-m
+        msg "stopped"
+    else msg "not_up"; fi
+}
+
+# Kill cray simulator session (unsafe)
+kill_cray() {
+    if cray_is_up; then
+        tmux kill-session -t cray
+        killall -9 cray_sim
+        msg "killed"
+        echo "Try 'killall -9 cray_sim' / kill -9 <pid of cray_sim> followed"
+        echo "by 'tmux_run stop' / 'tmux_run kill' again if it is hanging!"
+    else msg "not_up"; fi
+}
+
+# Restart cray simulator session
+restart_cray() {
+    if cray_is_up; then
+        msg "restarting"
+        stop_cray
+        sleep 3
+        if cray_is_up; then kill_cray; fi
+        start_cray
+    else msg "not_up"; fi
+}
+
+# Attach to the cray simulator session
+attach_cray() { if cray_is_up; then tmux attach-session -t cray; else msg "not_up"; fi }
+
+# Display status of cray simulator session and consoles
+status_cray() {
+    if cray_is_up; then
+        echo "Simulator Session:"
+        tmux ls | grep -i cray
+        echo "Consoles:"
+        tmux list-windows -t cray
+    else msg "not_up"; fi
+}
+
+# Show conditional menu
+show_menu() {
+    if cray_is_up; then
+        cat << EOF
+
+1. Stop
+2. Restart
+3. Kill
+4. Status
+5. Attach
+
+EOF
+    else echo "1. Start"; fi
+}
+
+# Pick a choice from conditonal menu 
+pick_choice() {
+    show_menu
+    echo "Enter the number of your choice (or press any key to exit):"
+    read -r choice
+    if cray_is_up; then
+        case "$choice" in
+            1) stop_cray ;;
+            2) restart_cray ;;
+            3) kill_cray ;;
+            4) status_cray ;;
+            5) attach_cray ;;
+            *) msg "unknown" ;;
+        esac
+    else
+        case "$choice" in
+            1) start_cray ;;
+            *) msg "unknown" ;;
+        esac
+    fi
+}
+
+# Main CLI logic
+case "$1" in
+    start)      if cray_is_up; then msg "running";  else start_cray;   fi ;;
+    stop)       if cray_is_up; then stop_cray;      else msg "not_up"; fi ;;
+    restart)    if cray_is_up; then restart_cray;   else msg "not_up"; fi ;;
+    kill)       if cray_is_up; then kill_cray;      else msg "not_up"; fi ;;
+    status)     if cray_is_up; then status_cray;    else msg "not_up"; fi ;;
+    attach)     if cray_is_up; then attach_cray;    else msg "not_up"; fi ;;
+    *) usage;   if cray_is_up; then msg "running";  else msg "not_up"; fi; pick_choice ;;
+esac

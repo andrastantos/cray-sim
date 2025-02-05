@@ -1,8 +1,7 @@
 #!/bin/sh
 PATH=$PATH:simulator/_bin/cygwin_release:simulator/_bin/linux_release:bin
 
-mkdir dump
-mkdir disk
-mkdir tape
+mkdir -p dump disk tape
+
 cray_sim cos_117.cfg
 
