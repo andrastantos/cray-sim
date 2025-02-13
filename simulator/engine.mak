@@ -2,7 +2,7 @@
 ### Set up compiler and linker flags unless they're already defined
 ifndef CXXFLAGS
 #CXXFLAGS = -std=c++11 -c -ffunction-sections -fdata-sections -g -Wall -Wno-unused-local-typedefs -Wno-reorder -Wno-deprecated-declarations -fno-strict-aliasing -Werror
-CXXFLAGS = $(CXX_BASE_FLAGS) -std=c++14 -c -ffunction-sections -fdata-sections -g -Wall -Wno-unused-local-typedefs -Wno-reorder -fno-strict-aliasing -Wno-unused-variable -Wno-unused-result -Wno-psabi -Werror
+CXXFLAGS = $(CXX_BASE_FLAGS) -std=c++14 -c -ffunction-sections -fdata-sections -g -Wall -Wno-unused-local-typedefs -Wno-reorder -fno-strict-aliasing -Wno-unused-variable -Wno-unused-result -Wno-psabi
 endif
 ifndef DEP_CXXFLAGS
 DEP_CXXFLAGS = -std=c++14
