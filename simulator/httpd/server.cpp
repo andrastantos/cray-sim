@@ -42,7 +42,7 @@ void server::setup(const std::string& address, const std::string& port)
 	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), boost::lexical_cast<short>(port));
 	if (address != "*") {
 		boost::asio::ip::tcp::resolver resolver(io_service_);
-		endpoint = *resolver.resolve({ address, port });
+		endpoint = *resolver.resolve(address, port).begin();
 	}
 	acceptor_.open(endpoint.protocol());
 	acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));

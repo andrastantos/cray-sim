@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 PATH=$PATH:simulator/_bin/linux_release
 
 usage() {
@@ -13,19 +13,56 @@ Usage: $0 {start|stop|restart|kill|attach|status}
   attach   - Attach to cray simulator session
   status   - List running cray simulator and consoles
 
+Advanced Usage:
+
+    $0 cos_install       - Automated COS installation (Do only once) 
+    $0 cos_boot          - Automated COS boot (Do only after installation)
+    $0 cos_shell         - Automated log on to COS interactive shell (Do only after boot)
+    $0 cos_boot_shell    - Automated COS boot and log on to interactive shell
+
+Advanced CLI Usage:
+    $0 cos_exec     <binary>  - Execute a COS binary (do only after interactive shell logon)
+    $0 cos_gen_disk <binary>  - Create a COS extender disk with specified binary
+    $0 cos_run_disk <binary>  - Same as above and execute it (do only after interactive shell logon)
+
 EOF
 }
 
-# Quick tmux help
+# Quick help
 help() {
 cat << EOF
 
-Run "tmux_run" or "tmux_run attach" to attach to simulator session.
-Or use 'tmux attach' or 'tmux attach-session -t cray'
-Use keys 'Ctrl b <0 to ...>' to move to specific windows
-Use keys 'Ctrl b n' to move to next window
-Use keys 'Ctrl b p' to move to previous window
-Use keys "Ctrl b d" to detach from simulator session.
+Quick Start
+
+Run "tmux_run attach" to attach to simulator session.
+Use keys "Ctrl b w" then "↑/↓ & ↵" to select console.
+Use keys "Ctrl b d" to detach and return to shell.
+Run "tmux_run stop" to stop simulator session.
+
+Quick Help
+
+Attach to Console:
+    
+    1. "tmux_run attach"
+    2. "tmux_run" & 5 ↵
+    3. "tmux attach-session -t cray"
+    4. "tmux attach" 
+
+Console Navigation:
+    
+    1. "Ctrl b w" & "↑/↓ & ↵"   - visual navigation
+    2. "Ctrl b <0 to ...>"      - to specific console
+    3. "Ctrl b n"               - next console
+    4. "Ctrl b p"               - previous console
+
+Detach from Console:
+
+    1. "Ctrl b d"               - detach from console
+
+Stop Simulator:
+
+    1. "tmux_run stop"
+    2. "tmux_run" & 1 ↵
 
 EOF
 }
@@ -33,13 +70,19 @@ EOF
 # Status messages
 msg() {
     case "$1" in
-        "not_up")       echo "No cray simulator session is running." ;;
-        "running")      echo "A cray simulator session is already running." ;;
-        "started")      echo "Started!" ;;
-        "stopped")      echo "Stopped!" ;;
-        "killed")       echo "Killed!" ;;
-        "restarting")   echo "Restarting!" ;;
-        "unknown")      echo "Unknown choice: Exiting.";;
+        "not_up")           echo "No cray simulator session is running." ;;
+        "running")          echo "A cray simulator session is already running." ;;
+        "started")          echo "Started!" ;;
+        "stopped")          echo "Stopped!" ;;
+        "killed")           echo "Killed!" ;;
+        "restarting")       echo "Restarting!" ;;
+        "sent")             printf "+" ;;
+        "matched")          printf "=" ;;
+        "no_match")         printf "~" ;;
+        "timeout")          echo "Timed out!" ;;
+        "no_match_timeout") echo "Query not matched or timed out!" ;;
+        "no_file")          echo "File not found!" ;;
+        "unknown")          echo "Unknown choice: Exiting.";;
     esac
 }
 
@@ -53,10 +96,11 @@ start_cray() {
     if cray_is_up; then msg "running"; else
         mkdir -p dump disk tape
         tmux new-session -d -s cray 
-        # Simplify the hooks, they could be error prone 
-        tmux set-hook -t cray -g session-created 'run-shell "tmux list-sessions -F '#{session_name}' | grep '^cray_' | sort | while read -r session; do tmux move-window -s $session:0 -t cray:; done; tmux move-window -s cray:$(tmux list-windows -t cray | grep -n 'cray_sim' | cut -d: -f1) -t cray:0"'
-        tmux set-hook -t cray -g window-linked 'run-shell "tmux list-windows -t cray -F \"#{window_index}\" | awk '\''$1 != \"0\" {print \"tmux rename-window -t \" $1 \" console_\" NR-1}'\'' | bash"'
-        tmux send-keys -t cray 'cray_sim cos_117_tmux.cfg' C-m
+        tmux set -t cray -g status off
+        tmux set-window-option -t cray -g pane-border-status off
+        tmux set-hook -t cray -g session-created 'run-shell "./run_tmux merge"'
+        tmux set-hook -t cray -g window-linked 'run-shell "./run_tmux rename"'
+        tmux send-keys -t cray 'cray_sim cos_117_tmux.cfg' Enter
         msg "started"
         help
     fi
@@ -66,8 +110,8 @@ start_cray() {
 stop_cray() {
     if cray_is_up; then
         tmux select-window -t cray:0
-        tmux send-keys -t cray:0 'exit' C-m
-        tmux send-keys -t cray:0 'exit' C-m
+        tmux send-keys -t cray:0 'exit' Enter
+        tmux send-keys -t cray:0 'exit' Enter
         msg "stopped"
     else msg "not_up"; fi
 }
@@ -107,19 +151,282 @@ status_cray() {
     else msg "not_up"; fi
 }
 
+# Merge all sessions to cray by moving windows. Used as hook. 
+merge_sessions() {
+    if cray_is_up; then
+    tmux list-sessions -F '#{session_name}' | grep '^cray_' | sort | while read -r session; do tmux move-window -s $session:0 -t cray:; done; tmux move-window -s cray:$(tmux list-windows -t cray | grep -n 'cray_sim' | cut -d: -f1) -t cray:0
+    else msg "not_up"; fi
+}
+
+# Rename windows to console_(1-n) sequentially. used as hook. 
+rename_console() {
+    if cray_is_up; then
+        for i in $(seq 1 $(tmux display-message -t cray -p '#{session_windows}')); do tmux rename-window -t cray:$i console_$i; done
+    else msg "not_up"; fi
+}
+
+
+# Experimental Automation Section:
+
+# Send keys or commands to console. 
+# Usage: send_keys <window_number> "<command>"
+send_keys() {
+    local window_number=$1
+    local command=$2
+
+    if cray_is_up; then
+        tmux select-window -t cray:$window_number
+        tmux send-keys -t cray:$window_number "$command" Enter
+        msg "sent"
+    else
+        msg "not_up"
+        return 1
+    fi
+}
+
+# Check console to see if a string is present. 
+# Usage check_console <window_number> "<search_string>"
+check_console() {
+    local window_number=$1
+    local search_string=$2
+
+    if cray_is_up; then
+        if tmux capture-pane -t cray:$window_number.0 -pS - | grep -q "xyzzy"; then
+            echo " "
+            echo "Automation Stopped!"
+            exit 1
+        elif tmux capture-pane -t cray:$window_number.0 -pS - | grep -q "$search_string"; then
+            msg "matched"
+            return 0
+        else
+            msg "no_match"
+            return 1
+        fi
+    else
+        msg "not_up"
+        return 2
+    fi
+}
+
+
+
+# Check console to see if a string is present repeatedly.
+# Usage: poll_check_console <window_number> "<search_string>" optional: <interval> <timeout>
+poll_check_console() {
+    local window_number=$1
+    local search_string=$2
+    local interval=${3:-3}
+    local timeout=${4:-none}
+    local start_time
+    local current_time
+
+    if [[ "$timeout" != "none" ]]; then
+        start_time=$(date +%s)
+    fi
+
+    while true; do
+        if check_console "$window_number" "$search_string"; then
+            msg "matched"
+            return 0
+        fi
+
+        if [[ "$timeout" != "none" ]]; then
+            current_time=$(date +%s)
+            if (( current_time - start_time >= timeout )); then
+                msg "timeout"
+                return 1
+            fi
+        fi
+
+        sleep "$interval"
+    done
+}
+
+# Check console for a string repeatedly and send a command if found.
+# Usage: poll_check_send <window_number> "<search_string>" "<command>" optional: <delay> <target_window_number> <interval> <timeout>
+poll_check_send() {
+    local window_number=$1
+    local search_string=$2
+    local command=$3
+    local delay=${4:-0}
+    local target_window_number=${5:-$window_number}
+    local interval=${6:-3}
+    local timeout=${7:-none}
+
+    if poll_check_console "$window_number" "$search_string" "$interval" "$timeout"; then
+        if [[ "$delay" -gt 0 ]]; then
+            sleep "$delay"
+        fi
+        send_keys "$target_window_number" "$command"
+    else
+        msg "no_match_timeout"
+        return 1
+    fi
+}
+
+# Automation
+
+# Create a COS disk with specified file included
+create_disk() {
+    if cray_is_up; then
+        echo "*** Generating a COS disk with file included ***"
+        if [ -z "$1" ]; then msg "no_file"; usage; exit 1; fi
+        local fullpath=$1
+        if [ ! -f "$fullpath" ]; then msg "no_file"; usage; exit 1; fi
+        cp $fullpath /tmp/
+        local filename=$(basename "$fullpath")
+        local cos_filename=$(echo "${filename^^}" | tr -d '_' | sed 's/\.[^.]*$//')
+        cd target/cos_117 
+        ./build_exp_disk_swd $fullpath
+        cd ../..
+        echo "File available as \"$cos_filename\""
+        echo "*** COS disk generation with file inclusion complete! ***"
+    else msg "not_up"; fi
+}
+
+# Install COS_117
+cos_install() {
+    if cray_is_up; then
+        echo "*** Performing an automated COS 117 install ***"
+        poll_check_send 1 "AUTODMP" "START COS_117 INSTALL" 5
+        poll_check_send 1 "START COMPLETE" "STATION" 2
+        sleep 1
+        poll_check_send 4 "CRAY STATION" "LOGON" 2
+        poll_check_send 4 "COS 1.17" "STMSG" 3
+        poll_check_send 4 "TO CONTINUE" "REPLY,0,GO" 1
+        poll_check_send 4 "I N S T A L L" "REPLY,1,GO" 2
+        poll_check_send 4 "END OF DATA" "STMSG,INFO" 2
+        poll_check_send 4 "VALIDATED SUCCESSFULLY" "+" 2
+        poll_check_send 4 "STARTUP COMPLETE" "" 3
+        echo " "
+        echo "*** Automated COS 117 install complete! ***"
+    else msg "not_up"; fi
+}
+
+# Boot COS_117
+cos_deadstart() {
+    if cray_is_up; then
+        echo "*** Performing an automated COS 117 boot ***"
+        poll_check_send 1 "AUTODMP" "START COS_117 DEADSTART" 5
+        poll_check_send 1 "START COMPLETE" "STATION" 2
+        sleep 1
+        poll_check_send 4 "CRAY STATION" "LOGON" 2
+        poll_check_send 4 "COS 1.17" "STMSG" 3
+        poll_check_send 4 "TO CONTINUE" "REPLY,0,GO" 2
+        poll_check_send 4 "TO PROCEED" "REPLY,9,CONTINUE" 3
+        poll_check_send 4 "END OF DATA" "STMSG,INFO" 3
+        poll_check_send 4 "VALIDATED SUCCESSFULLY" "+" 2
+        poll_check_send 4 "STARTUP COMPLETE" "" 3
+        echo " "
+        echo "*** Automated COS 117 boot complete! ***"
+    else msg "not_up"; fi
+}
+
+# Logon to interactive COS Shell
+cos_interactive() {
+    if cray_is_up; then
+        echo "*** Performing an automated logon to interactive COS shell ***"
+        poll_check_send 4 "STARTUP COMPLETE" "CLASS,ALL,ON" 2
+        poll_check_send 4 "CLASS" "LIMIT,5" 2
+        poll_check_send 4 "LIMIT" "IAIOP LOG" 3 1
+        poll_check_send 1 "LOGGED ON" "" 2 4
+        poll_check_send 4 "LOGON" "IACON" 3 
+        poll_check_send 4 ">" "/LOGON" 12
+        poll_check_send 4 "ASSEMBLY DATE" "ACCOUNT,AC=CRAY." 3
+        poll_check_send 4 "ACCOUNT" "" 3
+        echo " "
+        echo "*** Automated logon to interactive COS shell complete! ***"
+    else msg "not_up"; fi
+}
+
+# Boot and logon to COS interactive shell
+cos_ds_ia() {
+    if cray_is_up; then
+    echo "*** Performing an automated boot and logon to interactive COS shell ***"
+    cos_deadstart
+    cos_interactive
+    echo "*** Automated boot and logon to interactive COS shell complete! ***"
+    else msg "not_up"; fi
+}
+
+# Fetch and execute a file on COS
+cos_exec() {
+    if cray_is_up; then
+    echo "*** Performing an automated fetch and execution in interactive COS shell ***"
+    if [ -z "$1" ]; then msg "no_file"; usage; exit 1; fi
+    local COS_BINARY=$1
+    poll_check_send 4 "!" "DISPOSE,DN=$COS_BINARY,MF=AP." 2
+    poll_check_send 4 "DISPOSE" "FETCH,DN=$COS_BINARY,MF=AP,AC=ST,TEXT=BIN/$COS_BINARY." 5
+    poll_check_send 4 "DATASET RECEIVED FROM FRONT END" "$COS_BINARY." 5
+    echo " "
+    echo "*** Starting execution! ***"
+    else msg "not_up"; fi
+}
+
+# Create a COS disk with specified file included and run
+run_disk() {
+    if cray_is_up; then
+        echo "*** Automated execution of specified file ***"
+        if [ -z "$1" ]; then msg "no_file"; usage; exit 1; fi
+        local fullpath=$1
+        if [ ! -f "$fullpath" ]; then msg "no_file"; usage; exit 1; fi
+        local filename=$(basename "$fullpath")
+        local COS_FILENAME=$(echo "${filename^^}" | tr -d '_' | sed 's/\.[^.]*$//')
+        create_disk $fullpath
+        cos_exec $COS_FILENAME
+        echo "*** Execution of $COS_FILENAME started! ***"
+    else msg "not_up"; fi
+}
+
 # Show conditional menu
 show_menu() {
     if cray_is_up; then
         cat << EOF
 
-1. Stop
-2. Restart
-3. Kill
-4. Status
-5. Attach
+*** Main Options ***
+
+1. Stop       - Stop simulator
+2. Restart    - Restart simulator
+3. Kill       - Kill simulator
+4. Status     - Check simulator status
+5. Attach     - Attach to simulator screen
+
+*** Automation Options ***
+
+6. Boot COS & Load Shell - Boot COS and load interactive shell
+7. Load Shell            - Load COS interactive shell
+8. Boot COS              - Boot COS
+9. Install COS           - Install COS (perform only once!)
+
+Automation Progress Legends:
+
+    + - Command sent
+    = - Expected keyword matched
+    ~ - Expected keyword not yet matched
+
+Console Magic:
+
+    xyzzy   - Stop automation
+
+Type the above in console and wait for detection.
+
+Notes:
+
+- Perform Option 9 only once!
+- Use Options 8 or 6 after Option 9 and simulator restart.
+- Use Option 7 after Option 9 or 8.
+- Other Automation options are incompatible with each other.
 
 EOF
-    else echo "1. Start"; fi
+    else
+        cat << EOF
+
+*** Main Option ***
+
+1. Start
+
+EOF
+    fi
 }
 
 # Pick a choice from conditonal menu 
@@ -134,6 +441,10 @@ pick_choice() {
             3) kill_cray ;;
             4) status_cray ;;
             5) attach_cray ;;
+            6) cos_ds_ia ;;
+            7) cos_interactive ;;
+            8) cos_deadstart ;;
+            9) cos_install ;;
             *) msg "unknown" ;;
         esac
     else
@@ -146,11 +457,20 @@ pick_choice() {
 
 # Main CLI logic
 case "$1" in
-    start)      if cray_is_up; then msg "running";  else start_cray;   fi ;;
-    stop)       if cray_is_up; then stop_cray;      else msg "not_up"; fi ;;
-    restart)    if cray_is_up; then restart_cray;   else msg "not_up"; fi ;;
-    kill)       if cray_is_up; then kill_cray;      else msg "not_up"; fi ;;
-    status)     if cray_is_up; then status_cray;    else msg "not_up"; fi ;;
-    attach)     if cray_is_up; then attach_cray;    else msg "not_up"; fi ;;
-    *) usage;   if cray_is_up; then msg "running";  else msg "not_up"; fi; pick_choice ;;
+    start)          if cray_is_up; then msg "running";      else start_cray;   fi ;;
+    stop)           if cray_is_up; then stop_cray;          else msg "not_up"; fi ;;
+    restart)        if cray_is_up; then restart_cray;       else msg "not_up"; fi ;;
+    kill)           if cray_is_up; then kill_cray;          else msg "not_up"; fi ;;
+    status)         if cray_is_up; then status_cray;        else msg "not_up"; fi ;;
+    attach)         if cray_is_up; then attach_cray;        else msg "not_up"; fi ;;
+    merge)          if cray_is_up; then merge_sessions;     else msg "not_up"; fi ;; 
+    rename)         if cray_is_up; then rename_console;     else msg "not_up"; fi ;; 
+    cos_install)    if cray_is_up; then cos_install;        else msg "not_up"; fi ;; 
+    cos_boot)       if cray_is_up; then cos_deadstart;      else msg "not_up"; fi ;; 
+    cos_shell)      if cray_is_up; then cos_interactive;    else msg "not_up"; fi ;;
+    cos_boot_shell) if cray_is_up; then cos_ds_ia;          else msg "not_up"; fi ;;
+    cos_exec)       if cray_is_up; then cos_exec $2;        else msg "not_up"; fi ;;
+    cos_gen_disk)   if cray_is_up; then create_disk $2;     else msg "not_up"; fi ;;
+    cos_run_disk)   if cray_is_up; then run_disk $2;        else msg "not_up"; fi ;;
+    *) usage;       if cray_is_up; then msg "running";      else msg "not_up"; fi; pick_choice ;;
 esac

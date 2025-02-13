@@ -101,7 +101,7 @@ protected:
 	boost::optional<std::string> mConsoleCommand;
 	boost::optional<std::string> mNewTerminalCommand;
 
-	static boost::asio::io_service mIoService;
+	static boost::asio::io_context mIoService;
 	std::shared_ptr<boost::asio::ip::tcp::acceptor> mServerSocket;
 	std::shared_ptr<boost::asio::ip::tcp::socket> mConnectionSocket;
 	boost::array<char, 1> mReceiveBuf;
