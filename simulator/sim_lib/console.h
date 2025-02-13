@@ -116,6 +116,7 @@ protected:
 	// std::string mTransmitBuf;
 	// bool mTransmitFull;
 	bool mAccepted;
+	int mInSendFromQueue;
 
 	void CloseSocket();
 	void AcceptHandler(const boost::system::error_code& aError);

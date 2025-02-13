@@ -36,7 +36,8 @@ Console_c::Console_c(const Configuration_c &aConfig, CLogger_c &aLogger, uint16_
 	mMapBackspace(aConfig.get<bool>("MapBackspace", true)),
 	mBackspaceChar(aConfig.get<int>("BackspaceChar", 127) & 0xff),
 	mDisableAutoTerminal(aDisableAutoTerminal),
-	mLogInitialized(false)
+	mLogInitialized(false),
+	mInSendFromQueue(0)
 {
 	if (!mConsoleCommand.is_initialized()) {
 		mConsoleCommand = aConfig.get_optional<std::string>("ConsoleCommand");
@@ -115,11 +116,15 @@ void Console_c::SendFromQueue() {
 				*mConnectionSocket,
 				boost::asio::buffer(Head.mData),
 				boost::bind(&Console_c::WriteHandler, this, boost::asio::placeholders::error)
-				);
-			//for (int i = 0; i < 100; ++i) {
-			//	mIoService.reset();
-			//	mIoService.poll();
-			//}
+			);
+			for (int i = 0; i < 100; ++i) {
+				if (mInSendFromQueue < 100) {
+					++mInSendFromQueue;
+					mIoService.reset();
+					mIoService.poll();
+					--mInSendFromQueue;
+				}
+			}
 		}
 		catch (boost::system::system_error &) {
 			CloseSocket();
