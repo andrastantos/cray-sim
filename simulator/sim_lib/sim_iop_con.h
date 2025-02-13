@@ -33,6 +33,7 @@ protected:
 	mutable CLogger_c mLogger;
 	SimIopCluster_c &mParent;
 	uint8_t mDev;
+	boost::optional<std::string> mConsoleAnchor;
 };
 
 

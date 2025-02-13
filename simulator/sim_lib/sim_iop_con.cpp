@@ -20,16 +20,23 @@ SimIopConsole_c::SimIopConsole_c(const Configuration_c &aConfig, size_t aConsole
 	mConsoleId(aConsoleId),
 	mLogger(aConfig, "CON", aConsoleId),
 	mParent(aParent),
-	mDev(aDev)
+	mDev(aDev),
+	mConsoleAnchor(aConfig.get_optional<std::string>("ConsoleAnchor"))
 {
 	mLogger.SetParent(aParent.GetLogger());
 }
 
 void SimIopConsole_c::GetStatus(StatusReport_c &aStatus, boost::timer::nanosecond_type aElapsedTime, bool aLongFormat) const {
 	aStatus.put("State", mAccepted ? "Conn" : "----");
-	if (aLongFormat) {
+	if (aLongFormat && mConsoleAnchor.is_initialized()) {
 		std::stringstream Str;
-		Str << "<a href=telnet://localhost:" << mPort << ">" << mPort << "</a>";
+		std::stringstream PortStr;
+		PortStr << DecPrinter(mPort);
+
+		std::string Link = mConsoleAnchor.get();
+		Link = Replace(Link, "{port}", PortStr.str());
+		Str << Link << mPort << "</a>";
+		//Str << "<a href=telnet://localhost:" << mPort << ">" << mPort << "</a>";
 		aStatus.put("Port", Str.str());
 	} else {
 		aStatus.put("Port", mPort);
