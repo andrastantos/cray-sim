@@ -45,7 +45,7 @@ private:
   void do_await_stop();
 
   /// The io_service used to perform asynchronous operations.
-  boost::asio::io_service io_service_;
+  boost::asio::io_context io_service_;
 
   /// The signal_set is used to register for process termination notifications.
   boost::asio::signal_set signals_;

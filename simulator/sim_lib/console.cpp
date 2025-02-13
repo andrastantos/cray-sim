@@ -203,7 +203,7 @@ void Console_c::Tick() {
 }
 
 void Console_c::Poll() {
-	mIoService.reset();
+	mIoService.restart();
 	mIoService.poll();
 }
 
@@ -467,7 +467,7 @@ void Console_c::AcceptIfNeeded(bool aSilent) {
 	}
 }
 
-boost::asio::io_service Console_c::mIoService;
+boost::asio::io_context Console_c::mIoService;
 
 #if defined(PARTIAL_DEBUG) && defined(_MSC_VER)
 #pragma optimize ("", on)

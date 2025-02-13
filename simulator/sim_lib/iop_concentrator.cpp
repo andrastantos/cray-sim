@@ -78,7 +78,7 @@ void IopConcentrator_c::ProcessReceivedBytes() {
 	size_t i;
 	size_t size = mReceiveBuf.size();
 	while (size > 0) {
-		const uint8_t *data = boost::asio::buffer_cast<const uint8_t *>(mReceiveBuf.data());
+		const uint8_t *data = static_cast<const uint8_t *>(mReceiveBuf.data().data());
 		switch (mRcvState) {
 			case State_RcvLcpPduLength: // process 4-byte PDU length value
 				if (size < 4) return;
@@ -325,7 +325,7 @@ void IopConcentrator_c::Tick() {
         }
 }
 
-boost::asio::io_service IopConcentrator_c::mIoService;
+boost::asio::io_context IopConcentrator_c::mIoService;
 
 /////////////////////////////////////////////////////////
 // IopConcentratorChannel_c

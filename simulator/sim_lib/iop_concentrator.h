@@ -147,7 +147,7 @@ protected:
         std::shared_ptr<boost::asio::ip::tcp::socket> mConnectionSocket;
 	std::vector<CInt_t> mFromCrayData;
 	IopConcentratorChannel_c mInputChannel;
-        static boost::asio::io_service mIoService;
+        static boost::asio::io_context mIoService;
 	uint8_t mLastRcvdMessageCode;
 	uint8_t mLastXmitMessageCode;
         std::shared_ptr<boost::asio::ip::tcp::acceptor> mListenSocket;
