@@ -91,8 +91,8 @@ SoftCpu_c::SoftCpu_c(const Configuration_c &aConfig, const Configuration_c &aDef
 		}
 	}
 	mTimerIncrement = aConfig.get("TimerIncrement", aDefaultConfig.get("TimerIncrement", 1000));
-	mThrowOnUnknown = aConfig.get("ThrowOnUnknown", aDefaultConfig.get("ThrowOnUnknown", true));
-	mThrowOnUnimplemented = aConfig.get("ThrowOnUnimplemented", aDefaultConfig.get("ThrowOnUnimplemented", true));
+	mThrowOnUnknown = aConfig.get("ThrowOnUnknown", aDefaultConfig.get("ThrowOnUnknown", false));
+	mThrowOnUnimplemented = aConfig.get("ThrowOnUnimplemented", aDefaultConfig.get("ThrowOnUnimplemented", false));
 
 	if (mTimerIncrement == 0) mTimerIncrement = 1;
 	InitNotIntFlags();

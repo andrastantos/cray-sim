@@ -210,9 +210,9 @@ MemoryPokes: list of address-value pairs
 	parcel address (like 0x42346:p2). For word addresses, the value is a 64-bit
 	integer, for parcel-address the value is a 16-bit integer
 ThrowOnUnknown: optional boolean
-	If set, unknown instructions won't throw an assert. If cleared they are treated as no-ops. Defaults to set.
+	If set, unknown instructions throw an assert. If cleared they are treated as no-ops. Defaults to cleared.
 ThrowOnUnimplemented: optional boolean
-	If set, unimplemented instructions won't throw an assert. If cleared they are treated as no-ops. Defaults to set.
+	If set, unimplemented instructions throw an assert. If cleared they are treated as no-ops. Defaults to cleared.
 
 ================================================================================
 BreakPoints
