@@ -273,12 +273,15 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0152(uint64_t aParcels, size_
 	}
 	if (aDoExecute) {
 		RefVj.LogState("input");
-		CRAY_ASSERT(mState.VL != 0);
+		CRAY_UNDOCUMENTED_FLOW_THROUGH(mState.VL != 0);
 		CRAY_ASSERT(RefVL <= cVecSize);
-		for (size_t Idx = 0; Idx < size_t(mState.VL - 1); ++Idx) {
-			mState.V[i][Idx] = DoubleShiftLeft(mState.V[j][Idx], mState.V[j][Idx + 1], RefAk);
+		// It is not documented what happens in VL=0. For now, we're doing a no-op
+		if (mState.VL != 0) {
+			for (size_t Idx = 0; Idx < size_t(mState.VL - 1); ++Idx) {
+				mState.V[i][Idx] = DoubleShiftLeft(mState.V[j][Idx], mState.V[j][Idx + 1], RefAk);
+			}
+			mState.V[i][mState.VL - 1] = DoubleShiftLeft(mState.V[j][mState.VL - 1], CInt_t(0), RefAk);
 		}
-		mState.V[i][mState.VL - 1] = DoubleShiftLeft(mState.V[j][mState.VL - 1], CInt_t(0), RefAk);
 		RefVi.LogState();
 		mState.VectorNotUsed = false;
 	}
@@ -740,7 +743,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0174(uint64_t aParcels, size_
 				aExplanation << "Bit-matrix product";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsSv1BitMatrixLoaded());
+				CRAY_UNDOCUMENTED_FLOW_THROUGH(mState.Mode.IsSv1BitMatrixLoaded());
 				CRAY_ASSERT(RefVL <= cVecSize);
 				for (int j = 0; j < mState.VL; ++j) {
 					CInt_t Result = 0;

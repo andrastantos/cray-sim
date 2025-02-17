@@ -26,7 +26,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode010x(uint64_t aParcels, size_
 		}
 	}
 	if (aDoExecute) {
-		CRAY_ASSERT(IsXMode() || jk == 000);
+		CRAY_UNDOCUMENTED_FLOW_THROUGH(IsXMode() || jk == 000);
 		CAddr_t Addr = CAddr_t(RefAh) + Offset;
 		if (IsXmp()) {
 			if (!mState.XmpEnhancedAddressingMode) Addr = ApplyShortMask(CXmpAddr_t(Addr));
@@ -52,7 +52,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode011x(uint64_t aParcels, size_
 		}
 	}
 	if (aDoExecute) {
-		CRAY_ASSERT(IsXMode() || jk == 000);
+		CRAY_UNDOCUMENTED_FLOW_THROUGH(IsXMode() || jk == 000);
 		CAddr_t Addr = CAddr_t(RefAh) + Offset;
 		if (IsXmp()) {
 			if (!mState.XmpEnhancedAddressingMode) Addr = ApplyShortMask(CXmpAddr_t(Addr));
@@ -78,7 +78,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode012x(uint64_t aParcels, size_
 		}
 	}
 	if (aDoExecute) {
-		CRAY_ASSERT(IsXMode() || jk == 000);
+		CRAY_UNDOCUMENTED_FLOW_THROUGH(IsXMode() || jk == 000);
 		CAddr_t Addr = CAddr_t(RefAh) + Offset;
 		if (IsXmp()) {
 			if (!mState.XmpEnhancedAddressingMode) Addr = ApplyShortMask(CXmpAddr_t(Addr));
@@ -104,7 +104,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode013x(uint64_t aParcels, size_
 		}
 	}
 	if (aDoExecute) {
-		CRAY_ASSERT(IsXMode() || jk == 000);
+		CRAY_UNDOCUMENTED_FLOW_THROUGH(IsXMode() || jk == 000);
 		CAddr_t Addr = CAddr_t(RefAh) + Offset;
 		if (IsXmp()) {
 			if (!mState.XmpEnhancedAddressingMode) Addr = ApplyShortMask(CXmpAddr_t(Addr));

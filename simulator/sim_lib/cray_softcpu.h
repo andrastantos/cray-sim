@@ -57,6 +57,23 @@
 	} while (false);
 
 
+#define CRAY_UNDOCUMENTED(aCond, aRetVal)                                            \
+    do {                                                                             \
+		if (!(aCond)) {                                                              \
+			UndocumentedInstError_x Error(__FILE__,__LINE__,#aCond);                 \
+			if (mThrowOnUnknown) {                                                   \
+				throw Error;                                                         \
+			} else {                                                                 \
+				mLogger << setloglevel(LogLevel_Error) << Error.what() << std::endl; \
+				if (aRetVal > 0) return aRetVal;                                     \
+			}                                                                        \
+		}                                                                            \
+	} while (false);
+
+#define CRAY_UNDOCUMENTED_FLOW_THROUGH(aCond) CRAY_UNDOCUMENTED(aCond, 0)
+
+
+
 inline size_t FirstParcel(uint64_t aInst) { return size_t((aInst >> 32) & 0xffff); }
 inline size_t SecondParcel(uint64_t aInst) { return size_t((aInst >> 16) & 0xffff); }
 inline size_t ThirdParcel(uint64_t aInst) { return size_t((aInst >> 0) & 0xffff); }
@@ -852,6 +869,7 @@ protected:
 	struct DataWriteOutOfBoundsError_x: public Generic_x { DataWriteOutOfBoundsError_x() : Generic_x("Data write out of bounds") {} };
 	struct InstDecodeError_x : public Generic_x { InstDecodeError_x() : Generic_x("Instruction decode error") {} };
 	struct UnknownInstError_x : public Generic_x { UnknownInstError_x(const char *aFile, size_t aLine) : Generic_x("Unknown instruction error at") { *this << aFile << ":" << DecPrinter(aLine, 0); } };
+	struct UndocumentedInstError_x : public Generic_x { UndocumentedInstError_x(const char *aFile, size_t aLine, const char *aCond) : Generic_x("Undocumented instruction behavior error at") { *this << aFile << ":" << DecPrinter(aLine, 0) << " faild condition: " << aCond; } };
 	struct TerminateInstError_x : public Generic_x { TerminateInstError_x() : Generic_x("Terminate instruction executed") {} };
 	struct InstExecError_x : public Generic_x { InstExecError_x() : Generic_x("Instruction execution error") {} };
 	struct InstUnimplementedError_x : public Generic_x { InstUnimplementedError_x(const char *aFile, size_t aLine) { *this << "Unimplemented instruction at " << aFile << ":" << DecPrinter(aLine, 0); ResetSpacePrinted(); } };

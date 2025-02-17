@@ -29,7 +29,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0040(uint64_t aParcels, size_
 			aDisassembly << RefSiTarget << " " << HexPrinter(Value);
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			RefSiTarget = Value;
 		}
 		return 3;
@@ -55,7 +55,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0041(uint64_t aParcels, size_
 			aDisassembly << RefSiTarget << " " << HexPrinter(Value);
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			RefSiTarget = Value;
 		}
 		return 3;
@@ -513,7 +513,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0070(uint64_t aParcels, size_
 				aExplanation << "Transmit the bit-matrix product of (Sj ) and transpose of (BMM) to Si. *********** UNIMPLEMENTED FOR NOW ***********";
 			}
 			if (aDoExecute) {
-				CRAY_ASSERT(mState.Mode.IsSv1BitMatrixLoaded());
+				CRAY_UNDOCUMENTED_FLOW_THROUGH(mState.Mode.IsSv1BitMatrixLoaded());
 				CInt_t Result = 0;
 				for (int i = 0; i < mState.VL; ++i) {
 					Result ^= RefSj & RefBM[i];

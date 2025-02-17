@@ -453,7 +453,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0002(uint64_t aParcels, size_
 			aExplanation << "Enable floating point exceptions";
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			mState.Mode.SetFloatingPointErrorMode(true);
 			CalcInterruptMask();
 			mState.Flags.ClearFloatingPointError();
@@ -495,7 +495,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0002(uint64_t aParcels, size_
 			aExplanation << "Enable range exceptions";
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			mState.Mode.SetOperandRangeErrorMode(true);
 			CalcInterruptMask();
 		}
@@ -506,7 +506,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0002(uint64_t aParcels, size_
 			aExplanation << "Disable range exceptions";
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			mState.Mode.SetOperandRangeErrorMode(false);
 			CalcInterruptMask();
 		}
@@ -517,7 +517,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0002(uint64_t aParcels, size_
 			aExplanation << "Disable bidirectional memory transfers";
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			mState.Mode.SetBidirectionalMemoryMode(true);
 			CalcInterruptMask();
 		}
@@ -528,7 +528,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0002(uint64_t aParcels, size_
 			aExplanation << "Enable bidirectional memory transfers";
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			mState.Mode.SetBidirectionalMemoryMode(false);
 			CalcInterruptMask();
 		}
@@ -627,8 +627,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0003(uint64_t aParcels, size_
 			aDisassembly << "SM" << DecPrinter(int(jk), 0) << " 1,TS";
 			aExplanation << "Test and set semaphore SM" << DecPrinter(int(jk), 0);
 			return 1;
-		}
-		else {
+		} else {
 			if (mState.Cluster == 0) return 1;
 			//				std::unique_lock<std::mutex> Lock(mMainframe.GetCluster(mState.Cluster - 1).ClusterMutex);
 			Lock_c Lock(mMainframe.GetCluster(mState.Cluster - 1).ClusterMutex);
@@ -1082,7 +1081,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0020(uint64_t aParcels, size_
 			aDisassembly << RefAiTarget << " " << Addr(Value);
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			RefAiTarget = Value;
 		}
 		return 3;
@@ -1108,7 +1107,7 @@ template <bool aDoExecute> size_t SoftCpu_c::Decode0021(uint64_t aParcels, size_
 			aDisassembly << RefAiTarget << " " << Addr(Value);
 		}
 		if (aDoExecute) {
-			CRAY_ASSERT(jk == 000);
+			CRAY_UNDOCUMENTED_FLOW_THROUGH(jk == 000);
 			RefAiTarget = Value;
 		}
 		return 3;
