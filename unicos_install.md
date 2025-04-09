@@ -127,7 +127,7 @@ This process will do the following things:
 8. It will ask you for a root password and create a new user for you (with your input).
 9. UNICOS has the unhealthy habit of corrupting its filesystem due to its aggressive write-back cashing that I don’t know how to disable. As a work-around a cron-job is installed in the system that flushes this cache every second.
 
-The installation process takes hours and hours so, plan accordingly and be patient. The process also spews a ton of output in the screen so it should at least provide some entertainment for you. You should not see the screen not changing for more than 2-3 minutes. In case you want to go back and look into what happened, the session is save under the file `CON0` on the host machine, in the simulator directory.
+The installation process takes hours and hours so, plan accordingly and be patient. The process also spews a ton of output in the screen so it should at least provide some entertainment for you. You should not see the screen not changing for more than 2-3 minutes. In case you want to go back and look into what happened, the session is saved under the file `CON0` on the host machine, in the simulator directory.
 
 # Reconfigure the Cray PVP simulator to run the installed UNICOS system
 
@@ -164,7 +164,7 @@ Congratulations, you've finished installing UNICOS!
 
 # Goodies
 
-The system you've just installed is not the most user-friendly out of the box. It lacks many utilities you might gotten used to and the configuration of it might not be what you like. There are a few utilities pre-compiled for UNICOS-10 that you might find useful, under the `unicos_tools` directory.
+The system you've just installed is not the most user-friendly out of the box. It lacks many utilities you might have gotten used to and the configuration of it might not be what you like. There are a few utilities pre-compiled for UNICOS-10 that you might find useful, under the `unicos_tools` directory.
 
 To install these, rcp them over to UNICOS (as root):
 
